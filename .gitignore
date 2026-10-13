@@ -1,0 +1,29 @@
+# Python 自动生成的缓存
+__pycache__/
+*.pyc
+
+# 模型权重与推理缓存
+*.onnx
+*.pt
+*.pth
+*.engine
+*.plan
+
+# 视频、公开验证数据与运行输出
+*.mp4
+/pingpang/public_data/
+/basketball/public_data/
+out/
+output/
+out_check_solution/
+trt_cache/
+*.log
+
+# 解压后重复的内层工程目录
+/participant/
+
+# 本机配置与代理配置
+.env
+.env.*
+.clash/
+.mihomo/

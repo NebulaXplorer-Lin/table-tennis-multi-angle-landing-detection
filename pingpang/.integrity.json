@@ -1,0 +1,18 @@
+{
+ "protected": {
+  "core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "core/dataset.py": "1352e57e563c0ad1cb1c0143976dc9ba32cf5fbf1a7c8fe80a0e76ee1ba952f3",
+  "core/decoder.py": "ed3dfb425352c8422dd720d4c11280a30fbad58bc0b14fee2c7553c393134e91",
+  "core/logging_utils.py": "0362c7d583a36d1988a9135e0183a518595c1b8a2e1b6af4557bf556df776cf8",
+  "core/runner.py": "6bc5b8a97e971855215817c3cf2980cf1d9c274c1a28c7dcfcd6212e65588602",
+  "core/trt.py": "e68d2c4572981de0187909e6b5559038362a8a31b44c65ca26cdfbfb30fb66ae",
+  "core/types.py": "933fa4120c2a820aee18d333b314ba31ac1cc6f1f3b6476895f480477b91d58f",
+  "core/writer.py": "4d0d41688abb353609310217d55c8685c94f88d81dae1f9c0829dc082c8f60cf",
+  "integrity.py": "e845148739299a5bb2630e4b65cf8c16c4e3fdfbb6a974eb13d45dd4a2d3b1d9",
+  "run.py": "65c34a859fa742d5dd8d40aa68e3d186a9978129017eded55a90947a1cc6af84",
+  "run.sh": "0a0a324edc9d70e7b86ce4e426a25e15fae748617411db602ed4bc7dba0084c4",
+  "scripts/check_env.py": "4690bc8f58cd7340c665055bc3711623ce8faf65cd4136cf8431002ce4dd6f20",
+  "scripts/check_solution.py": "cb3e72c860c907e38856ab32c49017c13b555685a41e03cc3fcfcfb74d17501d",
+  "validate.py": "371317dcabebd76cbbd26d26e02131a16ec93722de938da364cd9a76eebcac79"
+ }
+}
