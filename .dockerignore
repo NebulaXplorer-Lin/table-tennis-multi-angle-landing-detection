@@ -1,0 +1,27 @@
+# Git 版本记录
+.git/
+
+# Python 缓存
+**/__pycache__/
+**/*.pyc
+
+# 本地解压产生的重复工程目录
+/participant/
+
+# 运行输出与推理缓存
+**/output/
+**/out/
+**/out_check_solution/
+**/trt_cache/
+**/*.log
+
+# 本机环境与代理配置
+.env
+.env.*
+.clash/
+.mihomo/
+
+# 压缩包
+**/*.zip
+**/*.tar
+**/*.tar.gz
