@@ -27,3 +27,8 @@ trt_cache/
 .env.*
 .clash/
 .mihomo/
+
+sport-base_v1.tar
+# uv local environment
+.venv/
+.uv-cache/

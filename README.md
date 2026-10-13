@@ -20,6 +20,12 @@ participant/
 
 两任务 core 同构独立，互不依赖——单任务出问题不波及另一个。
 
+## 本地 Blackwell 开发环境
+
+RTX 5070 Ti 可用 `uv sync --locked` 安装独立的 Python 3.10 / PyTorch cu128 环境。
+本地推理使用 ONNX Runtime CUDA 入口；安装、自检和运行命令见
+[本地环境说明](docs/local_environment.md)。官方提交仍使用下述固定镜像与原有入口。
+
 ## 本地自测（在 participant/ 所在目录执行）
 
 ```bash

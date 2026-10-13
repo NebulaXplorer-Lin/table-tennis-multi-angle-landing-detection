@@ -25,3 +25,11 @@
 **/*.zip
 **/*.tar
 **/*.tar.gz
+# Local Blackwell environment (never include in official image)
+.venv/
+.uv-cache/
+pyproject.toml
+uv.lock
+.python-version
+scripts/check_local_env.py
+**/participant/solution_local.py

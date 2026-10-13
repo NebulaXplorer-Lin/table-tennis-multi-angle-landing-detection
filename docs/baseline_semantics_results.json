@@ -1,0 +1,65 @@
+{
+  "scope": "existing _emit only; no ONNX/GPU/video inference",
+  "passed": 7,
+  "cases": [
+    {
+      "case": "normal_waits_for_two_future_points",
+      "passed": true,
+      "output": []
+    },
+    {
+      "case": "tail_allows_one_future_point",
+      "passed": true,
+      "output": [
+        {
+          "frame_id": 1,
+          "x": 100.0,
+          "y": 15
+        }
+      ]
+    },
+    {
+      "case": "second_future_y_not_checked",
+      "passed": true,
+      "output": [
+        {
+          "frame_id": 1,
+          "x": 100.0,
+          "y": 15
+        }
+      ]
+    },
+    {
+      "case": "missing_frames_not_rejected",
+      "passed": true,
+      "output": [
+        {
+          "frame_id": 19,
+          "x": 100.0,
+          "y": 15
+        }
+      ]
+    },
+    {
+      "case": "nine_frame_gap_suppressed",
+      "passed": true,
+      "output": []
+    },
+    {
+      "case": "ten_frame_gap_allowed",
+      "passed": true,
+      "output": [
+        {
+          "frame_id": 11,
+          "x": 100.0,
+          "y": 15
+        }
+      ]
+    },
+    {
+      "case": "last_point_cannot_be_peak_even_at_finish",
+      "passed": true,
+      "output": []
+    }
+  ]
+}
