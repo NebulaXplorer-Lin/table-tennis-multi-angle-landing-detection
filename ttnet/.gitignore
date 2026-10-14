@@ -1,10 +1,8 @@
 __pycache__/
-datasets/**/frames/
-datasets/**/frames
-datasets/**/global_inputs/
-datasets/**/previews/
-datasets/**/labels/
-datasets/**/windows/
+/data/
+/datasets
+/cache
+/output/
 runs/**/checkpoints/
 runs/**/logs/
 runs/**/predictions/
@@ -12,4 +10,5 @@ runs/**/visualizations/
 runs/**/exports/
 runs/**/feature_cache/
 runs/**/crop_indexes/
+runs/**/evaluations/**/*.png
 *.tmp
