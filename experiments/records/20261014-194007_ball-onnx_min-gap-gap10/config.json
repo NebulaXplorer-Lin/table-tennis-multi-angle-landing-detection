@@ -1,0 +1,14 @@
+{
+  "min_gap": 10,
+  "backend": "onnxruntime_cuda_fp32",
+  "decoder": "cpu",
+  "input_shape": [
+    1,
+    9,
+    288,
+    512
+  ],
+  "data": "\\\\?\\D:\\Study250711\\SchoolCurriculum\\Seminar3\\Introduction to Innovation and Entrepreneurship\\Multi-angle Detection of Table Tennis Ball Landing Points\\participant\\pingpang\\public_data",
+  "output": "\\\\?\\D:\\Study250711\\SchoolCurriculum\\Seminar3\\Introduction to Innovation and Entrepreneurship\\Multi-angle Detection of Table Tennis Ball Landing Points\\participant\\out\\experiments\\20261014-194007_ball-onnx_min-gap-gap10\\eval\\public",
+  "public_validation_used_for_parameter_selection": true
+}

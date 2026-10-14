@@ -1,0 +1,51 @@
+{
+  "protocol": "local_max_match_f1_frame1_px50_v1",
+  "caveat": "Valid GT matched first; remaining predictions near invalid GT ignored. Official ignore handling may differ.",
+  "overall": {
+    "tp": 61,
+    "fp": 42,
+    "fn": 31,
+    "precision": 0.5922330097087378,
+    "recall": 0.6630434782608695,
+    "f1": 0.6256410256410256
+  },
+  "by_angle": {
+    "0度": {
+      "ignored": 2,
+      "tp": 10,
+      "fp": 15,
+      "fn": 11,
+      "precision": 0.4,
+      "recall": 0.47619047619047616,
+      "f1": 0.43478260869565216
+    },
+    "45度": {
+      "ignored": 1,
+      "tp": 28,
+      "fp": 18,
+      "fn": 10,
+      "precision": 0.6086956521739131,
+      "recall": 0.7368421052631579,
+      "f1": 0.6666666666666666
+    },
+    "90度": {
+      "ignored": 2,
+      "tp": 23,
+      "fp": 9,
+      "fn": 10,
+      "precision": 0.71875,
+      "recall": 0.696969696969697,
+      "f1": 0.7076923076923077
+    }
+  },
+  "macro_f1": 0.6030471943515422,
+  "performance": {
+    "total_frames": 2109,
+    "infer_sec": 67.9,
+    "infer_fps": 31.1,
+    "avg_video_fps": 31.0,
+    "p50_video_fps": 30.9,
+    "p90_video_fps": 32.1
+  },
+  "prediction_sha256": "7b78896c53e206844bdd8e7e83a6bdf29aa5856450a2dc924b296b9d7ed7d666"
+}

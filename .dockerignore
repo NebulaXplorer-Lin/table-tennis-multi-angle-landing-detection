@@ -33,3 +33,6 @@ uv.lock
 .python-version
 scripts/check_local_env.py
 **/participant/solution_local.py
+.venv-local/
+tools/
+experiments/

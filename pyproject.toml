@@ -18,7 +18,10 @@ dependencies = [
 [tool.uv]
 package = false
 no-build = true
-environments = ["sys_platform == 'linux' and platform_machine == 'x86_64'"]
+environments = [
+    "sys_platform == 'linux' and platform_machine == 'x86_64'",
+    "sys_platform == 'win32' and platform_machine == 'AMD64'",
+]
 
 [tool.uv.sources]
 torch = { index = "pytorch-cu128" }

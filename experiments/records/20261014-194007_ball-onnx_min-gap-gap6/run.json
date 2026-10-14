@@ -1,0 +1,38 @@
+{
+  "experiment_id": "20261014-194007_ball-onnx_min-gap-gap6",
+  "state": "completed",
+  "started_at": "2026-10-14T19:44:54.368863+08:00",
+  "command": [
+    "D:\\Study250711\\SchoolCurriculum\\Seminar3\\Introduction to Innovation and Entrepreneurship\\Multi-angle Detection of Table Tennis Ball Landing Points\\participant\\.venv\\Scripts\\python.exe",
+    "D:\\Study250711\\SchoolCurriculum\\Seminar3\\Introduction to Innovation and Entrepreneurship\\Multi-angle Detection of Table Tennis Ball Landing Points\\participant\\pingpang\\run.py",
+    "--input",
+    "\\\\?\\D:\\Study250711\\SchoolCurriculum\\Seminar3\\Introduction to Innovation and Entrepreneurship\\Multi-angle Detection of Table Tennis Ball Landing Points\\participant\\pingpang\\public_data",
+    "--output",
+    "\\\\?\\D:\\Study250711\\SchoolCurriculum\\Seminar3\\Introduction to Innovation and Entrepreneurship\\Multi-angle Detection of Table Tennis Ball Landing Points\\participant\\out\\experiments\\20261014-194007_ball-onnx_min-gap-gap6\\eval\\public",
+    "--solution",
+    "participant.solution_local:Solution",
+    "--decoder",
+    "cpu"
+  ],
+  "model_sha256": "a5a467f134ae7e2fc5679e395dca9af12b6dfcc65cee51e633c465beb0c61543",
+  "manifest_sha256": "2e1eb4fb76efbb71fe80d0307ee4bbe6d7b412d8d464d07c25721ddb56f5c5e4",
+  "gt_sha256": "f015dffd8d2f4fc2c56c18d39174592105e298cb12c647fcd43a9c94c15adb98",
+  "python": "3.10.22 (main, Oct  9 2026, 15:18:58) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "pyproject_sha256": "86090ce675a8d7afe0d2e983178e023ad76886c08fdf1fd7623b40b360ce0191",
+  "lock_sha256": "1c6a09956710ab888c1c54d8058f61d69733084128cdfe229587646dbd2d2bd4",
+  "solution_sha256": "98ea900788f70f8cbbe5e3f115cfd1d2850887d3c36511682c75315517236350",
+  "local_adapter_sha256": "4623a106b301be4f1290f1a76dcf3ba257096ed1e4019fdc962881b70ad16ebd",
+  "commit": "558251ef9af119ea0a3dae9bbcb98823d9b0b2c9",
+  "working_tree_dirty": true,
+  "exit_code": 0,
+  "runtime": {
+    "backend": "onnxruntime_cuda_fp32",
+    "min_gap": 6,
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "ort_version": "1.22.0",
+    "torch_version": "2.7.1+cu128",
+    "gpu_conv_events": 59
+  },
+  "finished_at": "2026-10-14T19:46:06.339949+08:00"
+}

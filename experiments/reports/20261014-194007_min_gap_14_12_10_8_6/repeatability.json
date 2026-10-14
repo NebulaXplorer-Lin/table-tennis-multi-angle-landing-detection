@@ -1,0 +1,26 @@
+[
+  {
+    "gap": 10,
+    "previous_experiment": "20261014-190913_ball-onnx_min-gap-gap10",
+    "prediction_hash_equal": true,
+    "metrics_equal": true,
+    "previous_fps": 31.1,
+    "current_fps": 30.6
+  },
+  {
+    "gap": 8,
+    "previous_experiment": "20261014-191629_ball-onnx_min-gap-gap8",
+    "prediction_hash_equal": true,
+    "metrics_equal": true,
+    "previous_fps": 31.2,
+    "current_fps": 30.3
+  },
+  {
+    "gap": 6,
+    "previous_experiment": "20261014-191751_ball-onnx_min-gap-gap6",
+    "prediction_hash_equal": true,
+    "metrics_equal": true,
+    "previous_fps": 29.8,
+    "current_fps": 30.5
+  }
+]

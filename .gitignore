@@ -31,4 +31,5 @@ trt_cache/
 sport-base_v1.tar
 # uv local environment
 .venv/
+.venv-local/
 .uv-cache/
