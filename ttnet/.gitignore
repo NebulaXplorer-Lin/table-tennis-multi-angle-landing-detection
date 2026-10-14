@@ -1,0 +1,14 @@
+__pycache__/
+/data/
+/datasets
+/cache
+/output/
+runs/**/checkpoints/
+runs/**/logs/
+runs/**/predictions/
+runs/**/visualizations/
+runs/**/exports/
+runs/**/feature_cache/
+runs/**/crop_indexes/
+runs/**/evaluations/**/*.png
+*.tmp

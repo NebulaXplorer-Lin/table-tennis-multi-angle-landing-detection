@@ -1,0 +1,79 @@
+{
+  "bbox_ap": {
+    "metrics/precision(B)": 0.4090909090909091,
+    "metrics/recall(B)": 0.005092417955488495,
+    "metrics/mAP50(B)": 0.2085364928909953,
+    "metrics/mAP50-95(B)": 0.066878155450733,
+    "fitness": 0.066878155450733
+  },
+  "checkpoint": "out/experiments/20261013-163117_yolo11n_ball-640/attempts/001/train/weights/best.pt",
+  "checkpoint_sha256": "7ee0e78e6f75ca0b937358383fc6f200fba5dda87147cb124e9852b59fa618e9",
+  "protocol": "ball_v1",
+  "bbox_protocol": "Ultralytics AP IoU .50:.95, conf floor .001, NMS IoU .7, max_det 10; P/R at best F1 curve threshold, not fixed .25",
+  "center_protocol": "original pixel Euclidean distance 10 and 50; max-cardinality/min-distance Hungarian matching; confidence .25, NMS IoU .7, max_det 10; positives only",
+  "unknown_policy": "excluded, never treated as background; missing frames break consecutive miss runs",
+  "touch_metrics": null,
+  "center": {
+    "10": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 5302,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "error_median_px": null,
+      "error_p90_px": null,
+      "coverage": 0.0
+    },
+    "50": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 5302,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "error_median_px": null,
+      "error_p90_px": null,
+      "coverage": 0.0
+    },
+    "bbox_iou50_fixed_conf": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 5302,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "max_consecutive_missed_10px": 144,
+    "known_background_false_positives": null
+  },
+  "benchmark": {
+    "shape": [
+      1,
+      3,
+      640,
+      640
+    ],
+    "batch": 1,
+    "precision": "FP32",
+    "backend": "PyTorch CUDA",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "model_p50_ms": 1.6548960208892822,
+    "model_p95_ms": 1.6769007802009583,
+    "warmup": 50,
+    "repeats": 3,
+    "iterations": 200,
+    "e2e_fps": 316.73222827605866,
+    "e2e_scope": "six complete validation videos; CPU decode + preprocessing + H2D + model + NMS + D2H + JSONL writes; initialization excluded; predictor rect=True",
+    "peak_memory_mib": 167.2529296875,
+    "peak_memory_scope": "torch.cuda.max_memory_allocated during forward benchmark; includes resident YOLO and benchmark clone",
+    "params_m": 2.590035,
+    "gmac": 3.2203008,
+    "gflops": 6.4406016,
+    "compute_tool": "ultralytics-thop 2.0.18",
+    "compute_scope": "THOP supported modules incl Conv/Linear; functional operations such as attention matmul may be omitted; not an exact total; unfused model; FLOPs=2*MACs",
+    "structure_note": "Recomputed by reloading checkpoint before fusion; validation/predict had fused original instance in place."
+  },
+  "best_epoch": 1,
+  "epochs_run": 6
+}

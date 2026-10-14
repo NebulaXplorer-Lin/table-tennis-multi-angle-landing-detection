@@ -1,27 +1,27 @@
-# 本地实验记录
+# 球定位实验
 
-本目录保存实验参数、版本身份、评估结果和报告。失败尝试也保留，不混入成功成绩。大型模型、视频、原始预测及完整日志放在被 Git 忽略的 `out/` 或官方数据目录，不会随仓库克隆下载。
+本轮任务：YOLO 作为单帧球定位模型，暂不执行触桌识别。
 
-## 当前参数对照
+`comparison.csv` 是汇总源，`comparison.md` 由运行脚本生成。所有 AP / P / R / F1 存 0–1；缺失指标留空 / null。每次运行在 records 下登记状态、配置、环境和评估结果，大产物在 out/experiments。
 
-最新完整比较组为 `20261014-194007_ball-onnx_min-gap`，依次测试 MIN_GAP=14、12、10、8、6。使用 Windows、RTX 5060 Laptop、ONNX Runtime CUDA FP32、CPU 视频解码，模型为原 ball.onnx。五组中的 10 在整体和宏平均 F1 上最好；这是公开验证集结论，不能推断全局最优或官方隐藏集成绩。
+## ball_v1 协议
 
-完整中文报告和表格在 `reports/20261014-194007_min_gap_14_12_10_8_6/`。较早的单组测试和三组报告保留用于追溯；三组报告中的“消融”名称属于早期表述，最新报告已采用更准确的“参数敏感性分析”。
+- YOLO11n COCO 预训练，替换为 ball 单类别；首轮 640 输入、15 epoch 上限、AdamW、seed=42、FP32。训练 3,162 张，验证 5,302 张，按场景整体划分；不进行触桌标签推导。优化器每步累积由 Ultralytics nbs=64 和 warmup 决定，实际完整参数保存在 config.yaml。
+- best 按验证 mAP50–95 选择。AP 使用置信度下限 .001、NMS IoU .7、max_det=10；报告 Ultralytics AP 曲线上最佳 F1 处的 P/R，该 P/R 不是置信度 .25 的固定阈值结果。
+- 另报固定 conf=.25 下 bbox IoU≥.5 的 P/R/F1；球心距离≤10、≤50 **原图像素**的 P/R/F1、匹配球心误差中位数/P90和覆盖率。匈牙利算法最大化有效匹配数量，再最小化距离（框匹配最大化 IoU）。混合 720p/1080p，不归一化像素阈值。
+- 只评估有球框帧，其他球形物体或未标球可能影响 FP；无球误报率无法可靠计算，留 null。连续漏检在未知帧/视频边界断开，不跨未知帧补轨迹。
+- 前向测速为 1×3×640×640、FP32、融合网络，warmup=50、3×200 次 CUDA events。E2E 为六个留出目录各首段完整视频，包含 CPU 解码、预处理、传输、预测、NMS、回传和 JSONL 写盘，不包含初始化；单帧 predictor 使用 rect=True，实际输入为按 stride 对齐的 letterbox 矩形，与前向固定方形测速不同。
+- THOP 对未融合单类别网络统计参数 / MACs，1 MAC=2 FLOPs；不保证覆盖 functional attention matmul 等操作。记录单独的前向与训练显存，GPU 为 RTX 5070 Ti，不能代表赛事 4090。
+- 不涉及 ONNX/TensorRT 部署。Ultralytics 结束训练时会 strip best/last 的优化器，因此这两个文件适合推理，不能保证精确恢复训练；本轮未要求恢复。
 
-## 目录和数据格式
+## 重跑
 
-- `records/<experiment_id>/config.json`：实际配置。
-- 同目录 `run.json`：状态、时间、代码和数据哈希、依赖身份。
-- 同目录 `evaluation.json`：成功运行的本地估算成绩。
-- `*_comparison.csv`、`*_comparison.md`：各次调用的对照表。
-- `reports/`：完整报告、逐视频指标、逐事件复查清单及新旧运行重复性核对。
+实验依赖隔离在 `out/yolo-deps`，版本清单位于 `out/yolo_setup/requirements.txt`；使用本项目 `.venv` 的 torch / numpy / OpenCV。不会修改赛事固定环境。
 
-CSV 中 Precision、Recall 和 F1 使用 0–1 原始单位；报告显示百分比。FPS 是本地实测处理速度，不能视为赛事硬件成绩。宏平均 F1 是三个视角各自 F1 的简单平均，与合并 TP/FP/FN 得到的整体 F1 不同。
+```bash
+PYTHONPATH=out/yolo-deps .venv/bin/python scripts/prepare_yolo_ball.py
+# 使用全新的时间戳实验编号，先创建日志父目录，再重定向：
+.venv/bin/python scripts/run_yolo_ball.py YYYYMMDD-HHMMSS_yolo11n_ball-640 > out/experiments/YYYYMMDD-HHMMSS_yolo11n_ball-640/attempts/001/console.log 2>&1
+```
 
-本地协议 `local_max_match_f1_frame1_px50_v1`：帧差不超过1、原图坐标距离不超过50像素、有效 GT 优先的一对一最大匹配；剩余预测接近无效 GT 时忽略。官方忽略事件处理可能不同，不能将本地估计声称为官方得分。
-
-## 复现
-
-按 `docs/windows_local_ablation.md` 准备环境，从官方工程包补齐模型和公共验证数据，然后运行检查及参数测试。公开集已用于参数选择，应保留独立验证数据评估泛化。历史记录含本机绝对路径，这是当时的追溯信息；换电脑时应运行脚本重新生成路径，不直接复制历史命令。
-
-原始预测与日志只保存在本地 `out/`，提交实验摘要不代表这些运行产物已经备份。该目录不应进入正式比赛 Docker 镜像，Docker 排除规则已配置。
+官方模型与调用参考：[YOLO11](https://docs.ultralytics.com/models/yolo11/)、[Train](https://docs.ultralytics.com/modes/train/)、[Val](https://docs.ultralytics.com/modes/val/)。固定实际使用的 ultralytics=8.3.225；不依赖文档中后续版本的行为。

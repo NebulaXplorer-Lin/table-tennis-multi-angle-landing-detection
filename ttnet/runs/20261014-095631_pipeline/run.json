@@ -1,0 +1,7 @@
+{
+  "status": "interrupted",
+  "started": "2026-10-14T09:56:31.668487+09:00",
+  "dataset": "/home/radno/projects/pingpong/ttnet/datasets/ball_v2",
+  "updated": "2026-10-14T10:15:24.285192+09:00",
+  "reason": "Training and waiting pipeline processes were absent when checked; interruption cause unknown. Continuation relaunched with a 20-epoch limit and joint early stopping."
+}

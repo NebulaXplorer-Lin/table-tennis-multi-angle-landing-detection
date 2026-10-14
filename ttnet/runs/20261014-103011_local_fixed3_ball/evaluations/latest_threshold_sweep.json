@@ -1,0 +1,182 @@
+[
+  {
+    "threshold": 0.01,
+    "metrics": {
+      "tp": 4488,
+      "fp": 772,
+      "fn": 814,
+      "precision": 0.8532319391634982,
+      "recall": 0.8464730290456431,
+      "f1": 0.8498390456352962,
+      "matched_coverage": 0.8464730290456431,
+      "error_median_px": 0.9779546665290249,
+      "error_p90_px": 2.1444939421559894,
+      "accepted_error_median_px": 1.1233078618183163,
+      "accepted_error_p90_px": 152.19635895476057,
+      "max_consecutive_missed": 22,
+      "ignored_frames": 990,
+      "roi_coverage": 0.8721237268955111,
+      "bbox_ap": null
+    }
+  },
+  {
+    "threshold": 0.02,
+    "metrics": {
+      "tp": 4488,
+      "fp": 772,
+      "fn": 814,
+      "precision": 0.8532319391634982,
+      "recall": 0.8464730290456431,
+      "f1": 0.8498390456352962,
+      "matched_coverage": 0.8464730290456431,
+      "error_median_px": 0.9779546665290249,
+      "error_p90_px": 2.1444939421559894,
+      "accepted_error_median_px": 1.1233078618183163,
+      "accepted_error_p90_px": 152.19635895476057,
+      "max_consecutive_missed": 22,
+      "ignored_frames": 990,
+      "roi_coverage": 0.8721237268955111,
+      "bbox_ap": null
+    }
+  },
+  {
+    "threshold": 0.05,
+    "metrics": {
+      "tp": 4488,
+      "fp": 772,
+      "fn": 814,
+      "precision": 0.8532319391634982,
+      "recall": 0.8464730290456431,
+      "f1": 0.8498390456352962,
+      "matched_coverage": 0.8464730290456431,
+      "error_median_px": 0.9779546665290249,
+      "error_p90_px": 2.1444939421559894,
+      "accepted_error_median_px": 1.1233078618183163,
+      "accepted_error_p90_px": 152.19635895476057,
+      "max_consecutive_missed": 22,
+      "ignored_frames": 990,
+      "roi_coverage": 0.8721237268955111,
+      "bbox_ap": null
+    }
+  },
+  {
+    "threshold": 0.1,
+    "metrics": {
+      "tp": 4488,
+      "fp": 772,
+      "fn": 814,
+      "precision": 0.8532319391634982,
+      "recall": 0.8464730290456431,
+      "f1": 0.8498390456352962,
+      "matched_coverage": 0.8464730290456431,
+      "error_median_px": 0.9779546665290249,
+      "error_p90_px": 2.1444939421559894,
+      "accepted_error_median_px": 1.1233078618183163,
+      "accepted_error_p90_px": 152.19635895476057,
+      "max_consecutive_missed": 22,
+      "ignored_frames": 990,
+      "roi_coverage": 0.8721237268955111,
+      "bbox_ap": null
+    }
+  },
+  {
+    "threshold": 0.2,
+    "metrics": {
+      "tp": 4488,
+      "fp": 772,
+      "fn": 814,
+      "precision": 0.8532319391634982,
+      "recall": 0.8464730290456431,
+      "f1": 0.8498390456352962,
+      "matched_coverage": 0.8464730290456431,
+      "error_median_px": 0.9779546665290249,
+      "error_p90_px": 2.1444939421559894,
+      "accepted_error_median_px": 1.1233078618183163,
+      "accepted_error_p90_px": 152.19635895476057,
+      "max_consecutive_missed": 22,
+      "ignored_frames": 990,
+      "roi_coverage": 0.8721237268955111,
+      "bbox_ap": null
+    }
+  },
+  {
+    "threshold": 0.3,
+    "metrics": {
+      "tp": 4488,
+      "fp": 772,
+      "fn": 814,
+      "precision": 0.8532319391634982,
+      "recall": 0.8464730290456431,
+      "f1": 0.8498390456352962,
+      "matched_coverage": 0.8464730290456431,
+      "error_median_px": 0.9779546665290249,
+      "error_p90_px": 2.1444939421559894,
+      "accepted_error_median_px": 1.1233078618183163,
+      "accepted_error_p90_px": 152.19635895476057,
+      "max_consecutive_missed": 22,
+      "ignored_frames": 990,
+      "roi_coverage": 0.8721237268955111,
+      "bbox_ap": null
+    }
+  },
+  {
+    "threshold": 0.5,
+    "metrics": {
+      "tp": 4488,
+      "fp": 772,
+      "fn": 814,
+      "precision": 0.8532319391634982,
+      "recall": 0.8464730290456431,
+      "f1": 0.8498390456352962,
+      "matched_coverage": 0.8464730290456431,
+      "error_median_px": 0.9782318827624533,
+      "error_p90_px": 2.150771169499062,
+      "accepted_error_median_px": 1.123929809004128,
+      "accepted_error_p90_px": 151.628725405298,
+      "max_consecutive_missed": 22,
+      "ignored_frames": 990,
+      "roi_coverage": 0.8721237268955111,
+      "bbox_ap": null
+    }
+  },
+  {
+    "threshold": 0.7,
+    "metrics": {
+      "tp": 4483,
+      "fp": 777,
+      "fn": 819,
+      "precision": 0.8522813688212928,
+      "recall": 0.8455299886835157,
+      "f1": 0.8488922552546865,
+      "matched_coverage": 0.8455299886835157,
+      "error_median_px": 0.9802541109074763,
+      "error_p90_px": 2.1641466616487812,
+      "accepted_error_median_px": 1.1276923636131013,
+      "accepted_error_p90_px": 156.79763071229857,
+      "max_consecutive_missed": 22,
+      "ignored_frames": 990,
+      "roi_coverage": 0.8721237268955111,
+      "bbox_ap": null
+    }
+  },
+  {
+    "threshold": 0.9,
+    "metrics": {
+      "tp": 4461,
+      "fp": 799,
+      "fn": 841,
+      "precision": 0.8480988593155894,
+      "recall": 0.8413806110901546,
+      "f1": 0.8447263775800038,
+      "matched_coverage": 0.8413806110901546,
+      "error_median_px": 1.1233040850950031,
+      "error_p90_px": 2.631080324312164,
+      "accepted_error_median_px": 1.319614224849236,
+      "accepted_error_p90_px": 152.37140751125884,
+      "max_consecutive_missed": 22,
+      "ignored_frames": 990,
+      "roi_coverage": 0.8721237268955111,
+      "bbox_ap": null
+    }
+  }
+]

@@ -1,0 +1,56 @@
+{
+  "protocol": "local 101 recall points, max precision for achieved recall>=r, zero beyond maximum achieved recall; score-ordered greedy IoU matching per image; conf floor .001; not full pycocotools COCO protocol",
+  "predictions": 69,
+  "ground_truth": 5302,
+  "iou_thresholds": [
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.8999999999999999,
+    0.95
+  ],
+  "ap_by_iou": [
+    0.009900990099009901,
+    0.009900990099009901,
+    0.009900990099009901,
+    0.009900990099009901,
+    0.0013751375137513752,
+    0.000825082508250825,
+    0.0007616146230007616,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "ap50": 0.009900990099009901,
+  "ap50_95": 0.0042565795041042565,
+  "max_recall_by_iou": [
+    0.004337985665786495,
+    0.003206337231233497,
+    0.002074688796680498,
+    0.0016974726518294984,
+    0.000943040362127499,
+    0.0005658242172764995,
+    0.0001886080724254998,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "ultralytics_linear_endpoint_ap_by_iou": [
+    0.17071888615268038,
+    0.12734881329439346,
+    0.08407710385971254,
+    0.06967500143750152,
+    0.036597868039424386,
+    0.02195059021253668,
+    0.0075598817412503095,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "explanation": "Ultralytics 8.3.225 appends (recall=1,precision=0), then linearly interpolates and integrates across the unachieved recall region. With only a few low-score detections this can greatly exceed zero-beyond-achieved-recall AP. Primary library metrics retained for traceability."
+}

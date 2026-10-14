@@ -1,0 +1,32 @@
+{
+  "status": "failed",
+  "started": "2026-10-13T21:22:51.493406+09:00",
+  "command": [
+    "/home/radno/projects/pingpong/.venv/bin/python",
+    "scripts/evaluate_baseline_ball.py"
+  ],
+  "cwd": "/home/radno/projects/pingpong",
+  "pid": 205823,
+  "python": "3.10.21 (main, Sep  1 2026, 14:16:49) [Clang 22.1.3 ]",
+  "torch": "2.7.1+cu128",
+  "cuda": "12.8",
+  "onnxruntime": "1.22.0",
+  "opencv": "4.11.0",
+  "numpy": "1.26.4",
+  "git_commit": "558251ef9af119ea0a3dae9bbcb98823d9b0b2c9",
+  "git_status": " M .dockerignore\n M .gitignore\n M AGENT.md\n?? basketball/participant/solution_local.py\n?? data/\n?? experiments/\n?? pingpang/participant/solution_local.py\n?? scripts/\n",
+  "model_sha256": "a5a467f134ae7e2fc5679e395dca9af12b6dfcc65cee51e633c465beb0c61543",
+  "uv_lock_sha256": "223f6b30eb608a9e470e67513437514773c5607940eeb1dc78b0aeea7084f151",
+  "split_hashes": {
+    "train": "1d20f68042234955f5199b922080e62e24e39794fb28482e3f90e0e53e3bdeeb",
+    "val": "79cfab0124a98b7cd8c9c7b2ff15a1d8cf0ce5841f91c32684b9c94d7350b657"
+  },
+  "source_sha256": {
+    "ball_detector.py": "212c050ba2701fc33085eacb532be9a5eb286736a3dc454d0c3b1d391d62bd3b",
+    "solution.py": "98ea900788f70f8cbbe5e3f115cfd1d2850887d3c36511682c75315517236350",
+    "evaluator": "e5b87f69004b65fc63673df5113a1c8553e5df9a2fd5b4164549ae05505cae50"
+  },
+  "finished": "2026-10-13T21:22:51.584725+09:00",
+  "exit_code": 1,
+  "error": "Traceback (most recent call last):\n  File \"/home/radno/projects/pingpong/scripts/evaluate_baseline_ball.py\", line 380, in main\n    assert set(v for v, _ in labels) == {a['video'] for a in audits}\nAssertionError\n"
+}

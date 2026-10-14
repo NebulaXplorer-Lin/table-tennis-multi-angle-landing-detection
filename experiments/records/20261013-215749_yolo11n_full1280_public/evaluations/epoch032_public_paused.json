@@ -1,0 +1,380 @@
+{
+  "protocol": "local approximation: valid=true GT, Hungarian one-to-one, |frame delta|<=1 and distance<=50px; predictions near valid=false events ignored",
+  "overall": {
+    "tp": 43,
+    "fp": 81,
+    "fn": 49,
+    "precision": 0.3467741935483871,
+    "recall": 0.4673913043478261,
+    "f1": 0.3981481481481482
+  },
+  "per_angle": {
+    "0度": {
+      "tp": 5,
+      "fp": 31,
+      "fn": 16,
+      "precision": 0.1388888888888889,
+      "recall": 0.23809523809523808,
+      "f1": 0.17543859649122806
+    },
+    "45度": {
+      "tp": 19,
+      "fp": 36,
+      "fn": 19,
+      "precision": 0.34545454545454546,
+      "recall": 0.5,
+      "f1": 0.40860215053763443
+    },
+    "90度": {
+      "tp": 19,
+      "fp": 14,
+      "fn": 14,
+      "precision": 0.5757575757575758,
+      "recall": 0.5757575757575758,
+      "f1": 0.5757575757575758
+    }
+  },
+  "per_video": {
+    "v000001": {
+      "tp": 2,
+      "fp": 4,
+      "fn": 4,
+      "ignored_predictions": 0,
+      "predictions": 6,
+      "valid_gt": 6
+    },
+    "v000010": {
+      "tp": 1,
+      "fp": 6,
+      "fn": 2,
+      "ignored_predictions": 0,
+      "predictions": 7,
+      "valid_gt": 3
+    },
+    "v000019": {
+      "tp": 1,
+      "fp": 8,
+      "fn": 5,
+      "ignored_predictions": 0,
+      "predictions": 9,
+      "valid_gt": 6
+    },
+    "v000028": {
+      "tp": 1,
+      "fp": 6,
+      "fn": 1,
+      "ignored_predictions": 0,
+      "predictions": 7,
+      "valid_gt": 2
+    },
+    "v000037": {
+      "tp": 0,
+      "fp": 7,
+      "fn": 4,
+      "ignored_predictions": 0,
+      "predictions": 7,
+      "valid_gt": 4
+    },
+    "v000038": {
+      "tp": 2,
+      "fp": 8,
+      "fn": 4,
+      "ignored_predictions": 0,
+      "predictions": 10,
+      "valid_gt": 6
+    },
+    "v000047": {
+      "tp": 0,
+      "fp": 6,
+      "fn": 3,
+      "ignored_predictions": 0,
+      "predictions": 6,
+      "valid_gt": 3
+    },
+    "v000057": {
+      "tp": 5,
+      "fp": 4,
+      "fn": 2,
+      "ignored_predictions": 0,
+      "predictions": 9,
+      "valid_gt": 7
+    },
+    "v000066": {
+      "tp": 4,
+      "fp": 4,
+      "fn": 3,
+      "ignored_predictions": 0,
+      "predictions": 8,
+      "valid_gt": 7
+    },
+    "v000075": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "ignored_predictions": 0,
+      "predictions": 4,
+      "valid_gt": 4
+    },
+    "v000085": {
+      "tp": 2,
+      "fp": 10,
+      "fn": 4,
+      "ignored_predictions": 0,
+      "predictions": 12,
+      "valid_gt": 6
+    },
+    "v000094": {
+      "tp": 2,
+      "fp": 4,
+      "fn": 3,
+      "ignored_predictions": 0,
+      "predictions": 6,
+      "valid_gt": 5
+    },
+    "v000095": {
+      "tp": 8,
+      "fp": 7,
+      "fn": 7,
+      "ignored_predictions": 0,
+      "predictions": 15,
+      "valid_gt": 15
+    },
+    "v000106": {
+      "tp": 6,
+      "fp": 3,
+      "fn": 5,
+      "ignored_predictions": 0,
+      "predictions": 9,
+      "valid_gt": 11
+    },
+    "v000117": {
+      "tp": 5,
+      "fp": 4,
+      "fn": 2,
+      "ignored_predictions": 1,
+      "predictions": 10,
+      "valid_gt": 7
+    }
+  },
+  "epoch": 32,
+  "checkpoint": "out/experiments/20261013-215749_yolo11n_full1280_public/eval/epoch032_public_paused/checkpoint.pt",
+  "checkpoint_sha256": "f485cfb3768639f79c5fa9eaa514833354c1440321dd7291d3cf87c1cdea5cbc",
+  "onnx_sha256": "7e8392b9054755ec11e622caed52835184459131ecc93e2ca584ed4ea1c6c63e",
+  "conf": 0.05,
+  "nms_iou": 0.45,
+  "heuristic": {
+    "MIN_GAP": 10,
+    "FALL_AMP": 2.0,
+    "RISE_AMP": 1.0
+  },
+  "macro_f1": 0.38659944092881277,
+  "run_status": {
+    "status": "ok",
+    "started_at": "2026-10-14T00:08:21",
+    "videos": [
+      {
+        "video_id": "v000001",
+        "status": "ok",
+        "frames": 125,
+        "predictions": 6,
+        "sec": 2.08,
+        "fps": 60.1,
+        "decode_sec": 0.51,
+        "solution_sec": 1.57,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000010",
+        "status": "ok",
+        "frames": 116,
+        "predictions": 7,
+        "sec": 1.96,
+        "fps": 59.2,
+        "decode_sec": 0.49,
+        "solution_sec": 1.47,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000019",
+        "status": "ok",
+        "frames": 178,
+        "predictions": 9,
+        "sec": 3.01,
+        "fps": 59.1,
+        "decode_sec": 0.88,
+        "solution_sec": 2.13,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000028",
+        "status": "ok",
+        "frames": 101,
+        "predictions": 7,
+        "sec": 1.72,
+        "fps": 58.7,
+        "decode_sec": 0.48,
+        "solution_sec": 1.24,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000037",
+        "status": "ok",
+        "frames": 95,
+        "predictions": 7,
+        "sec": 1.59,
+        "fps": 59.7,
+        "decode_sec": 0.43,
+        "solution_sec": 1.16,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000038",
+        "status": "ok",
+        "frames": 197,
+        "predictions": 10,
+        "sec": 3.04,
+        "fps": 64.8,
+        "decode_sec": 1.03,
+        "solution_sec": 2.01,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000047",
+        "status": "ok",
+        "frames": 89,
+        "predictions": 6,
+        "sec": 1.22,
+        "fps": 73.0,
+        "decode_sec": 0.35,
+        "solution_sec": 0.86,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000057",
+        "status": "ok",
+        "frames": 131,
+        "predictions": 9,
+        "sec": 1.89,
+        "fps": 69.3,
+        "decode_sec": 0.58,
+        "solution_sec": 1.31,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000066",
+        "status": "ok",
+        "frames": 113,
+        "predictions": 8,
+        "sec": 1.74,
+        "fps": 64.9,
+        "decode_sec": 0.62,
+        "solution_sec": 1.12,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000075",
+        "status": "ok",
+        "frames": 68,
+        "predictions": 4,
+        "sec": 0.97,
+        "fps": 70.1,
+        "decode_sec": 0.29,
+        "solution_sec": 0.68,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000085",
+        "status": "ok",
+        "frames": 208,
+        "predictions": 12,
+        "sec": 2.91,
+        "fps": 71.5,
+        "decode_sec": 0.97,
+        "solution_sec": 1.94,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000094",
+        "status": "ok",
+        "frames": 98,
+        "predictions": 6,
+        "sec": 1.19,
+        "fps": 82.4,
+        "decode_sec": 0.55,
+        "solution_sec": 0.64,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000095",
+        "status": "ok",
+        "frames": 221,
+        "predictions": 15,
+        "sec": 2.25,
+        "fps": 98.2,
+        "decode_sec": 0.78,
+        "solution_sec": 1.47,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000106",
+        "status": "ok",
+        "frames": 191,
+        "predictions": 9,
+        "sec": 3.63,
+        "fps": 52.6,
+        "decode_sec": 0.99,
+        "solution_sec": 2.64,
+        "write_sec": 0.0
+      },
+      {
+        "video_id": "v000117",
+        "status": "ok",
+        "frames": 178,
+        "predictions": 10,
+        "sec": 2.64,
+        "fps": 67.4,
+        "decode_sec": 0.88,
+        "solution_sec": 1.76,
+        "write_sec": 0.0
+      }
+    ],
+    "totals": {
+      "videos": 15,
+      "ok": 15,
+      "failed": 0,
+      "skipped": 0,
+      "cpu_fallback": 0,
+      "frames": 2109,
+      "predictions": 125
+    },
+    "finished_at": "2026-10-14T00:08:54",
+    "solution_info": {
+      "backend": "onnxruntime_cuda_local"
+    },
+    "timing": {
+      "prepare_sec": 0.6,
+      "engine_build_sec": 0.0,
+      "infer_sec": 31.9,
+      "total_sec": 32.4
+    },
+    "performance": {
+      "total_frames": 2109,
+      "infer_sec": 31.9,
+      "infer_fps": 66.2,
+      "avg_video_fps": 67.4,
+      "p50_video_fps": 64.9,
+      "p90_video_fps": 82.4
+    },
+    "validation": {
+      "n_lines": 125,
+      "n_errors": 0,
+      "n_warnings": 0,
+      "errors": [],
+      "near_dup_examples": [],
+      "videos_with_predictions": 15
+    },
+    "output_size_gb": 0.0
+  },
+  "evaluated_at": "2026-10-14T00:08:55.319486+09:00",
+  "visualizations": "out/experiments/20261013-215749_yolo11n_full1280_public/eval/epoch032_public_paused/overlays"
+}

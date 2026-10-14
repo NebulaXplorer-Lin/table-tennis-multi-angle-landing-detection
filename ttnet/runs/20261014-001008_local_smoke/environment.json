@@ -1,0 +1,43 @@
+{
+  "python": "3.10.21 (main, Sep  1 2026, 14:16:49) [Clang 22.1.3 ]",
+  "torch": "2.7.1+cu128",
+  "cuda": "12.8",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "git_commit": "558251ef9af119ea0a3dae9bbcb98823d9b0b2c9",
+  "git_status": " M .dockerignore\n M .gitignore\n M AGENT.md\n M pingpang/participant/solution.py\n?? Roadmap.md\n?? basketball/participant/solution_local.py\n?? data/\n?? experiments/\n?? pingpang/participant/solution_local.py\n?? pingpang/participant/yolo_ball_detector.py\n?? scripts/\n?? ttnet/\n",
+  "command": [
+    "/home/radno/projects/pingpong/ttnet/training/train.py",
+    "--stage",
+    "local",
+    "--smoke",
+    "--run",
+    "/home/radno/projects/pingpong/ttnet/runs/20261014-001008_local_smoke",
+    "--global-checkpoint",
+    "ttnet/runs/20261013-234947_global_ball/checkpoints/best.pt",
+    "--dataset",
+    "/home/radno/projects/pingpong/ttnet/datasets/ball_v1"
+  ],
+  "code_hashes": {
+    "pipeline.py": "7ac4d4c91658eb31c484e5824929b4db0b897cee7ef9fac03463fc56b607a102",
+    "__init__.py": "479efadcd3ff2d79aa3c6a494e3ba83c54327298ad581303a81cedb91dc22497",
+    "common.py": "edc63377e655e7c60087094b4136500a2d37a1388da3e1ad132caa7d33690148",
+    "training/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "training/train.py": "0c403f10edd1518bb43fd6da8c0b01a3f4cd2545f6a270154bf1b3c21362bacb",
+    "training/dataset.py": "b96a2fb025fcea9fdfc41cc4caaa1986abb38e4c26baf82a2b769a251f5d1719",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/test_contracts.py": "c2ab075ce58ef56cc9319ae8d26be441ec8bc5af44c35c6d9e864abb3e8f5eba",
+    "models/__init__.py": "ecd9357a4c0d93801b3959f71b91b55b16a93b6e59842ac7aff55892efc16162",
+    "models/features.py": "edc49fb925554ee87319224198c871cc9cbd6e2bbf3360a78ec485f3776fe693",
+    "models/localizer.py": "5fc8bd137a92d9504a6a6e532aa9587139e9989a30c89eec3bdd088a625fe280",
+    "data_tools/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "data_tools/geometry.py": "430dfaa280196cdc92b7b6abcc98c6755bf8e66e7c45a917dd80d8dafb1f991d",
+    "data_tools/prepare.py": "0eb341679e783065a6a927ca12bedff140a1d7a6be7a77329e4c5853e97bbb2e",
+    "data_tools/audit.py": "0d340a79f178daeee975fe3e1cf10437ce5a098e90ff28401a7b16f9ee6413ef",
+    "evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evaluation/evaluate.py": "c875c835cb42aca9b784b0a4f47db9cf6f0ac06d3ca9881d2c79fbd58ba4535b",
+    "evaluation/benchmark.py": "f8595c7e7d6bd790f5fcd534e01e7242c90396e4d2d64c9d675f8a48136e1c10",
+    "evaluation/inference.py": "6f095d33c5d8eeca6ba43307213fa93d4240a4ee73e479a1c2fec93f2c09cb74",
+    "evaluation/metrics.py": "78e79a1379c4d18d3e9d4f979ce79c795edfbc3e0ac281d2174f770c8007ff89",
+    "evaluation/export.py": "ed5c337e1aaf60488b8d042bb1e085275f753519c467ce0038cb739b42139182"
+  }
+}

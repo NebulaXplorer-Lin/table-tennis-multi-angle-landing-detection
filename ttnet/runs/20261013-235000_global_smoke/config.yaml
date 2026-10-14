@@ -1,0 +1,54 @@
+{
+  "model": "lightweight residual FPN global/local, channels 16/32/64/96, GroupNorm",
+  "global_input": [
+    512,
+    288
+  ],
+  "local_input": [
+    256,
+    256
+  ],
+  "pretrained": null,
+  "optimizer": "AdamW",
+  "lr": 0.0003,
+  "weight_decay": 0.0001,
+  "effective_batch": 8,
+  "micro_batch": 2,
+  "epochs": 80,
+  "patience": 12,
+  "gt_crop_epochs": 10,
+  "sigma": 1.5,
+  "seed": 42,
+  "amp": true,
+  "workers": 4,
+  "torch_threads": 4,
+  "lr_schedule": "constant",
+  "warmup_epochs": 0,
+  "global_best_tolerance_px": 50,
+  "local_best_tolerance_px": 10,
+  "augmentation": {
+    "horizontal_flip": 0.5,
+    "brightness_scale": [
+      0.85,
+      1.15
+    ],
+    "brightness_offset": [
+      -8,
+      8
+    ],
+    "gt_crop_jitter_fraction": 0.2
+  },
+  "loss": "foreground/background separately normalized Gaussian heatmap MSE",
+  "window_half_span_sec": 0.03333333333333333,
+  "event_head": false,
+  "stage": "global",
+  "smoke": true,
+  "device": "cuda",
+  "data": "/home/radno/projects/pingpong/ttnet/datasets/ball_v1",
+  "frame_stride": 1,
+  "frame_window": 1,
+  "feature_window_slots": 9,
+  "batch": 2,
+  "gradient_accumulation": 4,
+  "global_checkpoint": null
+}

@@ -1,0 +1,2 @@
+# Optional: loss/F1 curves in RESULTS.md. Core training does not require this.
+matplotlib==3.10.9
