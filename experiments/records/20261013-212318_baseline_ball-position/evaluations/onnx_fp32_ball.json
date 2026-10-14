@@ -1,0 +1,331 @@
+{
+  "center": {
+    "10": {
+      "tp": 5084,
+      "fp": 15,
+      "fn": 218,
+      "precision": 0.9970582467150422,
+      "recall": 0.9588834402112411,
+      "f1": 0.977598307855014,
+      "coverage": 0.9588834402112411,
+      "error_median_px": 1.268974674877265,
+      "error_p90_px": 2.6007537138961427,
+      "max_consecutive_missed": 11
+    },
+    "50": {
+      "tp": 5098,
+      "fp": 1,
+      "fn": 204,
+      "precision": 0.9998038831143361,
+      "recall": 0.961523953225198,
+      "f1": 0.9802903566964715,
+      "coverage": 0.961523953225198,
+      "error_median_px": 1.2710448752015848,
+      "error_p90_px": 2.6264225065458904,
+      "max_consecutive_missed": 11
+    }
+  },
+  "downstream_conf075": {
+    "10": {
+      "tp": 5014,
+      "fp": 13,
+      "fn": 288,
+      "precision": 0.9974139645912075,
+      "recall": 0.945680875141456,
+      "f1": 0.9708587472165747,
+      "coverage": 0.945680875141456,
+      "error_median_px": 1.2601636951801423,
+      "error_p90_px": 2.549805606052146,
+      "max_consecutive_missed": 11
+    },
+    "50": {
+      "tp": 5026,
+      "fp": 1,
+      "fn": 276,
+      "precision": 0.9998010741993236,
+      "recall": 0.947944172010562,
+      "f1": 0.9731823022557846,
+      "coverage": 0.947944172010562,
+      "error_median_px": 1.2644598208243623,
+      "error_p90_px": 2.5750548402507225,
+      "max_consecutive_missed": 11
+    }
+  },
+  "decoded_frames": 6292,
+  "labelled_frames": 5302,
+  "unknown_frames": 990,
+  "tail_labelled_frames": 21,
+  "startup_predictions_discarded": 0,
+  "error_frames": 218,
+  "no_output_labelled_frames": 203,
+  "per_group": {
+    "02": {
+      "10": {
+        "tp": 562,
+        "fp": 6,
+        "fn": 31,
+        "precision": 0.9894366197183099,
+        "recall": 0.9477234401349073,
+        "f1": 0.9681309216192938,
+        "coverage": 0.9477234401349073,
+        "error_median_px": 1.2586808780854484,
+        "error_p90_px": 2.6513431596125856,
+        "max_consecutive_missed": 4
+      },
+      "50": {
+        "tp": 568,
+        "fp": 0,
+        "fn": 25,
+        "precision": 1.0,
+        "recall": 0.9578414839797639,
+        "f1": 0.9784668389319552,
+        "coverage": 0.9578414839797639,
+        "error_median_px": 1.263301991109734,
+        "error_p90_px": 2.811859592933915,
+        "max_consecutive_missed": 4
+      }
+    },
+    "03": {
+      "10": {
+        "tp": 484,
+        "fp": 4,
+        "fn": 31,
+        "precision": 0.9918032786885246,
+        "recall": 0.9398058252427185,
+        "f1": 0.9651046859421736,
+        "coverage": 0.9398058252427185,
+        "error_median_px": 2.142501390748224,
+        "error_p90_px": 3.8918291325002468,
+        "max_consecutive_missed": 4
+      },
+      "50": {
+        "tp": 488,
+        "fp": 0,
+        "fn": 27,
+        "precision": 1.0,
+        "recall": 0.9475728155339805,
+        "f1": 0.9730807577268196,
+        "coverage": 0.9475728155339805,
+        "error_median_px": 2.168974944140089,
+        "error_p90_px": 3.976043417050578,
+        "max_consecutive_missed": 2
+      }
+    },
+    "04": {
+      "10": {
+        "tp": 727,
+        "fp": 1,
+        "fn": 40,
+        "precision": 0.9986263736263736,
+        "recall": 0.9478487614080835,
+        "f1": 0.9725752508361204,
+        "coverage": 0.9478487614080835,
+        "error_median_px": 1.249690543712525,
+        "error_p90_px": 2.5649428725435612,
+        "max_consecutive_missed": 2
+      },
+      "50": {
+        "tp": 728,
+        "fp": 0,
+        "fn": 39,
+        "precision": 1.0,
+        "recall": 0.9491525423728814,
+        "f1": 0.9739130434782608,
+        "coverage": 0.9491525423728814,
+        "error_median_px": 1.2498116964424606,
+        "error_p90_px": 2.5747236424795394,
+        "max_consecutive_missed": 2
+      }
+    },
+    "12": {
+      "10": {
+        "tp": 565,
+        "fp": 1,
+        "fn": 16,
+        "precision": 0.9982332155477032,
+        "recall": 0.9724612736660929,
+        "f1": 0.985178727114211,
+        "coverage": 0.9724612736660929,
+        "error_median_px": 1.1046872624429673,
+        "error_p90_px": 2.043370726550958,
+        "max_consecutive_missed": 2
+      },
+      "50": {
+        "tp": 565,
+        "fp": 1,
+        "fn": 16,
+        "precision": 0.9982332155477032,
+        "recall": 0.9724612736660929,
+        "f1": 0.985178727114211,
+        "coverage": 0.9724612736660929,
+        "error_median_px": 1.1046872624429673,
+        "error_p90_px": 2.043370726550958,
+        "max_consecutive_missed": 2
+      }
+    },
+    "21": {
+      "10": {
+        "tp": 1115,
+        "fp": 2,
+        "fn": 52,
+        "precision": 0.9982094897045658,
+        "recall": 0.9554413024850043,
+        "f1": 0.9763572679509632,
+        "coverage": 0.9554413024850043,
+        "error_median_px": 1.2561722162609916,
+        "error_p90_px": 2.455384366028221,
+        "max_consecutive_missed": 5
+      },
+      "50": {
+        "tp": 1117,
+        "fp": 0,
+        "fn": 50,
+        "precision": 1.0,
+        "recall": 0.9571550985432733,
+        "f1": 0.978108581436077,
+        "coverage": 0.9571550985432733,
+        "error_median_px": 1.2563331793243984,
+        "error_p90_px": 2.466835228109454,
+        "max_consecutive_missed": 5
+      }
+    },
+    "22": {
+      "10": {
+        "tp": 1631,
+        "fp": 1,
+        "fn": 48,
+        "precision": 0.9993872549019608,
+        "recall": 0.9714115544967242,
+        "f1": 0.9852008456659619,
+        "coverage": 0.9714115544967242,
+        "error_median_px": 1.1769733513915404,
+        "error_p90_px": 2.312307260931309,
+        "max_consecutive_missed": 11
+      },
+      "50": {
+        "tp": 1632,
+        "fp": 0,
+        "fn": 47,
+        "precision": 1.0,
+        "recall": 0.9720071471113758,
+        "f1": 0.985804892781637,
+        "coverage": 0.9720071471113758,
+        "error_median_px": 1.1772664470717198,
+        "error_p90_px": 2.3177978379048487,
+        "max_consecutive_missed": 11
+      }
+    }
+  },
+  "known_background_false_positives": null,
+  "bbox_ap": null,
+  "touch_metrics": null,
+  "checkpoint": "pingpang/participant/weights/ball.onnx",
+  "checkpoint_sha256": "a5a467f134ae7e2fc5679e395dca9af12b6dfcc65cee51e633c465beb0c61543",
+  "protocol": {
+    "purpose": "test unchanged baseline ball localization only",
+    "control": "YOLO11n pilot on same frozen val manifest; model/backend/input differ",
+    "model": "official HRNet-style heatmap, pretrained origin/epoch unavailable",
+    "checkpoint": "pingpang/participant/weights/ball.onnx",
+    "checkpoint_sha256": "a5a467f134ae7e2fc5679e395dca9af12b6dfcc65cee51e633c465beb0c61543",
+    "input_shape": [
+      1,
+      9,
+      288,
+      512
+    ],
+    "window": 3,
+    "stride": 1,
+    "batch": 1,
+    "train": false,
+    "optimizer": null,
+    "epochs": null,
+    "seed": null,
+    "augmentation": null,
+    "precision": "float32; CUDA EP default TF32",
+    "split_id": "yolo_ball_v1",
+    "split_hashes": {
+      "train": "1d20f68042234955f5199b922080e62e24e39794fb28482e3f90e0e53e3bdeeb",
+      "val": "79cfab0124a98b7cd8c9c7b2ff15a1d8cf0ce5841f91c32684b9c94d7350b657"
+    },
+    "train_samples": 3162,
+    "val_samples": 5302,
+    "val_videos": 40,
+    "decode": "OpenCV CPU, full original videos, BGR to RGB",
+    "heat_threshold": 0.7,
+    "downstream_confidence": 0.75,
+    "output_channel": 1,
+    "center_thresholds_px": [
+      10,
+      50
+    ],
+    "matching": "one predicted center: nearest GT; maximum cardinality, minimum distance",
+    "frame_alignment": "input f -> output f-1; discard startup -1; final frame missing, no synthetic future frame",
+    "unknown_policy": "no ball box means unknown; exclude from precision/recall; break miss runs",
+    "bbox_ap": null,
+    "NMS": null,
+    "initialization": "det.reset per video; two normalized black frames",
+    "forward_benchmark": {
+      "warmup": 50,
+      "repeats": 3,
+      "iterations": 200,
+      "gpu_bound_io": true,
+      "synchronized": true
+    },
+    "provider_options": {
+      "CPUExecutionProvider": {},
+      "CUDAExecutionProvider": {
+        "sdpa_kernel": "0",
+        "use_tf32": "1",
+        "fuse_conv_bias": "0",
+        "prefer_nhwc": "0",
+        "tunable_op_max_tuning_duration_ms": "0",
+        "enable_skip_layer_norm_strict_mode": "0",
+        "tunable_op_tuning_enable": "0",
+        "tunable_op_enable": "0",
+        "use_ep_level_unified_stream": "0",
+        "device_id": "0",
+        "has_user_compute_stream": "0",
+        "gpu_external_empty_cache": "0",
+        "cudnn_conv_algo_search": "EXHAUSTIVE",
+        "cudnn_conv1d_pad_to_nc1d": "0",
+        "gpu_mem_limit": "18446744073709551615",
+        "gpu_external_alloc": "0",
+        "gpu_external_free": "0",
+        "arena_extend_strategy": "kNextPowerOfTwo",
+        "do_copy_in_default_stream": "1",
+        "enable_cuda_graph": "0",
+        "user_compute_stream": "0",
+        "cudnn_conv_use_max_workspace": "1"
+      }
+    }
+  },
+  "predictions": "out/experiments/20261013-212318_baseline_ball-position/eval/onnx_fp32_ball/predictions.jsonl",
+  "visualizations": "out/experiments/20261013-212318_baseline_ball-position/eval/onnx_fp32_ball/index.html",
+  "benchmark": {
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "backend": "ONNX Runtime CUDA",
+    "precision": "FP32 (CUDA EP default use_tf32=1)",
+    "shape": [
+      1,
+      9,
+      288,
+      512
+    ],
+    "batch": 1,
+    "warmup": 50,
+    "repeats": 3,
+    "iterations": 200,
+    "model_p50_ms": 6.563750999703188,
+    "model_p95_ms": 7.298566502322501,
+    "timing_scope": "GPU-bound IO; device-synchronized perf_counter; includes CPU dispatch; excludes transfers/preprocessing",
+    "e2e_fps": 111.22533523477739,
+    "e2e_scope": "six complete validation videos: CPU decode, BGR/RGB, normalization, stack, H2D, ORT, D2H, decode heatmap, JSONL write; no overlays/init",
+    "peak_memory_mib": null,
+    "peak_memory_reason": "PyTorch allocator cannot measure ORT CUDA arena; not measured",
+    "params_m": 1.292659,
+    "gmac": 27.105958848,
+    "gflops": 54.211917696,
+    "compute_tool": "local ONNX graph inspector; batch=1",
+    "compute_scope": "bias, activations, residual/fusion Add, SE Mul, pooling, Resize, shape operations, transfers"
+  }
+}

@@ -1,0 +1,15 @@
+__pycache__/
+datasets/**/frames/
+datasets/**/frames
+datasets/**/global_inputs/
+datasets/**/previews/
+datasets/**/labels/
+datasets/**/windows/
+runs/**/checkpoints/
+runs/**/logs/
+runs/**/predictions/
+runs/**/visualizations/
+runs/**/exports/
+runs/**/feature_cache/
+runs/**/crop_indexes/
+*.tmp

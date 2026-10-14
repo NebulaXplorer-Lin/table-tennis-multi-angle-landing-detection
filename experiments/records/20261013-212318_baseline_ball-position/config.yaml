@@ -1,0 +1,78 @@
+{
+  "purpose": "test unchanged baseline ball localization only",
+  "control": "YOLO11n pilot on same frozen val manifest; model/backend/input differ",
+  "model": "official HRNet-style heatmap, pretrained origin/epoch unavailable",
+  "checkpoint": "pingpang/participant/weights/ball.onnx",
+  "checkpoint_sha256": "a5a467f134ae7e2fc5679e395dca9af12b6dfcc65cee51e633c465beb0c61543",
+  "input_shape": [
+    1,
+    9,
+    288,
+    512
+  ],
+  "window": 3,
+  "stride": 1,
+  "batch": 1,
+  "train": false,
+  "optimizer": null,
+  "epochs": null,
+  "seed": null,
+  "augmentation": null,
+  "precision": "float32; CUDA EP default TF32",
+  "split_id": "yolo_ball_v1",
+  "split_hashes": {
+    "train": "1d20f68042234955f5199b922080e62e24e39794fb28482e3f90e0e53e3bdeeb",
+    "val": "79cfab0124a98b7cd8c9c7b2ff15a1d8cf0ce5841f91c32684b9c94d7350b657"
+  },
+  "train_samples": 3162,
+  "val_samples": 5302,
+  "val_videos": 40,
+  "decode": "OpenCV CPU, full original videos, BGR to RGB",
+  "heat_threshold": 0.7,
+  "downstream_confidence": 0.75,
+  "output_channel": 1,
+  "center_thresholds_px": [
+    10,
+    50
+  ],
+  "matching": "one predicted center: nearest GT; maximum cardinality, minimum distance",
+  "frame_alignment": "input f -> output f-1; discard startup -1; final frame missing, no synthetic future frame",
+  "unknown_policy": "no ball box means unknown; exclude from precision/recall; break miss runs",
+  "bbox_ap": null,
+  "NMS": null,
+  "initialization": "det.reset per video; two normalized black frames",
+  "forward_benchmark": {
+    "warmup": 50,
+    "repeats": 3,
+    "iterations": 200,
+    "gpu_bound_io": true,
+    "synchronized": true
+  },
+  "provider_options": {
+    "CPUExecutionProvider": {},
+    "CUDAExecutionProvider": {
+      "sdpa_kernel": "0",
+      "use_tf32": "1",
+      "fuse_conv_bias": "0",
+      "prefer_nhwc": "0",
+      "tunable_op_max_tuning_duration_ms": "0",
+      "enable_skip_layer_norm_strict_mode": "0",
+      "tunable_op_tuning_enable": "0",
+      "tunable_op_enable": "0",
+      "use_ep_level_unified_stream": "0",
+      "device_id": "0",
+      "has_user_compute_stream": "0",
+      "gpu_external_empty_cache": "0",
+      "cudnn_conv_algo_search": "EXHAUSTIVE",
+      "cudnn_conv1d_pad_to_nc1d": "0",
+      "gpu_mem_limit": "18446744073709551615",
+      "gpu_external_alloc": "0",
+      "gpu_external_free": "0",
+      "arena_extend_strategy": "kNextPowerOfTwo",
+      "do_copy_in_default_stream": "1",
+      "enable_cuda_graph": "0",
+      "user_compute_stream": "0",
+      "cudnn_conv_use_max_workspace": "1"
+    }
+  }
+}

@@ -9,7 +9,12 @@ __pycache__/
 *.engine
 *.plan
 
+# dataset
+data/
+datasets/
+
 # 视频、公开验证数据与运行输出
+/data
 *.mp4
 /pingpang/public_data/
 /basketball/public_data/
@@ -29,6 +34,8 @@ trt_cache/
 .mihomo/
 
 sport-base_v1.tar
+
 # uv local environment
 .venv/
 .uv-cache/
+

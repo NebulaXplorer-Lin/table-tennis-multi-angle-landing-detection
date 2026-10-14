@@ -1,4 +1,4 @@
-"""官方参考实现：球检测 + 落点启发式（接入样例，非精度基线）。
+"""YOLO 球定位 + 原有落点启发式。
 
 **参赛者直接改本文件（participant/ 就是你的代码区）**——本文件实现 run.py 调用的
 四个生命周期方法（prepare/reset/process_frame/finish_video），TRT 转换在 prepare
@@ -18,10 +18,12 @@ import numpy as np
 from core.types import Landing, RunContext, VideoMeta
 
 from .base_solution import BaseSolution
-from .ball_detector import BallDetector
+from .yolo_ball_detector import YoloBallDetector
 
 MIN_GAP = 10         # 两次落点最小帧间隔（数据集回合节奏 ~10-12 帧/落点）
-CONF_TH = 0.75       # 轨迹点置信门槛（略高于解码阈值，抑制弱检测）
+# The detector threshold is applied inside YoloBallDetector.  Keep this equal
+# to it so that every selected YOLO centre reaches the unchanged heuristic.
+CONF_TH = 0.05
 FALL_AMP = 2.0       # 判定前的最小下落幅度（px，图像 y）
 RISE_AMP = 1.0       # 判定后的最小反弹幅度（px，图像 y）
 
@@ -31,7 +33,7 @@ class Solution(BaseSolution):
 
     def prepare(self, context: RunContext) -> None:
         # 1. 权重：只带 ONNX，TRT engine 现场构建（首跑约 5 分钟，之后从缓存秒级加载）
-        onnx_path = Path(__file__).resolve().parent / "weights" / "ball.onnx"
+        onnx_path = Path(__file__).resolve().parent / "weights" / "yolo_ball_full_v1.onnx"
         assert onnx_path.exists(), f"缺少权重: {onnx_path}"
 
         # 2. TRT 转换：core.trt.load_or_build 自动处理缓存（按版本/GPU/ONNX 哈希分目录）
@@ -39,15 +41,15 @@ class Solution(BaseSolution):
         from core.trt import load_or_build
         trt_cache = Path(context.output_dir) / "trt_cache"
         model, how = load_or_build(
-            onnx_path, trt_cache, input_name="input",
-            shape=(1, 9, 288, 512), log=print)
+            onnx_path, trt_cache, input_name="images",
+            shape=(1, 3, 1280, 1280), log=print)
 
         # 3. 检测器：只管预处理 + 推理 + 解码，推理函数由 prepare 注入
-        self.det = BallDetector(model.infer, onnx_path)
+        self.det = YoloBallDetector(model.infer, size=1280, score_threshold=CONF_TH)
 
         # 4. warmup：TRT 首次推理会触发 kernel JIT 编译，跑一次 dummy 把 kernel
         #    都预热好，避免第一视频第一帧把这个时间算进 infer_sec
-        self.det.detect(np.zeros((288, 512, 3), np.uint8), 512, 288)
+        self.det.detect(np.zeros((1080, 1920, 3), np.uint8), 1920, 1080)
 
         # 5. 回填 backend 给 run_status（让平台看到是 built 还是 loaded）
         context.info["backend"] = f"tensorrt_{how}"
@@ -65,7 +67,8 @@ class Solution(BaseSolution):
         det = self.det.detect(frame_rgb, frame_meta["width"], frame_meta["height"])
         if det and det["conf"] >= CONF_TH:
             self.traj.append((fid, det["x"], det["y"], det["conf"]))
-        # ch1 解码本身滞后 1 帧；再等 2 个轨迹点确认局部极大
+        # YOLO output is aligned to the input frame; wait for two future
+        # trajectory points to confirm the same local-maximum heuristic.
         return self._emit(need_future=2)
 
     def finish_video(self, video_meta: VideoMeta) -> list[Landing]:
@@ -85,8 +88,6 @@ class Solution(BaseSolution):
             if (y > prev_y and y >= next_y                       # 局部极大
                     and (y - prev_y) >= FALL_AMP                  # 之前在下落
                     and (y - next_y) >= RISE_AMP):                # 之后在反弹
-                # 帧对齐：ch1 解码的是 3 帧栈的中间帧（滞后 1 帧）——traj 点标在
-                # frame_id=f 的位置实际是 f-1 的球位，所以上报 f-1 才是落点所属帧
-                out.append(Landing(frame_id=max(0, fid - 1), x=x, y=y))
+                out.append(Landing(frame_id=fid, x=x, y=y))
                 self.last_emit = fid
         return out

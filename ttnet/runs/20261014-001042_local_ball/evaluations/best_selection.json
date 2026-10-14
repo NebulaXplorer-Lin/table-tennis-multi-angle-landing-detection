@@ -1,0 +1,204 @@
+{
+  "epoch": 1,
+  "threshold": 0.9,
+  "tolerance_px": 10,
+  "metrics": {
+    "tp": 2386,
+    "fp": 2903,
+    "fn": 2916,
+    "precision": 0.4511249763660427,
+    "recall": 0.45001886080724257,
+    "f1": 0.4505712397318478,
+    "matched_coverage": 0.45001886080724257,
+    "error_median_px": 1.5525875441022339,
+    "error_p90_px": 3.2152158761059377,
+    "accepted_error_median_px": 79.885594939185,
+    "accepted_error_p90_px": 514.6002678775861,
+    "max_consecutive_missed": 45,
+    "ignored_frames": 990,
+    "roi_coverage": 0.52263296869106,
+    "bbox_ap": null
+  },
+  "sweep": [
+    {
+      "threshold": 0.01,
+      "metrics": {
+        "tp": 2363,
+        "fp": 2926,
+        "fn": 2939,
+        "precision": 0.4467763282283986,
+        "recall": 0.44568087514145605,
+        "f1": 0.4462279293739968,
+        "matched_coverage": 0.44568087514145605,
+        "error_median_px": 0.8881679150313719,
+        "error_p90_px": 2.1057590249740272,
+        "accepted_error_median_px": 77.64022647279182,
+        "accepted_error_p90_px": 513.1614292577959,
+        "max_consecutive_missed": 45,
+        "ignored_frames": 990,
+        "roi_coverage": 0.52263296869106,
+        "bbox_ap": null
+      }
+    },
+    {
+      "threshold": 0.02,
+      "metrics": {
+        "tp": 2363,
+        "fp": 2926,
+        "fn": 2939,
+        "precision": 0.4467763282283986,
+        "recall": 0.44568087514145605,
+        "f1": 0.4462279293739968,
+        "matched_coverage": 0.44568087514145605,
+        "error_median_px": 0.8881679150313719,
+        "error_p90_px": 2.1057590249740272,
+        "accepted_error_median_px": 77.64022647279182,
+        "accepted_error_p90_px": 513.1614292577959,
+        "max_consecutive_missed": 45,
+        "ignored_frames": 990,
+        "roi_coverage": 0.52263296869106,
+        "bbox_ap": null
+      }
+    },
+    {
+      "threshold": 0.05,
+      "metrics": {
+        "tp": 2363,
+        "fp": 2926,
+        "fn": 2939,
+        "precision": 0.4467763282283986,
+        "recall": 0.44568087514145605,
+        "f1": 0.4462279293739968,
+        "matched_coverage": 0.44568087514145605,
+        "error_median_px": 0.8881679150313719,
+        "error_p90_px": 2.1057590249740272,
+        "accepted_error_median_px": 77.64022647279182,
+        "accepted_error_p90_px": 513.1614292577959,
+        "max_consecutive_missed": 45,
+        "ignored_frames": 990,
+        "roi_coverage": 0.52263296869106,
+        "bbox_ap": null
+      }
+    },
+    {
+      "threshold": 0.1,
+      "metrics": {
+        "tp": 2363,
+        "fp": 2926,
+        "fn": 2939,
+        "precision": 0.4467763282283986,
+        "recall": 0.44568087514145605,
+        "f1": 0.4462279293739968,
+        "matched_coverage": 0.44568087514145605,
+        "error_median_px": 0.8881679150313719,
+        "error_p90_px": 2.1057590249740272,
+        "accepted_error_median_px": 77.64022647279182,
+        "accepted_error_p90_px": 513.1614292577959,
+        "max_consecutive_missed": 45,
+        "ignored_frames": 990,
+        "roi_coverage": 0.52263296869106,
+        "bbox_ap": null
+      }
+    },
+    {
+      "threshold": 0.2,
+      "metrics": {
+        "tp": 2363,
+        "fp": 2926,
+        "fn": 2939,
+        "precision": 0.4467763282283986,
+        "recall": 0.44568087514145605,
+        "f1": 0.4462279293739968,
+        "matched_coverage": 0.44568087514145605,
+        "error_median_px": 0.8881679150313719,
+        "error_p90_px": 2.1057590249740272,
+        "accepted_error_median_px": 77.64022647279182,
+        "accepted_error_p90_px": 513.1614292577959,
+        "max_consecutive_missed": 45,
+        "ignored_frames": 990,
+        "roi_coverage": 0.52263296869106,
+        "bbox_ap": null
+      }
+    },
+    {
+      "threshold": 0.3,
+      "metrics": {
+        "tp": 2363,
+        "fp": 2926,
+        "fn": 2939,
+        "precision": 0.4467763282283986,
+        "recall": 0.44568087514145605,
+        "f1": 0.4462279293739968,
+        "matched_coverage": 0.44568087514145605,
+        "error_median_px": 0.8881679150313719,
+        "error_p90_px": 2.1057590249740272,
+        "accepted_error_median_px": 77.64022647279182,
+        "accepted_error_p90_px": 513.1614292577959,
+        "max_consecutive_missed": 45,
+        "ignored_frames": 990,
+        "roi_coverage": 0.52263296869106,
+        "bbox_ap": null
+      }
+    },
+    {
+      "threshold": 0.5,
+      "metrics": {
+        "tp": 2363,
+        "fp": 2926,
+        "fn": 2939,
+        "precision": 0.4467763282283986,
+        "recall": 0.44568087514145605,
+        "f1": 0.4462279293739968,
+        "matched_coverage": 0.44568087514145605,
+        "error_median_px": 0.8881679150313719,
+        "error_p90_px": 2.1057590249740272,
+        "accepted_error_median_px": 77.64022647279182,
+        "accepted_error_p90_px": 512.9732095170248,
+        "max_consecutive_missed": 45,
+        "ignored_frames": 990,
+        "roi_coverage": 0.52263296869106,
+        "bbox_ap": null
+      }
+    },
+    {
+      "threshold": 0.7,
+      "metrics": {
+        "tp": 2354,
+        "fp": 2935,
+        "fn": 2948,
+        "precision": 0.4450746833049726,
+        "recall": 0.44398340248962653,
+        "f1": 0.4445283731470116,
+        "matched_coverage": 0.44398340248962653,
+        "error_median_px": 0.8993940718943274,
+        "error_p90_px": 2.142546541147204,
+        "accepted_error_median_px": 77.5401180092678,
+        "accepted_error_p90_px": 514.2125419760473,
+        "max_consecutive_missed": 45,
+        "ignored_frames": 990,
+        "roi_coverage": 0.52263296869106,
+        "bbox_ap": null
+      }
+    },
+    {
+      "threshold": 0.9,
+      "metrics": {
+        "tp": 2386,
+        "fp": 2903,
+        "fn": 2916,
+        "precision": 0.4511249763660427,
+        "recall": 0.45001886080724257,
+        "f1": 0.4505712397318478,
+        "matched_coverage": 0.45001886080724257,
+        "error_median_px": 1.5525875441022339,
+        "error_p90_px": 3.2152158761059377,
+        "accepted_error_median_px": 79.885594939185,
+        "accepted_error_p90_px": 514.6002678775861,
+        "max_consecutive_missed": 45,
+        "ignored_frames": 990,
+        "roi_coverage": 0.52263296869106,
+        "bbox_ap": null
+      }
+    }
+  ]
+}
