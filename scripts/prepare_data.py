@@ -73,8 +73,7 @@ def canonicalize(name):
         if source.is_symlink() or target.is_symlink():
             raise ValueError(f"请先处理目录符号链接：{source} / {target}")
         source.rename(target)  # Same filesystem: no copying of large videos.
-        source.symlink_to(name, target_is_directory=True)
-        print(f"目录统一：{source} → {target}（保留旧路径链接）", flush=True)
+        print(f"目录统一：{source} → {target}", flush=True)
     return target
 
 
@@ -175,15 +174,17 @@ def copy_dataset(source, target, name):
 
 
 def prepare_pp(name, source, attempts):
+    local = None if source.startswith(("http://", "https://")) else Path(source).expanduser().resolve()
+    original = existing(name)
     target = canonicalize(name)
+    if local is not None and original is not None and original != target and local.is_relative_to(original):
+        local = target / local.relative_to(original)
     if source.startswith(("http://", "https://")):
         if shutil.which("curl") is None:
             raise ValueError("下载需要系统 curl")
         key = hashlib.sha256(source.encode()).hexdigest()[:16]
         local = DATA / "_archives" / f"{name}-{key}.archive"
         download_ttnet.download(source, local, attempts, validator=validate_archive)
-    else:
-        local = Path(source).expanduser().resolve()
     if local.is_dir():
         copy_dataset(locate_dataset(local, name), target, name)
     elif local.is_file():

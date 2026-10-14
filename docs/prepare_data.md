@@ -43,7 +43,8 @@ data/
 
 `pp_tarin_data` 按现有训练代码统一为 `pp_train_data`，也可识别这个拼写的目录/压缩包。
 本机已有的 `data/openttgames`、`data/public_data` 会在同一文件系统内重命名，
-并保留指向新目录的相对符号链接。不会复制几十 GB 的 TTNet 视频。
+统一为 `data/ttnet`、`data/pp_public_data`，不创建旧路径的符号链接。
+`data/` 中只保留真实数据目录；脚本和命令应直接使用统一后的路径。不会复制几十 GB 的 TTNet 视频。
 原始数据不会删除；历史平铺解压的标注可以继续保留，但新环境只生成逐比赛隔离的标注。
 
 ## 查找来源与手动指定

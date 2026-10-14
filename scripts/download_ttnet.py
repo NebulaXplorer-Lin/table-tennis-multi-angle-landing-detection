@@ -84,10 +84,10 @@ def extract_annotations(path):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        description="下载 TTNet / OpenTTGames 数据集到项目 data/openttgames（约 35 GB）。",
+        description="下载 TTNet / OpenTTGames 数据集到项目 data/ttnet（约 35 GB）。",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "data/openttgames",
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "data/ttnet",
                         help="数据集保存目录；默认不受当前工作目录影响")
     parser.add_argument("--split", choices=["all", "train", "test"], default="all",
                         help="选择训练集、测试集或全部")

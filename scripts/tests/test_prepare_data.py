@@ -97,13 +97,15 @@ class PrepareDataTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "不一致"):
             prepare.main(["--check-only", "--datasets", "pp_public_data"])
 
-    def test_legacy_directories_keep_compatible_paths(self):
+    def test_legacy_directories_move_without_alias_links(self):
         self.data.mkdir()
         (self.root / "pingpang").mkdir()
         shutil.copytree(self.source / "pp_public_data", self.data / "public_data")
         self.assertEqual(prepare.main(["--datasets", "pp_public_data"]), 0)
-        self.assertTrue((self.data / "public_data").is_symlink())
-        self.assertEqual((self.data / "public_data").resolve(), self.data / "pp_public_data")
+        self.assertFalse((self.data / "public_data").exists())
+        self.assertFalse((self.data / "public_data").is_symlink())
+        self.assertFalse(any(path.is_symlink() for path in self.data.rglob("*")))
+        self.assertEqual(prepare.main(["--check-only", "--datasets", "pp_public_data"]), 0)
         self.assertEqual((self.root / "pingpang/public_data").resolve(), self.data / "pp_public_data")
 
     def test_http_archive_uses_archive_validator_and_download_cache(self):
