@@ -1,5 +1,9 @@
 # 下载 TTNet / OpenTTGames 数据集
 
+如需同时重建 PP 训练集、PP 公开集和 TTNet 原始数据，请使用
+[`scripts/prepare_data.py`](prepare_data.md)。统一入口保存 TTNet 到 `data/ttnet/`；
+下述独立下载脚本保留原有 `data/openttgames/` 默认路径。
+
 TTNet 论文使用的公开数据集为 [OpenTTGames](https://lab.osai.ai/)，包含
 5 个训练视频、7 个测试视频，以及球坐标、事件和分割标注。官网列出的文件总量约 35 GB；
 标注解压后还需额外空间。下载脚本使用官网链接，依赖 Python 3.10+ 和系统 `curl`，

@@ -26,6 +26,13 @@ RTX 5070 Ti 可用 `uv sync --locked` 安装独立的 Python 3.10 / PyTorch cu12
 本地推理使用 ONNX Runtime CUDA 入口；安装、自检和运行命令见
 [本地环境说明](docs/local_environment.md)。官方提交仍使用下述固定镜像与原有入口。
 
+## 数据准备与跨环境重建
+
+将 `pp_train_data.zip`、`pp_public_data.zip` 放在项目根目录，执行
+`python3 scripts/prepare_data.py`，会自动准备两份 PP 数据并下载 TTNet / OpenTTGames 到
+根目录 `data/`。本机已有数据会复用，也可以用 `--export-pp data/_archives` 导出 PP 迁移包。
+目录、SHA256 校验和后续训练输入生成方法见 [数据准备说明](docs/prepare_data.md)。
+
 ## 本地自测（在 participant/ 所在目录执行）
 
 ```bash

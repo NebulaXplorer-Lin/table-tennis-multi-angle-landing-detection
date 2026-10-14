@@ -35,9 +35,9 @@ def validate_file(path):
             raise ValueError(f"不是有效的 MP4 文件头：{path}")
 
 
-def download(url, destination, attempts):
+def download(url, destination, attempts, validator=validate_file):
     if destination.exists():
-        validate_file(destination)
+        validator(destination)
         print(f"已存在，跳过下载：{destination}", flush=True)
         return
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -51,7 +51,7 @@ def download(url, destination, attempts):
             "--continue-at", "-", "--output", str(partial), url,
         ], check=False)
         if result.returncode == 0:
-            validate_file(partial)
+            validator(partial)
             partial.replace(destination)
             return
         if result.returncode == 33:

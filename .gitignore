@@ -35,6 +35,13 @@ trt_cache/
 
 sport-base_v1.tar
 
+# 原始数据迁移包（含视频，不能提交到 Git）
+/*pp*data*.zip
+/*pp*data*.tar
+/*pp*data*.tar.gz
+/*pp*data*.tgz
+/participant.zip
+
 # uv local environment
 .venv/
 .uv-cache/
