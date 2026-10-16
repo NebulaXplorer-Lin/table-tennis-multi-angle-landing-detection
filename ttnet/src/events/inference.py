@@ -42,10 +42,19 @@ def source_mapping(n_source, rate, target_fps):
 def predict_windows(system,corpus,vid,features,records,centers=None,batch=64):
     centers=sorted(features) if centers is None else sorted(set(centers))
     output=[]
+    if not hasattr(corpus,'_prediction_windows'):corpus._prediction_windows={}
+    signature=tuple((k,system.config.get(k)) for k in ('context_head','scene_mode','event_window_mode'))
+    entry=corpus._prediction_windows.get(vid)
+    if entry is None or entry[0] is not features or entry[1] is not records or entry[2]!=signature:
+        entry=(features,records,signature,{})
+        corpus._prediction_windows[vid]=entry
+    prepared=entry[3]
     with torch.inference_mode(),torch.autocast(device_type=system.device.type,enabled=system.config['amp'] and system.device.type=='cuda'):
         for start in range(0,len(centers),batch):
             chosen=centers[start:start+batch]
-            inputs=[assemble_window(corpus,vid,c,features,records,torch.device('cpu')) for c in chosen]
+            for c in chosen:
+                if c not in prepared:prepared[c]=assemble_window(corpus,vid,c,features,records,torch.device('cpu'),system.config)
+            inputs=[prepared[c] for c in chosen]
             tensors=[torch.cat([item[k] for item in inputs]).to(system.device) for k in range(3)]
             probabilities=system.head(*tensors).float().sigmoid().cpu().numpy()
             for fid,p in zip(chosen,probabilities):
@@ -96,13 +105,19 @@ def predict_video(system,source,vid,target_fps=25,progress=True):
     json.dumps(rows,allow_nan=False)
     if system.device.type=='cuda':torch.cuda.synchronize()
     elapsed=time.perf_counter()-started
-    waits=[frames[i+7]['timestamp_sec']-frames[i]['timestamp_sec'] for i in range(max(0,n_target-7))]
+    from ttnet.events.data import event_window_ids
+    waits=[]
+    for i in range(n_target):
+        ids=[j for j in event_window_ids(corpus,vid,i,system.config) if j is not None]
+        last=min(n_target-1,max(ids)+1)
+        waits.append(frames[last]['timestamp_sec']-frames[i]['timestamp_sec'])
     performance=dict(frames=len(rows),elapsed_sec=elapsed,e2e_fps=len(rows)/elapsed,
                      peak_cuda_bytes=torch.cuda.max_memory_allocated() if system.device.type=='cuda' else None,
                      input_fps=float(rate),output_fps=effective_fps,native_frame_ids=native,source=str(Path(source)),
                      hardware=str(system.device),backend='PyTorch',precision='AMP' if system.config['amp'] and system.device.type=='cuda' else 'FP32',
                      tracker_future_frames=0,event_future_frames=6,localizer_future_frames=1,
-                     nominal_minimum_future_wait_sec=7/effective_fps,
+                     nominal_minimum_future_wait_sec=(.24+1/effective_fps if system.config.get('event_window_mode')=='seconds' else 7/effective_fps),
+                     event_window_mode=system.config.get('event_window_mode','frames'),
                      actual_future_wait_sec=dict(min=min(waits),max=max(waits)) if waits else None,execution='offline_full_video',
                      protocol='CPU PyAV decode + sampling + preprocessing + both locators + head + JSON serialization; excludes disk writes/init')
     return rows,records,performance

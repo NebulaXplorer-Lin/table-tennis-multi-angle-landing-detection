@@ -27,6 +27,7 @@ def associated_frames(system, corpus, vid, ids):
         row = frames[fid];ts = row['timestamp_sec']
         if not row.get('frame_valid',True):
             search=tracker.predict(ts)
+            if hasattr(tracker,'context'):tracker.context(np.zeros(128),None,resolution)
             tracker.update([],fid,ts)
             descriptors[fid]=next(system.parameters()).new_zeros(256)
             records[fid]=dict(frame_id=fid,prediction=None,global_prediction=None,local_prediction=None,
@@ -42,6 +43,7 @@ def associated_frames(system, corpus, vid, ids):
         transform = boxed[1][1]
         gx = torch.from_numpy(np.stack([normalize(im) for im,_ in boxed])).unsqueeze(0).to(system.device)
         heat,gdesc = system._run(system.global_model,gx,valid,offsets)
+        table = system.table_record(transform,resolution)
         hm = heat.detach().float().cpu().numpy()
         raw = candidates(hm,transform,resolution,count=tracker.config['top_k'])
         for p in raw:
@@ -49,6 +51,7 @@ def associated_frames(system, corpus, vid, ids):
         x,y,conf = decode_heatmap(hm);x,y = map_point(x,y,transform,inverse=True)
         g = accept(dict(x=x,y=y,confidence=conf,source='global'),cfg['localization_threshold'],resolution)
         search = tracker.predict(ts)
+        if hasattr(tracker,'context'):tracker.context(gdesc[0].detach().float().cpu().numpy(),table,resolution)
         selected = tracker.update(raw,fid,ts)
         centers = []
         if search and 0 <= search['x'] < meta['width'] and 0 <= search['y'] < meta['height']:
@@ -66,6 +69,8 @@ def associated_frames(system, corpus, vid, ids):
             lheat,ldesc = system._run(system.local_model,lx,valid,offsets)
             xx,yy,cc = decode_heatmap(lheat.detach().float().cpu().numpy());xx,yy = crop_point(xx,yy,crop,inverse=True)
             observations.append(accept(dict(x=xx,y=yy,confidence=cc,source='local',crop_transform=crop),cfg['localization_threshold'],resolution))
+            observations[-1]['appearance']=appearance(rgb[1],observations[-1])
+            observations[-1]['local_index']=len(crops)
             crops.append(crop);local_descriptors.append(ldesc)
         reference = selected or search
         def cost(i):
@@ -77,12 +82,17 @@ def associated_frames(system, corpus, vid, ids):
         local = observations[index] if index is not None else None
         observed = accept(selected,cfg['localization_threshold'],resolution) if selected else None
         prediction = local or observed
+        if hasattr(tracker,'finalize'):
+            chosen=tracker.finalize(observations)
+            index=chosen.get('local_index') if chosen and chosen.get('source')=='local' else None
+            local=observations[index] if index is not None else None
+            prediction=accept(chosen,cfg['localization_threshold'],resolution) if chosen else None
         ldesc = local_descriptors[index] if index is not None else gdesc.new_zeros((1,128))
         descriptors[fid] = torch.cat([gdesc,ldesc],-1)[0]
         records[fid] = dict(frame_id=fid,prediction=prediction,global_prediction=g,local_prediction=local,
                             raw_observations=dict(global_candidates=raw,local=observations),
                             associated_selection=selected,search_prediction=search,tracking_state=tracker.state(ts),
                             local_valid=local is not None,crop_transform=crops[index] if index is not None else (crops[0] if crops else None),
-                            roi_transforms=crops,global_candidates=raw)
+                            roi_transforms=crops,global_candidates=raw,table=table)
     zero = next(system.parameters()).new_zeros(())
     return descriptors,records,{'global':zero,'local':zero}

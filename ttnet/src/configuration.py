@@ -9,7 +9,7 @@ from ttnet.common import PROJECT, identity
 
 COMPONENT_KEYS = {'localizer','tracker','event_head','training'}
 EXPERIMENT_KEYS = {'schema_version','name','task','components','dataset','parameters','description'}
-EXTRA_PARAMETERS = {'mode','localizer_type','tracker_type','event_head_type','local_crop_side_1080',
+EXTRA_PARAMETERS = {'context_head','scene_mode','head_dropout','time_encoding','event_window_mode','table_checkpoint','table_source','ar_checkpoint','ar_beam_size','ar_use_table','mode','localizer_type','tracker_type','event_head_type','local_crop_side_1080',
                     'feature_batch','validation_batch','association','transformer','pp_annotations','sampling_protocol','local_crop_cache','global_train_scales','local_train_scales','data','dataset','global_checkpoint','local_checkpoint'}
 PATH_KEYS = {'global_checkpoint','local_checkpoint','data','dataset','pp_annotations'}
 ALIASES = {'localizer.type':'localizer_type','localizer.temporal_mode':'temporal_mode',

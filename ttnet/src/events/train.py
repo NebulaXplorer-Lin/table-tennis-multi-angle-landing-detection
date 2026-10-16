@@ -35,15 +35,22 @@ def atomic_checkpoint(path, value):
 def cached_forward(system,corpus,cache,sample):
     vid=sample['video_id'];features,records=cache[vid]
     # Keep full-video cache on CPU; only transfer the selected window.
-    selected={fid:features[fid].to(system.device) for fid in corpus.window_ids(vid,sample['frame_id']) if fid is not None}
-    return system.head(*assemble_window(corpus,vid,sample['frame_id'],selected,records,system.device))
+    from ttnet.events.data import event_window_ids
+    selected={fid:features[fid].to(system.device) for fid in event_window_ids(corpus,vid,sample['frame_id'],system.config) if fid is not None}
+    return system.head(*assemble_window(corpus,vid,sample['frame_id'],selected,records,system.device,system.config))
 
 
 def cached_forward_batch(system,corpus,cache,samples):
     inputs=[]
+    signature=tuple((k,system.config.get(k)) for k in ('context_head','scene_mode','event_window_mode'))
+    if getattr(corpus,'_tensor_cache_source',None) is not cache or getattr(corpus,'_tensor_cache_signature',None)!=signature:
+        corpus._tensor_cache_source=cache;corpus._tensor_cache_signature=signature;corpus._tensor_windows={}
     for sample in samples:
-        vid=sample['video_id'];features,records=cache[vid]
-        inputs.append(assemble_window(corpus,vid,sample['frame_id'],features,records,torch.device('cpu')))
+        vid=sample['video_id'];key=(vid,sample['frame_id'])
+        if key not in corpus._tensor_windows:
+            features,records=cache[vid]
+            corpus._tensor_windows[key]=assemble_window(corpus,vid,sample['frame_id'],features,records,torch.device('cpu'),system.config)
+        inputs.append(corpus._tensor_windows[key])
     tensors=[torch.cat([item[k] for item in inputs]).to(system.device,non_blocking=True) for k in range(3)]
     return system.head(*tensors)
 
@@ -54,7 +61,7 @@ def online_forward(system,corpus,sample):
     # Extra predecessor makes first-slot velocity identical to the frozen cache.
     if ids[0]-1 in corpus.videos[vid]['frames']:ids=[ids[0]-1]+ids
     features,records,losses=system.forward_frames(corpus,vid,ids)
-    logits=system.head(*assemble_window(corpus,vid,center,features,records,system.device))
+    logits=system.head(*assemble_window(corpus,vid,center,features,records,system.device,system.config))
     return logits,losses
 
 
@@ -63,7 +70,7 @@ def infer_cache(system,corpus,part):
     with torch.inference_mode(),torch.autocast(device_type=system.device.type,enabled=system.config['amp'] and system.device.type=='cuda'):
         for vid in corpus.split[part]:
             system.reset_tracking(vid)
-            if system.config.get('tracker_type')=='association':
+            if system.config.get('tracker_type') in ('association','autoregressive'):
                 from ttnet.events.context import stream_context_features
                 needed=sorted(corpus.videos[vid]['frames'])
                 if needed!=list(range(len(needed))):
@@ -179,7 +186,7 @@ def train(args):
             sample=next(s for s in corpus.samples['train'] if s['original'] and s['group']=='bounce')
             vid=sample['video_id'];ids=[i for i in corpus.window_ids(vid,sample['frame_id']) if i is not None]
             if ids[0]-1 in corpus.videos[vid]['frames']:ids=[ids[0]-1]+ids
-            if cfg.get('tracker_type')=='association':
+            if cfg.get('tracker_type') in ('association','autoregressive'):
                 from ttnet.events.context import stream_context_features
                 with torch.inference_mode():
                     extracted=list(stream_context_features(system,corpus,vid,ids))

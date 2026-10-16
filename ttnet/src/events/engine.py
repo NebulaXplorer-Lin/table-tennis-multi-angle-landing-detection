@@ -35,6 +35,25 @@ class EventSystem(nn.Module):
             # Inference must not depend on the original pretraining files remaining.
             self.global_model=build_localizer(dict(config,temporal_mode='fixed3')).to(device)
             self.local_model=build_localizer(dict(config,temporal_mode='fixed3')).to(device)
+        head_rng=torch.get_rng_state()
+        self.table_head=None
+        if config.get('table_checkpoint'):
+            from ttnet.scene.table import TableHead
+            self.table_head=TableHead().to(device)
+            if initialize:
+                table_state=torch.load(config['table_checkpoint'],map_location=device,weights_only=False)
+                if table_state['config']['global_sha256']!=sha(config['global_checkpoint']):raise ValueError('table/global dependency mismatch')
+                self.table_head.load_state_dict(table_state['head'])
+            self.table_head.requires_grad_(False).eval()
+        self.ar_model=None
+        if config.get('tracker_type')=='autoregressive':
+            from ttnet.tracking.autoregressive import CandidateGRU
+            self.ar_model=CandidateGRU().to(device)
+            if initialize:
+                ar_state=torch.load(config['ar_checkpoint'],map_location=device,weights_only=False)
+                self.ar_model.load_state_dict(ar_state['model'])
+            self.ar_model.requires_grad_(False).eval()
+        torch.set_rng_state(head_rng)
         self.head=build_event_head(config).to(device)
         self.criterion=LocalizationLoss()
         self.mode='frozen'
@@ -44,6 +63,9 @@ class EventSystem(nn.Module):
         from ttnet.tracking.association import BeamTracker
         self._tracking_video = video_id
         self._tracker = BeamTracker(self.config.get('association')) if self.config.get('tracker_type') == 'association' else None
+        if self.config.get('tracker_type')=='autoregressive':
+            from ttnet.tracking.autoregressive import LearnedBeamTracker
+            self._tracker=LearnedBeamTracker(self.ar_model,self.config.get('ar_beam_size',8),self.config.get('association'),self.config.get('ar_use_table',True))
 
     @property
     def device(self):return next(self.parameters()).device
@@ -52,18 +74,40 @@ class EventSystem(nn.Module):
         if mode not in ('frozen','joint'):raise ValueError(mode)
         self.mode=mode
         self.train(training)
+        if self.table_head is not None:self.table_head.eval()
+        if self.ar_model is not None:self.ar_model.eval()
         for model in (self.global_model,self.local_model):
             model.requires_grad_(mode=='joint')
             model.train(training and mode=='joint')
 
     def _run(self, model, images, valid, offsets):
+        if model is self.global_model and self.table_head is not None:
+            heat,desc,spatial=model(images,valid,offsets,return_spatial=True)
+            self._table_boxes=self.table_head(spatial).detach().float().cpu().numpy()
+            return heat,desc
         if self.training and self.mode=='joint':
             return checkpoint(model,images,valid,offsets,use_reentrant=False)
         return model(images,valid,offsets)
 
+    def table_record(self,transform,resolution,index=0):
+        if self.table_head is None:return None
+        from ttnet.scene.table import decode_table
+        return decode_table(self._table_boxes[index],transform,resolution)
+
     def forward_frames(self, corpus, vid, ids):
+        descriptors,records,loss=self._forward_frames(corpus,vid,ids)
+        if self.config.get('table_source')=='oracle':
+            from ttnet.scene.table import annotations
+            if not hasattr(self,'_table_annotations'):
+                self._table_annotations={**annotations('train')[0],**annotations('val')[0]}
+            for fid,r in records.items():
+                b=self._table_annotations.get((vid.removeprefix('pp_'),fid))
+                r['table']=dict(bbox_xyxy=b,valid=True,source='oracle') if b else None
+        return descriptors,records,loss
+
+    def _forward_frames(self, corpus, vid, ids):
         """Return differentiable per-frame features; decoded geometry is deliberately detached."""
-        if self.config.get('tracker_type','independent') == 'association':
+        if self.config.get('tracker_type','independent') in ('association','autoregressive'):
             from ttnet.tracking.runtime import associated_frames
             return associated_frames(self,corpus,vid,ids)
         frames=corpus.videos[vid]['frames']; meta=corpus.videos[vid]['meta'];cfg=self.config
@@ -90,6 +134,7 @@ class EventSystem(nn.Module):
                 global_images.append(normalize(image))
             gx=torch.from_numpy(np.stack(global_images)).unsqueeze(0).to(self.device)
             heat,gdesc=self._run(self.global_model,gx,valid,offsets)
+            table=self.table_record(transform,resolution)
             x,y,conf=decode_heatmap(heat.detach().float().cpu().numpy())
             x,y=map_point(x,y,transform,inverse=True)
             g=accept(dict(x=x,y=y,confidence=conf,source='global'),cfg['localization_threshold'],resolution)
@@ -115,7 +160,7 @@ class EventSystem(nn.Module):
             prediction=l if l and l['valid'] else g
             descriptors[fid]=torch.cat([gdesc,ldesc],-1)[0]
             records[fid]=dict(frame_id=fid,prediction=prediction,global_prediction=g,local_prediction=l,
-                              local_valid=bool(l and l['valid']),crop_transform=crop)
+                              local_valid=bool(l and l['valid']),crop_transform=crop,table=table)
             if cfg.get('candidate_diagnostics'):
                 from ttnet.tracking.candidates import candidates
                 records[fid]['global_candidates']=candidates(heat.detach().float().cpu().numpy(),transform,resolution)
@@ -125,13 +170,15 @@ class EventSystem(nn.Module):
 
 
 def cache_identity(system,corpus):
-    return dict(schema=2,dataset_id=corpus.identity,
+    return dict(schema=3,dataset_id=corpus.identity,
+                table=dict(checkpoint_sha256=sha(system.config['table_checkpoint']) if system.config.get('table_checkpoint') else None,source=system.config.get('table_source','predicted'),code=sha(SRC/'scene/table.py')),
+                autoregressive=dict(checkpoint_sha256=sha(system.config['ar_checkpoint']) if system.config.get('ar_checkpoint') else None,beam_size=system.config.get('ar_beam_size',8),use_table=system.config.get('ar_use_table',True)),
                 tracker=dict(type=system.config.get('tracker_type','independent'),
-                             parameters=system.config.get('association',{}) if system.config.get('tracker_type')=='association' else {}),global_sha256=sha(system.config['global_checkpoint']),
+                             parameters=system.config.get('association',{}) if system.config.get('tracker_type') in ('association','autoregressive') else {}),global_sha256=sha(system.config['global_checkpoint']),
                 local_sha256=sha(system.config['local_checkpoint']),
                 config={k:system.config[k] for k in ('global_input','local_input','local_crop_side_1080','localization_threshold','amp')},
                 code_sha256=sha(__file__),
-                implementation={name:sha(SRC/name) for name in ('models/localizer.py','models/build.py','tracking/independent.py','tracking/association.py','tracking/candidates.py','tracking/runtime.py',
+                implementation={name:sha(SRC/name) for name in ('models/localizer.py','models/build.py','tracking/independent.py','tracking/association.py','tracking/candidates.py','tracking/runtime.py','tracking/autoregressive.py',
                     'training/dataset.py','data_tools/geometry.py','data_tools/frame_store.py','events/context.py','events/batched_features.py')},
                 extraction_batch=system.config.get('feature_batch',16),
                 sampling=dict(target_fps=system.config.get('target_fps',25),temporal_mode='fixed3',association_context='stream_source_with_existing_npy_precedence'))
@@ -154,7 +201,7 @@ def build_cache(system,corpus,dest,parts=('train','val')):
             if path.exists() and records_path.exists():continue
             arrays=[];records=[];ids=sorted(corpus.videos[vid]['frames'])
             with torch.inference_mode(),torch.autocast(device_type=system.device.type,enabled=system.config['amp'] and system.device.type=='cuda'):
-                if system.config.get('tracker_type')=='association' and ids!=list(range(len(ids))):
+                if system.config.get('tracker_type') in ('association','autoregressive') and ids!=list(range(len(ids))):
                     from ttnet.events.context import stream_context_features
                     for fid,feature,record in stream_context_features(system,corpus,vid,ids):
                         arrays.append(feature.float().cpu().numpy());records.append(record)

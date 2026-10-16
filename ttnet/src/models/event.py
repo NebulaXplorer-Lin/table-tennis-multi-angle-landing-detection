@@ -90,3 +90,45 @@ class TransformerEventHead(nn.Module):
         x = self.encoder(x, src_key_padding_mask=~safe)
         center = torch.where(valid[:,6,None], x[:,6], 0)
         return self.classifier(center)
+
+
+class ContextEventHead(nn.Module):
+    """Identical front end and time encoding for controlled TCN/attention trials."""
+    def __init__(self, kind='tcn', scene_mode='relative', dropout=.1, time_encoding=False):
+        super().__init__()
+        self.kind=kind;self.scene_mode=scene_mode;self.time_encoding=time_encoding
+        self.global_norm=nn.LayerNorm(128);self.local_norm=nn.LayerNorm(128)
+        self.visual=nn.Sequential(nn.Linear(256,96),nn.LayerNorm(96),nn.SiLU())
+        self.motion=nn.Sequential(nn.Linear(9,32),nn.SiLU(),nn.Linear(32,32),nn.SiLU())
+        self.scene=nn.Sequential(nn.Linear(9,32),nn.SiLU(),nn.Linear(32,32),nn.SiLU()) if scene_mode!='none' else None
+        self.fusion=nn.Sequential(nn.Linear(160 if self.scene else 128,128),nn.LayerNorm(128),nn.SiLU())
+        if kind=='tcn':
+            self.temporal=nn.ModuleList([TemporalBlock(d) for d in (1,2,3)])
+            for block in self.temporal:block.dropout.p=dropout
+        elif kind=='transformer':
+            layer=nn.TransformerEncoderLayer(128,4,256,dropout,activation='gelu',batch_first=True)
+            self.temporal=nn.TransformerEncoder(layer,2,enable_nested_tensor=False)
+        else:raise ValueError(kind)
+        self.classifier=nn.Linear(128,2)
+        self.register_buffer('frequencies',torch.exp(torch.linspace(0,6,64)),persistent=False)
+
+    def forward(self,features,motion,frame_valid):
+        if features.shape[1:]!=(13,256) or motion.shape!=(*features.shape[:2],18):raise ValueError('context head requires visual256 + motion9/scene9')
+        valid=frame_valid.bool();m=torch.where(valid[...,None],motion,0);f=torch.where(valid[...,None],features,0)
+        lv=valid[...,None] & (m[...,7:8]>.5)
+        local=torch.where(lv,self.local_norm(torch.where(lv,f[...,128:],0)),0)
+        branches=[self.visual(torch.cat([self.global_norm(f[...,:128]),local],-1)),self.motion(m[...,:9])]
+        if self.scene:
+            scene=m[...,9:].clone()
+            if self.scene_mode=='box':scene[...,4:6]=0;scene[...,7]=0
+            branches.append(self.scene(scene)*(scene[...,6:7]>.5))
+        x=self.fusion(torch.cat(branches,-1))
+        if self.time_encoding:
+            angles=m[...,8:9]*self.frequencies;x=x+torch.stack([angles.sin(),angles.cos()],-1).flatten(-2)
+        x=torch.where(valid[...,None],x,0)
+        if self.kind=='tcn':
+            for block in self.temporal:x=block(x,valid[...,None])
+        else:
+            safe=valid.clone();safe[~safe.any(1),6]=True
+            x=self.temporal(x,src_key_padding_mask=~safe)
+        return self.classifier(torch.where(valid[:,6,None],x[:,6],0))

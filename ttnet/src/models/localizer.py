@@ -56,7 +56,7 @@ class BallLocalizer(nn.Module):
         self.fuse = nn.Sequential(ResidualBlock(32,32), nn.Conv2d(32,1,1))
         nn.init.constant_(self.fuse[-1].bias, -2.19)
 
-    def forward(self, x, frame_valid=None, time_offsets_sec=None):
+    def forward(self, x, frame_valid=None, time_offsets_sec=None, return_spatial=False):
         if self.temporal_mode!="single":
             if x.ndim!=5 or x.shape[1]!=self.slots:
                 raise ValueError(f"expected [B,{self.slots},3,H,W]")
@@ -85,7 +85,7 @@ class BallLocalizer(nn.Module):
         pool_kernel = getattr(self, "export_pool_kernel", None)
         descriptor = (F.avg_pool2d(f, pool_kernel) if pool_kernel is not None
                       else F.adaptive_avg_pool2d(f, (2,2))).flatten(1)
-        return heatmap, descriptor
+        return (heatmap, descriptor, f) if return_spatial else (heatmap, descriptor)
 
 
 class LocalizationLoss(nn.Module):

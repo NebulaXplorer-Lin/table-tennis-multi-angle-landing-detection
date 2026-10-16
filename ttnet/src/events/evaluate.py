@@ -194,7 +194,8 @@ def public_evaluation(system,root,dest,thresholds):
 
 def head_benchmark(system,dest):
     device=system.device
-    f=torch.zeros(1,13,256,device=device);m=torch.zeros(1,13,9,device=device);v=torch.ones(1,13,dtype=torch.bool,device=device)
+    motion_dim = 18 if system.config.get('context_head') else 9
+    f=torch.zeros(1,13,256,device=device);m=torch.zeros(1,13,motion_dim,device=device);v=torch.ones(1,13,dtype=torch.bool,device=device)
     samples=[];macs={}
     def count(name,module,inputs):
         total=[0];handles=[]
@@ -222,7 +223,7 @@ def head_benchmark(system,dest):
     stats=dict(parameters={name:sum(p.numel() for p in module.parameters()) for name,module in
                            [('global',system.global_model),('local',system.local_model),('head',system.head)]},
                head_forward_p50_ms=float(np.percentile(samples,50)),head_forward_p95_ms=float(np.percentile(samples,95)),
-               input_shapes=[[1,13,256],[1,13,9],[1,13]],batch=1,device=str(device),amp=system.config['amp'],
+               input_shapes=[[1,13,256],[1,13,motion_dim],[1,13]],batch=1,device=str(device),amp=system.config['amp'],
                hardware=torch.cuda.get_device_name() if device.type=='cuda' else 'CPU',warmup=50,measured=600)
     stats.update(macs=macs,flops={k:2*v for k,v in macs.items()},
                  compute_coverage='Partial Conv1d/Conv2d/Linear hooks; 1 MAC=2 FLOPs; excludes functional/fused attention and projections, normalization, activation, pooling, resize and decoding; local assumes one ROI (association uses up to two)')

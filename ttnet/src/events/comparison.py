@@ -162,7 +162,7 @@ def report(paths, dest):
 def main():
     p=argparse.ArgumentParser(description=__doc__);sub=p.add_subparsers(dest='action',required=True)
     e=sub.add_parser('evaluate');e.add_argument('--checkpoint',type=Path,required=True);e.add_argument('--annotations',type=Path,required=True)
-    e.add_argument('--output',type=Path,required=True);e.add_argument('--device',default='cpu');e.add_argument('--scheme',choices=['A0','A','B','C','D'],required=True)
+    e.add_argument('--output',type=Path,required=True);e.add_argument('--device',default='cpu');e.add_argument('--scheme',required=True)
     e.add_argument('--use-checkpoint-threshold',action='store_true')
     r=sub.add_parser('report');r.add_argument('--results',type=Path,nargs='+',required=True);r.add_argument('--output',type=Path,required=True)
     a=p.parse_args()

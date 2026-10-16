@@ -29,7 +29,7 @@ def independent_features(system,corpus,vid,ids):
     if not selected:return descriptors,records,{'global':zero,'local':zero}
     gx=torch.from_numpy(np.stack(images)).to(system.device)
     valid=torch.tensor(valids,device=system.device);times=torch.tensor(offsets,device=system.device,dtype=torch.float32)
-    heat,gdesc=system.global_model(gx,valid,times)
+    heat,gdesc=system._run(system.global_model,gx,valid,times)
     heat=heat.float().cpu().numpy();local_indices=[];local_images=[];crops={};globals_={}
     for i,fid in enumerate(selected):
         x,y,conf=decode_heatmap(heat[i]);x,y=map_point(x,y,transforms[i],inverse=True)
@@ -50,5 +50,5 @@ def independent_features(system,corpus,vid,ids):
         g=globals_[i];l=local.get(i);ld=local_descriptors.get(i,gdesc[i].new_zeros(128))
         descriptors[fid]=torch.cat([gdesc[i],ld],-1)
         records[fid]=dict(frame_id=fid,prediction=l if l and l['valid'] else g,global_prediction=g,local_prediction=l,
-                          local_valid=bool(l and l['valid']),crop_transform=crops.get(i))
+                          local_valid=bool(l and l['valid']),crop_transform=crops.get(i),table=system.table_record(transforms[i],resolution,i))
     return descriptors,records,{'global':zero,'local':zero}

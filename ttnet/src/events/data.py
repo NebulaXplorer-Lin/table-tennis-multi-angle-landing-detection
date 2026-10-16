@@ -66,8 +66,9 @@ def balanced_samples(samples, seed, epoch):
     return [result[i] for i in rng.permutation(len(result))]
 
 
-def assemble_window(corpus, vid, center, descriptors, records, device):
-    ids=corpus.window_ids(vid,center)
+def assemble_window(corpus, vid, center, descriptors, records, device, config=None):
+    config=config or {}
+    ids=event_window_ids(corpus,vid,center,config)
     features=[]; motion=[]; valid=[]
     frames=corpus.videos[vid]['frames'];meta=corpus.videos[vid]['meta']
     zero=next(iter(descriptors.values())).new_zeros(256)
@@ -75,7 +76,7 @@ def assemble_window(corpus, vid, center, descriptors, records, device):
         frame_valid=fid is not None and frames[fid].get('frame_valid',True)
         valid.append(frame_valid)
         if not frame_valid:
-            features.append(zero);motion.append([0.]*9);continue
+            features.append(zero);motion.append([0.]*(18 if config.get('context_head') else 9));continue
         features.append(descriptors[fid])
         rec=records[fid]; p=rec['prediction']; pv=bool(p and p['valid'])
         x,y=(p['x']/meta['width'],p['y']/meta['height']) if pv else (0.,0.)
@@ -88,9 +89,28 @@ def assemble_window(corpus, vid, center, descriptors, records, device):
         vy=(y-previous['y']/meta['height'])/dt if vv else 0.
         motion.append([x,y,vx,vy,p['confidence'] if pv else 0.,float(pv),float(vv),float(rec['local_valid']),
                        frames[fid]['timestamp_sec']-frames[center]['timestamp_sec']])
+        if config.get('context_head'):
+            from ttnet.scene.table import geometry
+            motion[-1].extend(geometry(rec.get('table'),p,meta['width'],meta['height'],config.get('scene_mode','none')).tolist())
     return (torch.stack(features).unsqueeze(0),torch.tensor([motion],device=device,dtype=torch.float32),
             torch.tensor([valid],device=device,dtype=torch.bool))
 
 
 def sample_identity(samples):
     return identity([(s['video_id'],s['anchor'],s['frame_id'],s['target'],s['supervised']) for s in samples])
+
+
+def event_window_ids(corpus,vid,center,config):
+    if config.get('event_window_mode','frames')=='frames':return corpus.window_ids(vid,center)
+    frames=corpus.videos[vid]['frames'];ordered=sorted(frames)
+    times=np.array([frames[i]['timestamp_sec'] for i in ordered]);tc=frames[center]['timestamp_sec']
+    result=[];used=set()
+    for offset in np.linspace(-.24,.24,13):
+        desired=tc+offset
+        if desired<times[0]-1e-8 or desired>times[-1]+1e-8:result.append(None);continue
+        j=int(np.argmin(abs(times-desired)));fid=ordered[j]
+        # Missing intervals and repeated source frames must not become synthetic observations.
+        if abs(times[j]-desired)>.021 or fid in used:result.append(None);continue
+        result.append(fid);used.add(fid)
+    result[6]=center
+    return result
