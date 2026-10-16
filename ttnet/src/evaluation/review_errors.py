@@ -1,6 +1,8 @@
 """Review saved validation errors without running inference again."""
 from __future__ import annotations
 
+from ttnet.data_tools.frame_store import FrameStore
+
 import argparse
 from collections import Counter
 from fractions import Fraction
@@ -23,13 +25,14 @@ CAUSES = {'gt_outside_roi':'GT 在 Local 裁剪区域外', 'local_error':'GT 在
 
 
 def encode_clip(path, rows, records, dataset, target, global_threshold):
+    frame_store=FrameStore(dataset)
     fps=max(1,round(rows[0]['nominal_fps']/3))
     with av.open(str(path),mode='w') as output:
         stream=output.add_stream('libx264',rate=fps)
         stream.width=1280;stream.height=720;stream.pix_fmt='yuv420p'
         stream.options={'crf':'20','preset':'veryfast'}
         for i,row in enumerate(rows):
-            source=cv2.imread(str(dataset/row['frame_path']))
+            source=frame_store.row_rgb(row)[:,:,::-1].copy()
             if source is None:raise RuntimeError(f'unreadable frame: {row["frame_path"]}')
             record=records[(row['video_id'],row['frame_id'])]
             painted,_,_=overlay(source,row,record['prediction'])

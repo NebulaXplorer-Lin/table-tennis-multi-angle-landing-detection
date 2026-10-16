@@ -98,7 +98,10 @@ class MaterializedDataTests(unittest.TestCase):
         meta=json.loads((DATA/'metadata/dataset.json').read_text())
         self.assertEqual(meta['schema'],'ttnet_ball_v2.0')
         self.assertEqual(meta['status'],'completed')
-        self.assertTrue((DATA/'frames').is_symlink())
+        if (DATA/'frame_store.json').exists():
+            from ttnet.data_tools.frame_store import FrameStore
+            self.assertIsNotNone(FrameStore(DATA).root)
+        else:self.assertTrue((DATA/'frames').is_symlink())
         row=jsonl(DATA/'labels/val.jsonl')[0]
         self.assertFalse({'global_resolution','global_transform','global_input_path'} & row.keys())
         self.assertTrue({'fps','resolution','timestamp_sec','frame_path'} <= row.keys())
@@ -108,6 +111,8 @@ class MaterializedDataTests(unittest.TestCase):
         from ttnet.common import ROOT
         legacy=ROOT/'data/datasets/ball_v1'
         if not legacy.exists():self.skipTest('legacy dataset absent')
+        if not next((legacy/'global_inputs').glob('*/*.png'),None):
+            self.skipTest('obsolete PNG resize cache was removed; runtime resize remains covered')
         seen=set()
         for split in ['train','val']:
             ds=BallDataset(legacy,split,all_frames=True)

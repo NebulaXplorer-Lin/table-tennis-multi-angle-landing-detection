@@ -156,6 +156,8 @@ def main():
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--pilot", type=int, default=0, help="convert only N diverse pilot videos; later rerun without this flag")
     args = parser.parse_args()
+    if (args.dataset/'frame_store.json').exists():
+        parser.error('array datasets are immutable; legacy image preparation needs a separate --dataset directory')
     source = PROJECT / "experiments/splits/yolo_ball_v1/audit.json"
     audits = json.loads(source.read_text())
     entries = []

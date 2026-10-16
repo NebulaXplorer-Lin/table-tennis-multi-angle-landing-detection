@@ -1,0 +1,11 @@
+{
+  "event_head_type": "transformer",
+  "window": 13,
+  "transformer": {
+    "layers": 2,
+    "dimension": 128,
+    "heads": 4,
+    "ffn": 256,
+    "dropout": 0.1
+  }
+}

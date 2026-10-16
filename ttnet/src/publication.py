@@ -9,7 +9,7 @@ from pathlib import Path
 import shutil
 import tempfile
 
-from ttnet.common import ROOT, identity, now, save, sha
+from ttnet.common import ROOT, identity, now, save, sha, output_directory
 
 ARTIFACTS = {'checkpoints': 'weights', 'evaluations': 'eval',
              'visualizations': 'error_samples', 'predictions': 'predictions',
@@ -45,7 +45,7 @@ def publish_run(run, root=ROOT):
     state, config = read(run/'run.json'), read(run/'config.yaml')
     if state.get('status') not in TERMINAL or config.get('smoke') or config.get('stage') not in {'global', 'local'}:
         return None
-    output = root/'output'
+    output = output_directory(root)
     dest = output/run.name
     files = [p for name in ARTIFACTS for p in (run/name).rglob('*') if p.is_file() and '.tmp' not in p.name]
     files += [p for p in [run/'config.yaml', run/'run.json', run/'environment.json'] if p.is_file()]
@@ -182,7 +182,7 @@ def publish_run(run, root=ROOT):
 
 def write_index(root=ROOT):
     root = Path(root).resolve()
-    output = root/'output'
+    output = output_directory(root)
     output.mkdir(parents=True, exist_ok=True)
     rows = []
     for path in sorted(output.glob('*/manifest.json')):

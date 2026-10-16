@@ -1,0 +1,16 @@
+{
+  "tracker_type": "association",
+  "association": {
+    "top_k": 5,
+    "beam_size": 8,
+    "history": 6,
+    "reset_after": 3,
+    "min_confidence": 0.1,
+    "motion_scale_px": 80.0,
+    "motion_cap": 2.0,
+    "motion_weight": 0.6,
+    "appearance_weight": 0.2,
+    "missing_cost": 2.5,
+    "roi_merge_fraction": 0.5
+  }
+}

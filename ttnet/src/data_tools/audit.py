@@ -10,9 +10,11 @@ import numpy as np
 
 from ttnet.common import DATA,ROOT,identity,jsonl,save,sha
 from .geometry import window_indices
+from .frame_store import FrameStore
 
 
 def audit(dataset,full_images=False):
+    store=FrameStore(dataset)
     meta=json.loads((dataset/'metadata/dataset.json').read_text())
     frozen=json.loads((ROOT/'src/configs/frozen_split.json').read_text())
     assert meta['status']=='completed'
@@ -53,6 +55,10 @@ def audit(dataset,full_images=False):
                 elif 'global_input_path' in r:
                     image_fields.append(('global_input_path',(512,288)))
                 for field,dims in image_fields:
+                    if store.root is not None and field=='frame_path':
+                        image=store.row_rgb(r)
+                        assert image.shape[1::-1]==dims and image.dtype==np.uint8
+                        continue
                     p=dataset/r[field];assert p.is_file() and p.stat().st_size>0
                     if full_images:
                         image=cv2.imread(str(p));assert image is not None and image.shape[1::-1]==dims

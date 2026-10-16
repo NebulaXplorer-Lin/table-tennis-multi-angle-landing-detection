@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from ttnet.data_tools.frame_store import FrameStore
+
 import argparse
 import json
 from pathlib import Path
@@ -39,6 +41,7 @@ def export_one(checkpoint,dataset,dest,stage):
     graph=onnx.load(path);onnx.checker.check_model(graph,full_check=True)
     opts=ort.SessionOptions();opts.intra_op_num_threads=4;opts.inter_op_num_threads=1
     session=ort.InferenceSession(str(path),sess_options=opts,providers=['CPUExecutionProvider'])
+    frame_store=FrameStore(dataset)
     rows=jsonl(dataset/'labels/val.jsonl')
     chosen=[];seen=set()
     for r in rows:
@@ -59,9 +62,9 @@ def export_one(checkpoint,dataset,dest,stage):
             payload,_,_,_=ds[row_index[(r['video_id'],r['frame_id'])]]
             inputs.append({k:v.numpy()[None] for k,v in payload.items()})
             continue
-        if stage=='global':rgb,_=letterbox(read_rgb(dataset/r['frame_path']),w,h)
+        if stage=='global':rgb,_=letterbox(frame_store.row_rgb(r),w,h)
         else:
-            raw=read_rgb(dataset/r['frame_path']);x,y=r['ball_centers'][0] if r['ball_centers'] else (0,0)
+            raw=frame_store.row_rgb(r);x,y=r['ball_centers'][0] if r['ball_centers'] else (0,0)
             rgb=crop_image(raw,crop_transform(x,y,r['resolution']['width'],r['resolution']['height'],w,
                                                info.get('config',{}).get('local_crop_side_1080',256)))
         inputs.append(dict(input=normalize(rgb)[None]))

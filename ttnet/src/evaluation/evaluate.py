@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from ttnet.data_tools.frame_store import FrameStore
+
 import argparse
 from collections import defaultdict
 import csv
@@ -121,6 +123,7 @@ def evaluate(args):
     feature_mode=mode if mode!='single' else 'fps_mask9'
     cache=FeatureWindowCache(meta['dataset_id'],sha(args.global_checkpoint),sha(args.local_checkpoint) if args.local_checkpoint else None,
                              temporal_mode=feature_mode,window_half_span_sec=ginfo.get('config',{}).get('window_half_span_sec',1/30))
+    frame_store=FrameStore(args.dataset)
     feature_checks=[]
     errors,examples=[],[]
     visual=run/'visualizations'/args.eval_id;visual.mkdir(parents=True,exist_ok=True)
@@ -151,7 +154,7 @@ def evaluate(args):
             needs_error=(positive and kind!='tp') or (r['label_status']=='negative' and accepted)
             sample=kind not in sample_kinds
             if needs_error or sample:
-                im=cv2.imread(str(args.dataset/r['frame_path']))
+                im=frame_store.row_rgb(r)[:,:,::-1].copy()
                 painted,kind,error=overlay(im,r,p)
                 dest=visual/k/f"{r['frame_id']:06d}_{kind}.jpg";dest.parent.mkdir(exist_ok=True)
                 if not cv2.imwrite(str(dest),painted,[cv2.IMWRITE_JPEG_QUALITY,90]):raise RuntimeError('visualization write failed')

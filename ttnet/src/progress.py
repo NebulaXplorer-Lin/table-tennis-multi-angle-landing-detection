@@ -23,7 +23,8 @@ def training_curve(run, records):
     curve_identity = identity(dict(records=records, config=cfg))
     if read(run/'evaluations/training_curve_identity.json').get('identity') == curve_identity and (run/'evaluations/training_curve.svg').is_file():
         return
-    os.environ.setdefault('MPLCONFIGDIR',str(ROOT/'data/cache/matplotlib'))
+    from ttnet.common import CACHE
+    os.environ.setdefault('MPLCONFIGDIR',str(CACHE/'matplotlib'))
     try:
         import matplotlib
     except ModuleNotFoundError:

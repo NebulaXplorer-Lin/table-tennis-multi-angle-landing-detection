@@ -1,0 +1,7 @@
+{
+  "split_id": "openttgames_event25_match_v1",
+  "train": ["game_1", "game_2", "game_3", "game_4"],
+  "val": ["game_5"],
+  "test": ["test_1", "test_2", "test_3", "test_4", "test_5", "test_6", "test_7"],
+  "policy": "Entire matches are disjoint. Test is never used for selection. Missing annotations are unknown."
+}

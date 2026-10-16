@@ -7,13 +7,14 @@ from torch.utils.data import DataLoader
 from ttnet.data_tools.geometry import crop_point, map_point
 from ttnet.training.dataset import BallDataset
 from ttnet.models.localizer import BallLocalizer
+from ttnet.models.build import build_localizer
 from .metrics import accept, decode_heatmap
 from ttnet.temporal import move_inputs,temporal_mode
 
 
 def load_model(path, device):
     checkpoint = torch.load(path,map_location="cpu",weights_only=False)
-    model = BallLocalizer(temporal_mode(checkpoint.get("config"))).to(device)
+    model = build_localizer(checkpoint.get("config")).to(device)
     model.load_state_dict(checkpoint["model"])
     model.eval()
     return model,checkpoint

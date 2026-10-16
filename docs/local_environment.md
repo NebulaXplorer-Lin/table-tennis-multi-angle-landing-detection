@@ -83,3 +83,22 @@ uv run python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())'
 版本依据：[PyTorch 官方安装矩阵](https://pytorch.org/get-started/previous-versions/)、
 [ORT CUDA/cuDNN 兼容表](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html)、
 [TensorRT 8 → 10 Python 接口迁移](https://docs.nvidia.com/deeplearning/tensorrt/10.x.x/api/tensorrt-8x-to-10x-python-api.html)。
+
+## 本轮复核（2026-10-15）
+
+`pyproject.toml` / `uv.lock` 与 `.venv` 一致，实际为 PyTorch 2.7.1+cu128。
+受限沙箱内 `torch.cuda.is_available()` 为 false 且 NVML 初始化失败；在允许访问
+宿主 GPU 的执行环境中可识别 RTX 5070 Ti，CUDA 前向/反向及四组真实样本检查通过。
+这属于设备可见性限制，不需要改动 CUDA wheel 或重新安装依赖。
+
+四组完整视频预训练前测速命令：
+
+```bash
+.venv/bin/python -m ttnet.events.benchmark_comparison --device cuda \
+  --video 02_001 --video 22_001 --output out/results/new_comparison_runtime
+```
+
+若受限沙箱不可见 GPU，应在可访问宿主 GPU 的终端运行。两个 PP 视频共 762 帧，
+PyTorch AMP 完整推理 A/B/C/D 分别约 98.31/89.99/90.63/86.46 FPS；这是已训练定位器
+加初始化事件头的运行检查，包含原视频解码和序列化，不包含初始化、画图和磁盘写入，
+不代表事件准确率或整个验证集的最终测速。PP 原始帧号/真实时间戳模式支持非等间隔 PTS。

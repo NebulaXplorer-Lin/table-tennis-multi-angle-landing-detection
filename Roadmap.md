@@ -1,3 +1,5 @@
+当前可执行后续路线统一维护在 [docs/next_steps.md](docs/next_steps.md)。下面保留历史分析与阶段记录。
+
 # 乒乓球落点检测项目：整体技术方案 V1.0
 
 技术主线：TTNet-style Global-to-Local Ball Localization + Trajectory Reconstruction + Temporal Event Spotting
@@ -353,9 +355,9 @@ video_001/
 
 ## 六、阶段 4：建立事件标注数据集
 
-这是当前数据最明显的缺口。
+历史规划中的标注缺口现已部分补齐：本地已准备 OpenTTGames 事件标签，第二阶段先训练 Bounce/Net；PP train 的赛题多视角事件监督仍待补齐。当前实现与实验协议见 [EventHead 第二阶段](docs/eventhead_training.md)。
 
-原始 TTNet 使用具有事件标签的 OpenTTGames 数据集，识别包括 Bounce 和 Net Hit 在内的事件。你的项目没有这类标签，因此不可能仅利用现有 Ball Bounding Box 就直接进行完整事件分支的监督训练。
+原始 TTNet 使用具有事件标签的 OpenTTGames 数据集，识别包括 Bounce 和 Net Hit 在内的事件。当前项目已接入这批独立事件标签；PP Ball Bounding Box 本身仍不能替代触台事件监督。
 
 [image](https://www.google.com/s2/favicons?domain=https://arxiv.org\&sz=32)
 

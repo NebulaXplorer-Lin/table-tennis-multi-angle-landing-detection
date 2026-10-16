@@ -1,6 +1,20 @@
 # Python 自动生成的缓存
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Python 构建与打包产物
+build/
+dist/
+*.egg-info/
+.eggs/
 
 # 模型权重与推理缓存
 *.onnx
@@ -30,6 +44,8 @@ trt_cache/
 # 本机配置与代理配置
 .env
 .env.*
+!.env.example
+!.env.*.example
 .clash/
 .mihomo/
 
@@ -46,4 +62,44 @@ sport-base_v1.tar
 .venv/
 .venv-local/
 .uv-cache/
+venv/
+.tox/
+.nox/
 
+# Historical workspace snapshots, raw frame archives and migration backups.
+/archive/
+# Machine-local compatibility links into the archive (not portable source).
+/ttnet/data
+/ttnet/runs
+/ttnet/output
+
+# 编辑器、系统与下载临时文件
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+*.tmp
+*.part
+*.partial
+
+# Event experiments: keep lightweight records, exclude working image caches.
+ttnet/runs/*/pilot/
+ttnet/runs/*/evaluations/*/images/
+ttnet/runs/*/evaluations/*/*/images/
+ttnet/runs/*/label_audit.jpg
+ttnet/runs/*/training_curve.png
+ttnet/runs/*/*_review.jpg
+ttnet/runs/*/analysis/*.jpg
+
+# 逐帧预测与中间结果；保留配置、指标、摘要和错误索引。
+/ttnet/runs/*/evaluations/**/*_frames.jsonl
+/ttnet/runs/*/evaluations/**/*_localizations.jsonl
+/ttnet/runs/*/evaluations/**/*_complete_predictions.jsonl
+/ttnet/runs/*/evaluations/**/*_unscored_events.jsonl
+/ttnet/runs/*/evaluations/**/*_events_without_coordinates.jsonl
+/ttnet/runs/*/evaluations/**/predictions.jsonl
+
+experiments/

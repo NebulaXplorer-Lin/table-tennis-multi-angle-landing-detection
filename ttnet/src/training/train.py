@@ -20,6 +20,7 @@ from ttnet.common import DATA,PROJECT,ROOT,SRC,identity,jsonl,now,save,save_json
 from ttnet.evaluation.inference import load_model,predict,prediction_map
 from ttnet.evaluation.metrics import aggregate,select_threshold
 from ttnet.models.localizer import BallLocalizer,LocalizationLoss
+from ttnet.models.build import build_localizer
 from .dataset import BallDataset
 from .scales import MultiScaleBatchSampler,input_size,training_scales
 from .cache import ensure_global_cache,ensure_local_cache
@@ -100,7 +101,8 @@ def train(args,run,config,attempt):
             save(run/"local_cache.json",dict(path=str(local_cache),dataset_id=meta["dataset_id"],global_sha256=gid))
     ds=BallDataset(args.dataset,"train",args.stage,augment=True,sigma=config["sigma"],predictions=global_maps.get("train"),
                    input_size=input_size(config,args.stage),crop_side_at_1080=config.get("local_crop_side_1080",256),
-                   temporal_mode=mode,window_half_span_sec=config.get("window_half_span_sec",1/30),input_cache=input_cache,local_cache=local_cache)
+                   temporal_mode=mode,window_half_span_sec=config.get("window_half_span_sec",1/30),input_cache=input_cache,local_cache=local_cache,
+                   augmentation=config.get('augmentation'))
     if args.smoke:
         # Spread over videos while keeping a genuinely fixed small training set.
         indices=np.linspace(0,len(ds)-1,min(8,len(ds))).round().astype(int).tolist()
@@ -114,7 +116,7 @@ def train(args,run,config,attempt):
         else:
             loader=DataLoader(ds,batch_size=config["micro_batch"],shuffle=True,num_workers=config["workers"],
                               pin_memory=device.type=="cuda",worker_init_fn=seed_worker)
-    model=BallLocalizer(mode).to(device)
+    model=build_localizer(config).to(device)
     optimizer=torch.optim.AdamW(model.parameters(),lr=config["lr"],weight_decay=config["weight_decay"])
     criterion=LocalizationLoss()
     scaler=torch.amp.GradScaler("cuda",enabled=config["amp"] and device.type=="cuda")
@@ -254,7 +256,8 @@ def main():
     data_meta=json.loads((args.dataset/"metadata/dataset.json").read_text())
     data_counts={s:len(jsonl(args.dataset/"labels"/f"{s}.jsonl")) for s in ["train","val"]}
     config.update(stage=args.stage,smoke=args.smoke,device=args.device,data=str(args.dataset),frame_stride=1,
-                  frame_window=slots_for_mode(temporal_mode(config)),feature_window_slots=slots_for_mode(temporal_mode(config)),
+                  frame_window=slots_for_mode(temporal_mode(config)),
+                  feature_window_slots=config.get('feature_window_slots',9 if temporal_mode(config)=='single' else slots_for_mode(temporal_mode(config))),
                   batch=config["micro_batch"],gradient_accumulation=config["effective_batch"]//config["micro_batch"],
                   global_checkpoint=str(args.global_checkpoint) if args.global_checkpoint else None,
                   dataset_id=data_meta["dataset_id"],split_id="ttnet_ball_v1_frozen_yolo_pilot",

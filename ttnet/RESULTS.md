@@ -1,4 +1,8 @@
+[统一方案与实验索引](../experiments/index.md) · [后续计划](../docs/next_steps.md)
+
 # TTNet 结果入口
+
+第二阶段 EventHead 已增加冻结定位与联合微调两版实验；运行与评估协议见 [说明](../docs/eventhead_training.md)，训练任务状态见 [本轮管线](runs/20261014-181231_event_train_pipeline/run.json)。最终结果单独汇总到 `output/events/README.md`，避免与球定位 F1 混用。
 
 更新于 2026-10-14T12:28:12.994679+09:00。
 

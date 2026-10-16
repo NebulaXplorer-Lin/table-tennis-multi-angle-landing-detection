@@ -1,6 +1,8 @@
+当前使用方法以 [工作区说明](../docs/workspace.md) 为准；配置入口在根目录 `configs/`，当前数据位于 `data/datasets/`，新实验位于 `out/experiments/`。下文保留历史接口和模型说明；旧目录通过归档兼容链接保留。
+
 # TTNet 第一阶段：球定位
 
-独立的数据与训练工程。原始视频只读；不覆盖 YOLO 数据或结果，不修改赛事框架和 `Solution`。事件模型尚未实现，本阶段提供可复用的视觉特征接口。
+独立的数据与训练工程。原始视频只读；不覆盖 YOLO 数据或结果，不修改赛事框架和 `Solution`。第二阶段已增加视觉与轨迹融合 EventHead，提供冻结定位和联合微调两种训练路径，见 [第二阶段说明](../docs/eventhead_training.md)。
 
 查看最终结果请直接打开 [output/README.md](output/README.md)，从任务汇总进入权重、eval、错误图册、Recall / F1、延迟与 FPS；[RESULTS.md](RESULTS.md) 是训练进度和最终结果的统一入口。
 

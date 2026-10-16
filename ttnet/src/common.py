@@ -10,11 +10,21 @@ from zoneinfo import ZoneInfo
 SRC = Path(__file__).resolve().parent
 ROOT = SRC.parent
 CONFIGS = SRC / "configs"
-DATA_ROOT = ROOT / "data"
-CACHE = DATA_ROOT / "cache"
-OUTPUT = ROOT / "output"
 PROJECT = ROOT.parent
-DATA = DATA_ROOT / "datasets/ball_v2"
+DATA_ROOT = PROJECT / "data"
+CACHE = DATA_ROOT / "cache"
+OUTPUT = PROJECT / "out/results"
+RUNS = PROJECT / "out/experiments"
+DATA = DATA_ROOT / "datasets/pp_ball_v2"
+EVENT_DATA = DATA_ROOT / "datasets/openttgames_event25_v3"
+
+
+def output_directory(root=ROOT):
+    return OUTPUT if Path(root).resolve() == ROOT.resolve() else Path(root)/'output'
+
+
+def run_directory(root=ROOT):
+    return RUNS if Path(root).resolve() == ROOT.resolve() else Path(root)/'runs'
 
 
 def now():

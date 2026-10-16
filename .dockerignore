@@ -35,3 +35,12 @@ uv.lock
 .python-version
 scripts/check_local_env.py
 **/participant/solution_local.py
+
+# Research datasets and archived workspaces never enter a submission image.
+/data/
+/archive/
+/ttnet/data/
+/ttnet/cache
+/ttnet/datasets
+/ttnet/runs/
+/ttnet/output/

@@ -1,0 +1,17 @@
+{
+  "model": "temporal residual FPN, shared per-frame encoder + ordered spatial fusion at all 4 scales",
+  "global_input": [
+    512,
+    288
+  ],
+  "local_input": [
+    256,
+    256
+  ],
+  "pretrained": null,
+  "sigma": 1.5,
+  "window_half_span_sec": 0.03333333333333333,
+  "temporal_mode": "fixed3",
+  "localizer_type": "residual_fpn",
+  "local_crop_side_1080": 256
+}

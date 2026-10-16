@@ -10,13 +10,13 @@ import sys
 import time
 from zoneinfo import ZoneInfo
 
-from ttnet.common import DATA,PROJECT,ROOT,jsonl,now,save,sha
+from ttnet.common import DATA,PROJECT,ROOT,RUNS,jsonl,now,save,sha
 from ttnet.temporal import temporal_mode
 from ttnet.results import write_results
 
 
 def new_run(name):
-    return ROOT/'runs'/(datetime.now(ZoneInfo('Asia/Tokyo')).strftime('%Y%m%d-%H%M%S')+'_'+name)
+    return RUNS/(datetime.now(ZoneInfo('Asia/Tokyo')).strftime('%Y%m%d-%H%M%S')+'_'+name)
 
 
 def command(module,*args):
@@ -84,11 +84,11 @@ def finalize(run):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--global-run',type=Path);p.add_argument('--dataset',type=Path,default=DATA)
+    p=argparse.ArgumentParser();p.add_argument('--global-run',type=Path);p.add_argument('--dataset',type=Path,default=DATA);p.add_argument('--task',type=Path);p.add_argument('--device',default='cuda')
     p.add_argument('--wait-global',action='store_true');p.add_argument('--config',type=Path,default=ROOT/'src/configs/fixed3.json');args=p.parse_args()
     if args.global_run:args.global_run=args.global_run.resolve()
     mode=temporal_mode(json.loads(args.config.read_text()))
-    pipeline=new_run('pipeline');pipeline.mkdir(parents=True)
+    pipeline=args.task or new_run('pipeline');pipeline.mkdir(parents=True)
     save(pipeline/'run.json',dict(status='running',started=now(),dataset=str(args.dataset)))
     global_run=args.global_run or new_run(f'global_{mode}_ball')
     local_run=None
@@ -101,24 +101,24 @@ def main():
                 time.sleep(10)
         elif not args.global_run:
             smoke=new_run(f'global_{mode}_smoke')
-            command('ttnet.training.train','--stage','global','--smoke','--run',smoke,'--dataset',args.dataset,'--config',args.config)
-            command('ttnet.training.train','--stage','global','--run',global_run,'--dataset',args.dataset,'--config',args.config)
+            command('ttnet.training.train','--stage','global','--smoke','--run',smoke,'--dataset',args.dataset,'--config',args.config,'--device',args.device)
+            command('ttnet.training.train','--stage','global','--run',global_run,'--dataset',args.dataset,'--config',args.config,'--device',args.device)
         g=global_run/'checkpoints/best.pt'
-        command('ttnet.evaluation.evaluate','--run',global_run,'--global-checkpoint',g,'--dataset',args.dataset,'--amp')
+        command('ttnet.evaluation.evaluate','--run',global_run,'--global-checkpoint',g,'--dataset',args.dataset,'--amp','--device',args.device)
         command('ttnet.evaluation.export','--run',global_run,'--global-checkpoint',g,'--dataset',args.dataset)
-        command('ttnet.evaluation.benchmark','--run',global_run,'--global-checkpoint',g,'--dataset',args.dataset,'--amp')
+        command('ttnet.evaluation.benchmark','--run',global_run,'--global-checkpoint',g,'--dataset',args.dataset,'--amp','--device',args.device)
         finalize(global_run)
         smoke=new_run(f'local_{mode}_smoke')
-        command('ttnet.training.train','--stage','local','--smoke','--run',smoke,'--global-checkpoint',g,'--dataset',args.dataset,'--config',args.config)
+        command('ttnet.training.train','--stage','local','--smoke','--run',smoke,'--global-checkpoint',g,'--dataset',args.dataset,'--config',args.config,'--device',args.device)
         local_run=new_run(f'local_{mode}_ball')
-        command('ttnet.training.train','--stage','local','--run',local_run,'--global-checkpoint',g,'--dataset',args.dataset,'--config',args.config)
+        command('ttnet.training.train','--stage','local','--run',local_run,'--global-checkpoint',g,'--dataset',args.dataset,'--config',args.config,'--device',args.device)
         l=local_run/'checkpoints/best.pt'
-        command('ttnet.evaluation.evaluate','--run',local_run,'--global-checkpoint',g,'--local-checkpoint',l,'--dataset',args.dataset,'--amp')
+        command('ttnet.evaluation.evaluate','--run',local_run,'--global-checkpoint',g,'--local-checkpoint',l,'--dataset',args.dataset,'--amp','--device',args.device)
         command('ttnet.evaluation.export','--run',local_run,'--global-checkpoint',g,'--local-checkpoint',l,'--dataset',args.dataset)
-        command('ttnet.evaluation.benchmark','--run',local_run,'--global-checkpoint',g,'--local-checkpoint',l,'--dataset',args.dataset,'--amp')
+        command('ttnet.evaluation.benchmark','--run',local_run,'--global-checkpoint',g,'--local-checkpoint',l,'--dataset',args.dataset,'--amp','--device',args.device)
         finalize(local_run)
-        save(pipeline/'run.json',dict(status='completed',finished=now(),global_run=str(global_run.relative_to(ROOT)),local_run=str(local_run.relative_to(ROOT))))
-        save(ROOT/'runs/latest.json',dict(global_run=str(global_run.relative_to(ROOT)),local_run=str(local_run.relative_to(ROOT)),pipeline_run=str(pipeline.relative_to(ROOT))))
+        save(pipeline/'run.json',dict(status='completed',finished=now(),global_run=str(global_run.relative_to(PROJECT)),local_run=str(local_run.relative_to(PROJECT))))
+        save(RUNS/'latest.json',dict(global_run=str(global_run.relative_to(PROJECT)),local_run=str(local_run.relative_to(PROJECT)),pipeline_run=str(pipeline.relative_to(PROJECT))))
         write_results()
         (pipeline/'summary.md').write_text(f'# 第一阶段完成\n\n[Global](../{global_run.name}/summary.md)\n\n[Global / Local](../{local_run.name}/summary.md)\n')
     except BaseException as e:

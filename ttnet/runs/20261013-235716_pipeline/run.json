@@ -1,7 +1,0 @@
-{
-  "status": "paused_by_user",
-  "started": "2026-10-13T23:57:16.458432+09:00",
-  "dataset": "/home/radno/projects/pingpong/ttnet/datasets/ball_v1",
-  "paused": "2026-10-14T00:16:25.220026+09:00",
-  "reason": "User requested no further training; automatic pipeline stopped."
-}
