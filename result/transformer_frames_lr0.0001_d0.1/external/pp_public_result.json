@@ -1,0 +1,39 @@
+{
+  "by_angle": {
+    "0度": {
+      "tp": 11,
+      "fp": 9,
+      "fn": 10,
+      "precision": 0.55,
+      "recall": 0.5238095238095238,
+      "f1": 0.5365853658536585
+    },
+    "45度": {
+      "tp": 25,
+      "fp": 11,
+      "fn": 13,
+      "precision": 0.6944444444444444,
+      "recall": 0.6578947368421053,
+      "f1": 0.6756756756756757
+    },
+    "90度": {
+      "tp": 26,
+      "fp": 4,
+      "fn": 7,
+      "precision": 0.8666666666666667,
+      "recall": 0.7878787878787878,
+      "f1": 0.8253968253968254
+    }
+  },
+  "macro_f1": 0.6792192889753865,
+  "protocol": "transfer only; no tuning. +/-1 frame, 50px, maximum one-to-one valid GT matching; ignored GT absorbs unmatched predictions",
+  "events_without_coordinates": 0,
+  "error_diagnostics": {
+    "other_unmatched_event": 23,
+    "boundary_false_positives": 8,
+    "fn_without_event_prediction_within_one_frame": 29,
+    "position_error_at_event_time": 1,
+    "fn_with_prediction_at_wrong_position": 1
+  },
+  "e2e_fps": 77.71619446997164
+}

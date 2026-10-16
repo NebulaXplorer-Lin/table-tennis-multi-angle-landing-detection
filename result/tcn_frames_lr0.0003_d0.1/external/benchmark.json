@@ -1,0 +1,42 @@
+{
+  "parameters": {
+    "global": 553985,
+    "local": 553985,
+    "head": 197858
+  },
+  "head_forward_p50_ms": 0.38957099968683906,
+  "head_forward_p95_ms": 0.4657380504795582,
+  "input_shapes": [
+    [
+      1,
+      13,
+      256
+    ],
+    [
+      1,
+      13,
+      18
+    ],
+    [
+      1,
+      13
+    ]
+  ],
+  "batch": 1,
+  "device": "cuda:0",
+  "amp": true,
+  "hardware": "NVIDIA GeForce RTX 5070 Ti",
+  "warmup": 50,
+  "measured": 600,
+  "macs": {
+    "head": 2537024,
+    "global": 2778107904,
+    "local": 1234714624
+  },
+  "flops": {
+    "head": 5074048,
+    "global": 5556215808,
+    "local": 2469429248
+  },
+  "compute_coverage": "Partial Conv1d/Conv2d/Linear hooks; 1 MAC=2 FLOPs; excludes functional/fused attention and projections, normalization, activation, pooling, resize and decoding; local assumes one ROI (association uses up to two)"
+}

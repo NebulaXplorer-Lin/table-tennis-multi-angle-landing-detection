@@ -1,0 +1,195 @@
+{
+  "metrics": {
+    "ttgames_test": {
+      "bounce": {
+        "tp": 229,
+        "fp": 4,
+        "fn": 11,
+        "tn": 220,
+        "precision": 0.9828326180257511,
+        "recall": 0.9541666666666667,
+        "f1": 0.9682875264270614
+      },
+      "net": {
+        "tp": 89,
+        "fp": 0,
+        "fn": 91,
+        "tn": 284,
+        "precision": 1.0,
+        "recall": 0.49444444444444446,
+        "f1": 0.6617100371747212
+      },
+      "macro_f1": 0.8149987818008912,
+      "confusion_bounce_net_empty": [
+        [
+          229,
+          0,
+          11
+        ],
+        [
+          1,
+          89,
+          90
+        ],
+        [
+          3,
+          0,
+          41
+        ]
+      ],
+      "samples": 464,
+      "event_masked_bce": 0.2622526407176177,
+      "localization_loss": {
+        "global": 0.0,
+        "local": 0.0
+      },
+      "protocol": "classification only at annotated anchors; no full-video event F1 from sparse labels",
+      "localization": {
+        "10": {
+          "tp": 1370,
+          "fp": 69,
+          "fn": 40,
+          "precision": 0.9520500347463516,
+          "recall": 0.9716312056737588,
+          "f1": 0.9617409617409618,
+          "matched_coverage": 0.9716312056737588,
+          "error_median_px": 1.7642104667308012,
+          "error_p90_px": 3.1480881000210985,
+          "accepted_error_median_px": 1.7912506314785128,
+          "accepted_error_p90_px": 3.3978364507126564,
+          "max_consecutive_missed": 4,
+          "ignored_frames": 2705,
+          "roi_coverage": 0.798581560283688,
+          "bbox_ap": null
+        },
+        "50": {
+          "tp": 1381,
+          "fp": 58,
+          "fn": 29,
+          "precision": 0.9596942321056289,
+          "recall": 0.9794326241134752,
+          "f1": 0.9694629694629695,
+          "matched_coverage": 0.9794326241134752,
+          "error_median_px": 1.7741847060262774,
+          "error_p90_px": 3.2116312841333587,
+          "accepted_error_median_px": 1.7912506314785128,
+          "accepted_error_p90_px": 3.3978364507126564,
+          "max_consecutive_missed": 4,
+          "ignored_frames": 2705,
+          "roi_coverage": 0.798581560283688,
+          "bbox_ap": null
+        }
+      },
+      "feature_availability": {
+        "frames": 4146,
+        "local_valid_fraction": 0.7954655089242644,
+        "prediction_valid_fraction": 0.9860106126386879,
+        "note": "all cached context frames; distinct from recall on labeled ball frames"
+      },
+      "local_timing": {
+        "bounce": {
+          "events": 240,
+          "hit_within_one_frame": 0.9583333333333334,
+          "median_error_ms": 8.33333333333286,
+          "note": "scan only around known events; not continuous event recall"
+        },
+        "net": {
+          "events": 180,
+          "hit_within_one_frame": 0.5722222222222222,
+          "median_error_ms": 16.66666666666572,
+          "note": "scan only around known events; not continuous event recall"
+        }
+      }
+    },
+    "pp_public": {
+      "by_angle": {
+        "0度": {
+          "tp": 11,
+          "fp": 9,
+          "fn": 10,
+          "precision": 0.55,
+          "recall": 0.5238095238095238,
+          "f1": 0.5365853658536585
+        },
+        "45度": {
+          "tp": 25,
+          "fp": 11,
+          "fn": 13,
+          "precision": 0.6944444444444444,
+          "recall": 0.6578947368421053,
+          "f1": 0.6756756756756757
+        },
+        "90度": {
+          "tp": 26,
+          "fp": 4,
+          "fn": 7,
+          "precision": 0.8666666666666667,
+          "recall": 0.7878787878787878,
+          "f1": 0.8253968253968254
+        }
+      },
+      "macro_f1": 0.6792192889753865,
+      "protocol": "transfer only; no tuning. +/-1 frame, 50px, maximum one-to-one valid GT matching; ignored GT absorbs unmatched predictions",
+      "events_without_coordinates": 0,
+      "error_diagnostics": {
+        "other_unmatched_event": 23,
+        "boundary_false_positives": 8,
+        "fn_without_event_prediction_within_one_frame": 29,
+        "position_error_at_event_time": 1,
+        "fn_with_prediction_at_wrong_position": 1
+      },
+      "e2e_fps": 77.71619446997164
+    },
+    "head_benchmark": {
+      "parameters": {
+        "global": 553985,
+        "local": 553985,
+        "head": 314210
+      },
+      "head_forward_p50_ms": 0.5323170043993741,
+      "head_forward_p95_ms": 0.6118430035712663,
+      "input_shapes": [
+        [
+          1,
+          13,
+          256
+        ],
+        [
+          1,
+          13,
+          18
+        ],
+        [
+          1,
+          13
+        ]
+      ],
+      "batch": 1,
+      "device": "cuda:0",
+      "amp": true,
+      "hardware": "NVIDIA GeForce RTX 5070 Ti",
+      "warmup": 50,
+      "measured": 600,
+      "macs": {
+        "head": 2324032,
+        "global": 2778107904,
+        "local": 1234714624
+      },
+      "flops": {
+        "head": 4648064,
+        "global": 5556215808,
+        "local": 2469429248
+      },
+      "compute_coverage": "Partial Conv1d/Conv2d/Linear hooks; 1 MAC=2 FLOPs; excludes functional/fused attention and projections, normalization, activation, pooling, resize and decoding; local assumes one ROI (association uses up to two)"
+    }
+  },
+  "identity": {
+    "checkpoint_sha256": "9c55fb25880337ef074a848ddd77b3eae91b92e2ff3127086b7ff11d52038c46",
+    "thresholds": [
+      0.2,
+      0.5
+    ],
+    "locked": true
+  },
+  "finished": "2026-10-17T00:20:50.738357+09:00"
+}
