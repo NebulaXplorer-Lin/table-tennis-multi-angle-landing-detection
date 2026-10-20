@@ -1,0 +1,53 @@
+{
+  "winner": {
+    "name": "tcn_smoothed",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_smoothed",
+    "eval_id": "continuous",
+    "metrics": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_smoothed/evaluations/continuous/metrics.json",
+    "checkpoint": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_smoothed/checkpoints/best.pt",
+    "checkpoint_sha256": "e8c4a323f93d9e05514c4e0d2ed33232e8f087e37eeea413700ced892a644c7b",
+    "seed": 42,
+    "epoch": 23,
+    "macro_f1": 0.7969008116066939,
+    "tp": 144,
+    "fp": 33,
+    "fn": 45,
+    "threshold": 0.4,
+    "e2e_fps": 86.8840107318258,
+    "by_view": {
+      "side": {
+        "tp": 82,
+        "fp": 21,
+        "fn": 23,
+        "precision": 0.7961165048543689,
+        "recall": 0.780952380952381,
+        "f1": 0.7884615384615384
+      },
+      "diagonal": {
+        "tp": 38,
+        "fp": 12,
+        "fn": 14,
+        "precision": 0.76,
+        "recall": 0.7307692307692307,
+        "f1": 0.7450980392156863
+      },
+      "front": {
+        "tp": 24,
+        "fp": 0,
+        "fn": 8,
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.8571428571428571
+      }
+    },
+    "protocol_id": "39dbfc6ee7ad8d04a9a1dba8daf4bc3f823d4410c63c37a2de6b43ca03b7577d",
+    "status": "evaluated"
+  },
+  "thresholds": [
+    0.4,
+    0.5
+  ],
+  "locked": "2026-10-17T11:30:50.335933+09:00",
+  "criterion": "validation macro F1, fewer FP on tie, E2E FPS >=50",
+  "note": "Locked before external evaluation; no external-driven tuning."
+}

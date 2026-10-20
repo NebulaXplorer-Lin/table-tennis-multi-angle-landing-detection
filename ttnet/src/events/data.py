@@ -32,6 +32,10 @@ class EventCorpus:
                 self.samples[part].extend(dict(s, video_id=vid) for s in jsonl(path/'samples.jsonl'))
         self.identity = self.metadata['dataset_id']
         self.frame_store = FrameStore(self.root)
+        if self.frame_store.is_video:
+            for vid,video in self.videos.items():
+                video['meta']['source_original']=video['meta']['source']
+                video['meta']['source']=str(self.frame_store.source_path(vid))
 
     @lru_cache(maxsize=32)
     def image(self, vid, fid):
@@ -66,11 +70,18 @@ def balanced_samples(samples, seed, epoch):
     return [result[i] for i in rng.permutation(len(result))]
 
 
+def window_signature(config):
+    return tuple((k,config.get(k)) for k in ('context_head','scene_mode','event_window_mode',
+                                            'table_smoothing','table_smoothing_tau_sec'))
+
+
 def assemble_window(corpus, vid, center, descriptors, records, device, config=None):
     config=config or {}
     ids=event_window_ids(corpus,vid,center,config)
     features=[]; motion=[]; valid=[]
     frames=corpus.videos[vid]['frames'];meta=corpus.videos[vid]['meta']
+    from ttnet.events.refinement import smooth_window_tables
+    tables=smooth_window_tables(ids,frames,records,config)
     zero=next(iter(descriptors.values())).new_zeros(256)
     for fid in ids:
         frame_valid=fid is not None and frames[fid].get('frame_valid',True)
@@ -91,7 +102,8 @@ def assemble_window(corpus, vid, center, descriptors, records, device, config=No
                        frames[fid]['timestamp_sec']-frames[center]['timestamp_sec']])
         if config.get('context_head'):
             from ttnet.scene.table import geometry
-            motion[-1].extend(geometry(rec.get('table'),p,meta['width'],meta['height'],config.get('scene_mode','none')).tolist())
+            table=rec.get('table') if tables is None else tables.get(fid)
+            motion[-1].extend(geometry(table,p,meta['width'],meta['height'],config.get('scene_mode','none')).tolist())
     return (torch.stack(features).unsqueeze(0),torch.tensor([motion],device=device,dtype=torch.float32),
             torch.tensor([valid],device=device,dtype=torch.bool))
 

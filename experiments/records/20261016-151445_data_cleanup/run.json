@@ -1,0 +1,12 @@
+{
+  "status": "completed_cleanup",
+  "training_started": false,
+  "deleted_files": 144788,
+  "freed_bytes": 53238005760,
+  "record": "/home/radno/projects/pingpong/out/results/20261016_data_cleanup",
+  "retained_stores": [
+    "data/cache/frames/31be21667d34f45b0c7f",
+    "data/cache/frames/d3299f59fa021c8c845e"
+  ],
+  "protected_artifacts_verified": 122
+}

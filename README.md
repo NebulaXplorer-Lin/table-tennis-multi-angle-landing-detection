@@ -1,68 +1,38 @@
-工作区已统一为共享代码与方案配置。研究入口见 [工作区说明](docs/workspace.md)、[实验索引](experiments/index.md) 和 [后续计划](docs/next_steps.md)。当前训练画面使用分块NPY；历史文件归档保留。
+# 乒乓球落点检测
 
-# 乒乓球落点检测赛 · 比赛工程（含附加题：篮球球员跟踪）
+面向组员的入口：[Quick intro](docs/quick_intro.md)。这里说明实验脉络、当前模型、代码结构、数据和后续路线；实际操作见[数据准备与训练指南](docs/training_guide.md)。
 
-主赛题为乒乓球落点检测，附加题为篮球球员跟踪（自愿选做，成绩不影响主赛排名）；
-两题共用纯环境镜像 `sport-base:v1`（只有运行环境，不含本工程）。
-本工程构建提交镜像时放到 `/participant`；本地自测也可直接挂载到 `/participant`。
+当前研究基线为 **三帧 Global/Local 定位 + 轨迹关联 + 桌框几何 + 13帧 TCN**。内部 PP 验证宏 F1 为79.56%，三种子均值78.77%；EMA单种子候选为79.69%。研究模型尚未替换赛事入口。
 
-## 目录结构
+| 要做的事 | 入口 |
+| --- | --- |
+| 快速了解项目 | [Quick intro](docs/quick_intro.md) |
+| 准备数据、训练、验证与恢复 | [训练指南](docs/training_guide.md) |
+| 查看保留的完整版本、权重和错误视频 | [结果首页](result/README.md)、[实验索引](experiments/index.md) |
+| 找代码、配置和产物 | [工作区说明](docs/workspace.md)、[配置说明](configs/README.md) |
+| 继续开发 | [当前路线](docs/next_steps.md)、[训练白皮书](docs/training_whitepaper_20261018.md) |
+| 迁移至100GB服务器 | [原视频按需解码方案](docs/server_100gb_20261018.md) |
+| 了解本次清理 | [整理记录](docs/workspace_cleanup_20261020.md) |
 
-```text
-participant/
-├── run_all.sh           联合入口：依次执行两任务（评测一次 docker run 跑完）
-├── pingpang/            乒乓球落点检测（框架独立自包含）
-│   ├── core/              框架：runner/decoder/types/...（参赛者不改）
-│   ├── run.py             单任务运行入口（run.sh/validate.py/integrity.py 为配套）
-│   ├── scripts/           自检：check_env.py / check_solution.py
-│   ├── public_data/       验证集（15 视频 + manifest + GT，开箱自测）
-│   └── participant/       参赛者代码区（内置官方参考实现，可整体替换）
-└── basketball/          篮球球员跟踪（结构同上；验证集 2 视频 main+switch）
-```
+## 本地开始
 
-两任务 core 同构独立，互不依赖——单任务出问题不波及另一个。
-
-## 本地 Blackwell 开发环境
-
-RTX 5070 Ti 可用 `uv sync --locked` 安装独立的 Python 3.10 / PyTorch cu128 环境。
-本地推理使用 ONNX Runtime CUDA 入口；安装、自检和运行命令见
-[本地环境说明](docs/local_environment.md)。官方提交仍使用下述固定镜像与原有入口。
-
-## 数据准备与跨环境重建
-
-将 `pp_train_data.zip`、`pp_public_data.zip` 放在项目根目录，执行
-`python3 scripts/prepare_data.py`，会自动准备两份 PP 数据并下载 TTNet / OpenTTGames 到
-根目录 `data/`。本机已有数据会复用，也可以用 `--export-pp data/_archives` 导出 PP 迁移包。
-目录、SHA256 校验和后续训练输入生成方法见 [数据准备说明](docs/prepare_data.md)。
-
-## 本地自测（在 participant/ 所在目录执行）
+在仓库根目录执行。依赖固定于 Python 3.10 / PyTorch 2.7.1+cu128；数据和权重需另行准备。
 
 ```bash
-# 双任务联合（与评测形态一致；验证集模拟 /participant/input/{pingpang,basketball}）
-docker run --rm --gpus all \
-    -v $PWD/participant:/participant:ro \
-    -v $PWD/participant/pingpang/public_data:/participant/input/pingpang:ro \
-    -v $PWD/participant/basketball/public_data:/participant/input/basketball:ro \
-    -v $PWD/out/joint_demo:/participant/output \
-    sport-base:v1
-
-# 单任务（以乒乓球为例，篮球换路径）
-docker run --rm --gpus all \
-    -v $PWD/participant:/participant -v $PWD/out:/participant/output \
-    --entrypoint python3 sport-base:v1 \
-    /participant/pingpang/run.py \
-        --input /participant/pingpang/public_data --output /participant/output/pingpang_demo \
-        --solution participant.solution:Solution --decoder gpu
+uv sync --locked
+.venv/bin/python -m ttnet.cli list
+.venv/bin/python -m ttnet.cli train \
+  --config configs/experiments/event_tcn_reference.json --dry-run
 ```
 
-## 提交形式与规则
+服务器遵循比赛固定环境，使用 `configs/server/`，不以本地 uv 环境升级比赛依赖。100GB服务器采用原视频解码；本机已有的233GiB NPY帧库继续保留。
 
-提交物为基于 `sport-base:v1` 的镜像，`COPY participant/ /participant/`
-（详见随包《作品形式&提交流程.md》）。每个任务在 `participant/<task>/participant/solution.py`
-实现 `Solution` 类（接口见该任务 `core/types.py`），模型放 `participant/weights/`。
-只做一个任务时，另一任务保持内置参考实现，评测按参考实现计分。
+## 研究代码与赛事代码
 
-规则：只改各任务的 `participant/` 代码区；不改 `core/` 与框架脚本（完整性校验不过则无成绩）；
-不升级 torch / numpy / onnxruntime / tensorrt（评测环境固定，无安装环节）。
+研究实现位于 `ttnet/src/`，方案位于 `configs/`，轻量实验记录位于 `experiments/`；大产物写入 `out/`，完整结果从 `result/` 浏览。项目内的 `ttnet` 是历史包名，自建定位器为 Residual FPN。
 
-任务细节（数据/指标/FAQ）见《赛题解析.md》。
+`pingpang/` 是乒乓球赛题框架，`basketball/` 是可选附加题。各自 `participant/` 是允许修改的代码区，`core/` 与框架脚本受保护。根目录 `run_all.sh` 顺序运行两题，`Dockerfile` 将当前根目录复制到 `/participant`。
+
+当前 `pingpang/participant/solution.py` 为 YOLO + 落点规则。官方模型的本地 ORT 运行与环境自检见[本地环境说明](docs/local_environment.md)；该路径的成绩与研究 TCN 分开报告。
+
+提交镜像基于 `sport-base:v1`，不升级比赛的 torch / numpy / onnxruntime / tensorrt。接口、评分与提交要求见 [TaskDescription.md](TaskDescription.md)，实验记录要求见 [AGENT.md](AGENT.md)。

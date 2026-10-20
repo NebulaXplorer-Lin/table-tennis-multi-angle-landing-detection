@@ -1,0 +1,330 @@
+{
+  "schema": 1,
+  "batch": "20261020-185047_workspace_cleanup",
+  "created_at": "2026-10-20T18:50:48.062905+08:00",
+  "archive": "archive/20261020-185047_workspace_cleanup",
+  "moves": [
+    {
+      "source": "docs/context_autoregressive_plan_20261016.md",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/docs/context_autoregressive_plan_20261016.md",
+      "reason": "已被完成实验结论或最新三阶段路线替代的规划"
+    },
+    {
+      "source": "docs/next_stage_validation_20261016.md",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/docs/next_stage_validation_20261016.md",
+      "reason": "已被完成实验结论或最新三阶段路线替代的规划"
+    },
+    {
+      "source": "docs/training_research_roadmap.md",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/docs/training_research_roadmap.md",
+      "reason": "已被完成实验结论或最新三阶段路线替代的规划"
+    },
+    {
+      "source": "docs/windows_local_ablation.md",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/docs/windows_local_ablation.md",
+      "reason": "已被完成实验结论或最新三阶段路线替代的规划"
+    },
+    {
+      "source": "experiments/records/20261013-212251_baseline_ball-position",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261013-212251_baseline_ball-position",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：failed"
+    },
+    {
+      "source": "experiments/records/20261013-215749_yolo11n_full1280_public",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261013-215749_yolo11n_full1280_public",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：paused"
+    },
+    {
+      "source": "experiments/records/20261013-235000_global_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261013-235000_global_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261013-235716_pipeline",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261013-235716_pipeline",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：paused_by_user"
+    },
+    {
+      "source": "experiments/records/20261014-001008_local_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261014-001008_local_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261014-001042_local_ball",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261014-001042_local_ball",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：paused_by_user"
+    },
+    {
+      "source": "experiments/records/20261014-094900_global_fixed3_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261014-094900_global_fixed3_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261014-095631_pipeline",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261014-095631_pipeline",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：interrupted"
+    },
+    {
+      "source": "experiments/records/20261014-102844_local_fixed3_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261014-102844_local_fixed3_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261014-174500_event_smoke_pipeline",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261014-174500_event_smoke_pipeline",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261014-181231_event25_joint",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261014-181231_event25_joint",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：paused_by_user"
+    },
+    {
+      "source": "experiments/records/20261014-181231_event_train_pipeline",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261014-181231_event_train_pipeline",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：paused_by_user"
+    },
+    {
+      "source": "experiments/records/20261014-185624_ball-onnx_min-gap-gap10",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261014-185624_ball-onnx_min-gap-gap10",
+      "reason": "启动失败：exit_code=1"
+    },
+    {
+      "source": "experiments/records/20261015-112043_event_comparison_implementation",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261015-112043_event_comparison_implementation",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：partial_pending_annotations"
+    },
+    {
+      "source": "experiments/records/20261016-152348_event_comparison_seed42_A",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016-152348_event_comparison_seed42_A",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：superseded_during_feature_preparation"
+    },
+    {
+      "source": "experiments/records/20261016-152348_event_comparison_seed42_A_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016-152348_event_comparison_seed42_A_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261016-152348_event_comparison_seed42_B_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016-152348_event_comparison_seed42_B_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261016-152348_event_comparison_seed42_C_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016-152348_event_comparison_seed42_C_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261016-152348_event_comparison_seed42_D_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016-152348_event_comparison_seed42_D_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261016-153213_event_comparison_b8_seed42_A_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016-153213_event_comparison_b8_seed42_A_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261016-153213_event_comparison_b8_seed42_B_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016-153213_event_comparison_b8_seed42_B_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261016-153213_event_comparison_b8_seed42_C_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016-153213_event_comparison_b8_seed42_C_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261016-153213_event_comparison_b8_seed42_D_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016-153213_event_comparison_b8_seed42_D_smoke",
+      "reason": "小样本预检；完整版本已保留"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_tcn_frames_lr0.0001_d0.1",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_tcn_frames_lr0.0001_d0.1",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_tcn_frames_lr0.0001_d0.2",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_tcn_frames_lr0.0001_d0.2",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_tcn_frames_lr0.0003_d0.2",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_tcn_frames_lr0.0003_d0.2",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_tcn_seconds_lr0.0001_d0.1",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_tcn_seconds_lr0.0001_d0.1",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_tcn_seconds_lr0.0001_d0.2",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_tcn_seconds_lr0.0001_d0.2",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_tcn_seconds_lr0.0003_d0.1",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_tcn_seconds_lr0.0003_d0.1",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_tcn_seconds_lr0.0003_d0.2",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_tcn_seconds_lr0.0003_d0.2",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_transformer_frames_lr0.0001_d0.2",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_transformer_frames_lr0.0001_d0.2",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_transformer_frames_lr0.0003_d0.1",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_transformer_frames_lr0.0003_d0.1",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_transformer_frames_lr0.0003_d0.2",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_transformer_frames_lr0.0003_d0.2",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_transformer_seconds_lr0.0001_d0.1",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_transformer_seconds_lr0.0001_d0.1",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_transformer_seconds_lr0.0001_d0.2",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_transformer_seconds_lr0.0001_d0.2",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_transformer_seconds_lr0.0003_d0.1",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_transformer_seconds_lr0.0003_d0.1",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261016_table_ar_transformer_seconds_lr0.0003_d0.2",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261016_table_ar_transformer_seconds_lr0.0003_d0.2",
+      "reason": "中断、被替代或仅有缓存验证的探索记录：trained_cached_validation"
+    },
+    {
+      "source": "experiments/records/20261017-125829_scratch_joint_baseline",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261017-125829_scratch_joint_baseline",
+      "reason": "过时聚合记录或已停止、无完整验证的scratch实验"
+    },
+    {
+      "source": "experiments/records/latest.json",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/experiments/records/latest.json",
+      "reason": "过时聚合记录或已停止、无完整验证的scratch实验"
+    },
+    {
+      "source": "out/experiments/20261016-152348_event_comparison_seed42",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/experiments/20261016-152348_event_comparison_seed42",
+      "reason": "预检、被替代的启动或已停止且无完整验证的scratch运行"
+    },
+    {
+      "source": "out/experiments/20261016-152348_event_comparison_seed42_A",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/experiments/20261016-152348_event_comparison_seed42_A",
+      "reason": "预检、被替代的启动或已停止且无完整验证的scratch运行"
+    },
+    {
+      "source": "out/experiments/20261016-152348_event_comparison_seed42_A_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/experiments/20261016-152348_event_comparison_seed42_A_smoke",
+      "reason": "预检、被替代的启动或已停止且无完整验证的scratch运行"
+    },
+    {
+      "source": "out/experiments/20261016-152348_event_comparison_seed42_B_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/experiments/20261016-152348_event_comparison_seed42_B_smoke",
+      "reason": "预检、被替代的启动或已停止且无完整验证的scratch运行"
+    },
+    {
+      "source": "out/experiments/20261016-152348_event_comparison_seed42_C_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/experiments/20261016-152348_event_comparison_seed42_C_smoke",
+      "reason": "预检、被替代的启动或已停止且无完整验证的scratch运行"
+    },
+    {
+      "source": "out/experiments/20261016-152348_event_comparison_seed42_D_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/experiments/20261016-152348_event_comparison_seed42_D_smoke",
+      "reason": "预检、被替代的启动或已停止且无完整验证的scratch运行"
+    },
+    {
+      "source": "out/experiments/20261016-153213_event_comparison_b8_seed42_A_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/experiments/20261016-153213_event_comparison_b8_seed42_A_smoke",
+      "reason": "预检、被替代的启动或已停止且无完整验证的scratch运行"
+    },
+    {
+      "source": "out/experiments/20261016-153213_event_comparison_b8_seed42_B_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/experiments/20261016-153213_event_comparison_b8_seed42_B_smoke",
+      "reason": "预检、被替代的启动或已停止且无完整验证的scratch运行"
+    },
+    {
+      "source": "out/experiments/20261016-153213_event_comparison_b8_seed42_C_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/experiments/20261016-153213_event_comparison_b8_seed42_C_smoke",
+      "reason": "预检、被替代的启动或已停止且无完整验证的scratch运行"
+    },
+    {
+      "source": "out/experiments/20261016-153213_event_comparison_b8_seed42_D_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/experiments/20261016-153213_event_comparison_b8_seed42_D_smoke",
+      "reason": "预检、被替代的启动或已停止且无完整验证的scratch运行"
+    },
+    {
+      "source": "out/experiments/20261017-125829_scratch_joint_baseline",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/experiments/20261017-125829_scratch_joint_baseline",
+      "reason": "预检、被替代的启动或已停止且无完整验证的scratch运行"
+    },
+    {
+      "source": "out/launches/20261016-152348_event_comparison_seed42_A",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/launches/20261016-152348_event_comparison_seed42_A",
+      "reason": "对应运行已归档的启动日志"
+    },
+    {
+      "source": "out/launches/20261016-152348_event_comparison_seed42_A_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/launches/20261016-152348_event_comparison_seed42_A_smoke",
+      "reason": "对应运行已归档的启动日志"
+    },
+    {
+      "source": "out/launches/20261016-152348_event_comparison_seed42_B_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/launches/20261016-152348_event_comparison_seed42_B_smoke",
+      "reason": "对应运行已归档的启动日志"
+    },
+    {
+      "source": "out/launches/20261016-152348_event_comparison_seed42_C_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/launches/20261016-152348_event_comparison_seed42_C_smoke",
+      "reason": "对应运行已归档的启动日志"
+    },
+    {
+      "source": "out/launches/20261016-152348_event_comparison_seed42_D_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/launches/20261016-152348_event_comparison_seed42_D_smoke",
+      "reason": "对应运行已归档的启动日志"
+    },
+    {
+      "source": "out/launches/20261016-153213_event_comparison_b8_seed42_A_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/launches/20261016-153213_event_comparison_b8_seed42_A_smoke",
+      "reason": "对应运行已归档的启动日志"
+    },
+    {
+      "source": "out/launches/20261016-153213_event_comparison_b8_seed42_B_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/launches/20261016-153213_event_comparison_b8_seed42_B_smoke",
+      "reason": "对应运行已归档的启动日志"
+    },
+    {
+      "source": "out/launches/20261016-153213_event_comparison_b8_seed42_C_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/launches/20261016-153213_event_comparison_b8_seed42_C_smoke",
+      "reason": "对应运行已归档的启动日志"
+    },
+    {
+      "source": "out/launches/20261016-153213_event_comparison_b8_seed42_D_smoke",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/out/launches/20261016-153213_event_comparison_b8_seed42_D_smoke",
+      "reason": "对应运行已归档的启动日志"
+    },
+    {
+      "source": "result/20261017-125829_scratch_joint_baseline",
+      "destination": "archive/20261020-185047_workspace_cleanup/removed/result/20261017-125829_scratch_joint_baseline",
+      "reason": "无完整验证的scratch结果入口"
+    }
+  ],
+  "files_count": 388,
+  "bytes": 97532935
+}

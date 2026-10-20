@@ -1,0 +1,18 @@
+{
+  "finished": "2026-10-17T11:34:44.264631+09:00",
+  "tests_passed": 31,
+  "command": ".venv/bin/python -m unittest ttnet.tests.test_refinement ttnet.tests.test_scene_ar ttnet.tests.test_events ttnet.tests.test_merge_pp_events",
+  "diff_check_passed": true,
+  "files": {
+    "events/refinement.py": "d0e54514f621e3af8239570c946047676808d88c5061dc5534b0a3908ca38477",
+    "events/data.py": "26fe0f1f5e200e45529dcf9cf6e5063a9a1155b2203449b9ecd08f2d927e42a3",
+    "events/continuous.py": "83c10523fdf5eff67abc546f2bc31d5906c4fa53d20ae9df15a50ce22c3f0637",
+    "events/train.py": "f3ecd13e233effde31c3ee3e66d676094de0fd0bf6a9ca1be6ac93d023a8bf69",
+    "events/inference.py": "ca34f60d30ac0754b3048e0cf52b4c3650c4ad6e900e2a697b4af33fbc18e4d9",
+    "tracking/train_ar.py": "82f75797392594ebfc2dc343d4957011621ca8d2378465737f07100ee315c135",
+    "scene/diagnose_ar.py": "b8c973995322df0748e969a0a1870131022e0a65996db40e4e3c3b002f09689f",
+    "scene/fast_refine.py": "bb12943bfebb2f1214e31900e0baa7918160353ae6c498c1b5f42ebade12a8fc",
+    "tests/test_refinement.py": "371d3d903b4b73437f63df0fd969c86924257942da9270d8759e86665b2c9f3e"
+  },
+  "note": "Final compatibility/read-only-cache patches were verified after training; source_snapshot preserves the experiment execution source."
+}

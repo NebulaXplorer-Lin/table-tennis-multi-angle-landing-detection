@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "name": "server_event_reference",
+  "task": "event",
+  "components": {
+    "localizer": "../components/ball_fixed3.json",
+    "tracker": "../components/association.json",
+    "event_head": "../components/tcn.json",
+    "training": "../components/event_comparison_train.json"
+  },
+  "dataset": "../datasets/openttgames_event25_v3.json",
+  "parameters": {
+    "mode": "frozen",
+    "global_checkpoint": "weights/reference/global_best.pt",
+    "local_checkpoint": "weights/reference/local_best.pt",
+    "table_checkpoint": "weights/reference/table_legacy.pt",
+    "pp_annotations": "data/annotations/pp_bounce_confirmed_v1.json",
+    "context_head": true,
+    "scene_mode": "box",
+    "table_source": "predicted",
+    "head_dropout": 0.1,
+    "time_encoding": true,
+    "event_window_mode": "frames"
+  },
+  "description": "Existing frozen TCN plus legacy shared table-box head for migration checks. Does not implement the new independent table branch or reproduce the EMA variant."
+}

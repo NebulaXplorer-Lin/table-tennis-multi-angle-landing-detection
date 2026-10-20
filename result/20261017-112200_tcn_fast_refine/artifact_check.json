@@ -1,0 +1,31 @@
+{
+  "finished": "2026-10-17T11:37:58.751379+09:00",
+  "checks": {
+    "baseline_tcn": {
+      "videos": 40,
+      "frames": 6292,
+      "overlays": 40,
+      "error_index": true,
+      "checkpoint_sha256_verified": true
+    },
+    "tcn_sampled": {
+      "videos": 40,
+      "frames": 6292,
+      "overlays": 40,
+      "error_index": true,
+      "checkpoint_sha256_verified": true
+    },
+    "tcn_smoothed": {
+      "videos": 40,
+      "frames": 6292,
+      "overlays": 40,
+      "error_index": true,
+      "checkpoint_sha256_verified": true
+    }
+  },
+  "selected_checkpoint_and_thresholds_verified": true,
+  "raw_cache_identity_unchanged": true,
+  "fixed_split_and_initialization_verified": true,
+  "external_invocations": 1,
+  "ar_cache_not_built": true
+}

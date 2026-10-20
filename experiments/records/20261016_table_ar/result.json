@@ -1,0 +1,42 @@
+{
+  "status": "completed",
+  "root": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar",
+  "table": {
+    "mean_iou": 0.38745763897895813,
+    "iou50_recall": 0.3801215447951382,
+    "iou75_recall": 0.0,
+    "frames": 5101,
+    "epoch": 4,
+    "checkpoint_sha256": "8cead7ac73eff8b85f91e728a4279d2b7dce9c05db5ad339f4e3a1c462fb4ef1"
+  },
+  "stability": {
+    "tcn_frames_lr0.0003_d0.1": {
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "mean": 0.7876677370470938,
+      "std": 0.023031504009484605
+    },
+    "transformer_frames_lr0.0001_d0.1": {
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "mean": 0.7571785122402126,
+      "std": 0.01796258276242785
+    },
+    "B": {
+      "mean": 0.764095030176188,
+      "std": 0.011126184068441737,
+      "seeds": [
+        42,
+        43,
+        44
+      ]
+    }
+  },
+  "completed": "2026-10-17T00:20:55.600112+09:00"
+}

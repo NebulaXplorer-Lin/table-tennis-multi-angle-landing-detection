@@ -1,0 +1,406 @@
+{
+  "schema": 1,
+  "batch": "20261015-102535_workspace",
+  "files": [
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/config.yaml",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/config.yaml",
+      "sha256": "da8869d9ac18c09986978af0e0cf1bfce1f1bbe91d41ce2237a279371b193bc0"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/environment.json",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/environment.json",
+      "sha256": "49a70d326c12dde0913702ff172f496ffc0b1eb9f93c81e0bbb39af3a04e9bc3"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/evaluations/benchmark/metrics.json",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/evaluations/benchmark/metrics.json",
+      "sha256": "9b30716c45d9c21826eb4902a735f2b5c3d72328f7de2eec2d2c16e88126796c"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/evaluations/best_selection.json",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/evaluations/best_selection.json",
+      "sha256": "7a902cd4c2f201ee28505cf874f953e216b57111d03455e5a2f400e089d17f2c"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/evaluations/best_val/errors.json",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/evaluations/best_val/errors.json",
+      "sha256": "d8e675b9cd93b71d470884d23bbe1820766e1bd9005bb098013bf4a84dd06368"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/evaluations/best_val/examples.json",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/evaluations/best_val/examples.json",
+      "sha256": "698006ff6a188f206eec38717b3aa663a75bed365a1496fd18bc9de55e207455"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/evaluations/best_val/feature_interface_checks.json",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/evaluations/best_val/feature_interface_checks.json",
+      "sha256": "63644c481bd72e56bdf119db9f34bc327e408b1e0e0eb30a05bd344bba6e5a65"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/evaluations/best_val/index.html",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/evaluations/best_val/index.html",
+      "sha256": "5570b8e2d2ef9b661306729179d5b7952ba0611e76bd531bd9ea0bbd9324b219"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/evaluations/best_val/metrics.json",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/evaluations/best_val/metrics.json",
+      "sha256": "6805ab1293e06b008cb5f05fe7e75f2b8bf2914b95918dad6627518b064f8cb3"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/evaluations/best_val/per_video.json",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/evaluations/best_val/per_video.json",
+      "sha256": "3a725f9ded250e271a9463fd45b6c74b867fec55e0ab3fe6b52fb69bf06b2304"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/evaluations/latest_threshold_sweep.json",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/evaluations/latest_threshold_sweep.json",
+      "sha256": "f62c6e74bf77a783d1e5eef2c3b64b16a3771039fc8e26bd4fd4feda9e73fb40"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/evaluations/training_curve.svg",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/evaluations/training_curve.svg",
+      "sha256": "d0a450f8315052437f7f7fc5c770646d61e125744a3ddf31fc88d0915c5f1ba1"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/evaluations/training_curve_identity.json",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/evaluations/training_curve_identity.json",
+      "sha256": "caff050ade8eaff353915bf6dcba7b365889ca2bee46b57ff2754ec5988f6b58"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/run.json",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/run.json",
+      "sha256": "b1ea22dade8e87d05b112074d1d2ffd68f49b2e3f24af61e581f245b3117bc52"
+    },
+    {
+      "source": "ttnet/runs/20261013-234947_global_ball/summary.md",
+      "snapshot": "experiments/records/20261013-234947_global_ball/history/summary.md",
+      "sha256": "83d34f69ce0de628bcdc07e37bc3188cac66ae197ba99f9214fd339e33f3564b"
+    },
+    {
+      "source": "ttnet/runs/20261013-235000_global_smoke/config.yaml",
+      "snapshot": "experiments/records/20261013-235000_global_smoke/history/config.yaml",
+      "sha256": "01e57e900ecef6524f7e455333fbe8db0a66030a4deeb10f0498624b6fc52ac4"
+    },
+    {
+      "source": "ttnet/runs/20261013-235000_global_smoke/environment.json",
+      "snapshot": "experiments/records/20261013-235000_global_smoke/history/environment.json",
+      "sha256": "5af7c75c2975280498d79f84ab4b58e5de052d7ebdd84a10c04e9b1626f4e3a1"
+    },
+    {
+      "source": "ttnet/runs/20261013-235000_global_smoke/evaluations/smoke.json",
+      "snapshot": "experiments/records/20261013-235000_global_smoke/history/evaluations/smoke.json",
+      "sha256": "f221b739f94b750056d627ea9bdf723f719ab85c4b81ac1236f07e2955cea40f"
+    },
+    {
+      "source": "ttnet/runs/20261013-235000_global_smoke/run.json",
+      "snapshot": "experiments/records/20261013-235000_global_smoke/history/run.json",
+      "sha256": "26d889ed3cf0d5f5901dec8cd5e55671e6711a9470cfe75fc3227d63009e2035"
+    },
+    {
+      "source": "ttnet/runs/20261013-235716_pipeline/run.json",
+      "snapshot": "experiments/records/20261013-235716_pipeline/history/run.json",
+      "sha256": "9c5ee0b58d903e84f596c1179aa0c4ce1aeaa0dc7ec43877489d23ccb2d836aa"
+    },
+    {
+      "source": "ttnet/runs/20261014-001008_local_smoke/config.yaml",
+      "snapshot": "experiments/records/20261014-001008_local_smoke/history/config.yaml",
+      "sha256": "5ddf7083101992b243c4757793df1705d4d06e197a34a033555dd67955ee1899"
+    },
+    {
+      "source": "ttnet/runs/20261014-001008_local_smoke/environment.json",
+      "snapshot": "experiments/records/20261014-001008_local_smoke/history/environment.json",
+      "sha256": "f30da2fe14f811ffd9845e5ef9f75812f59a54f915accc38ffb6990f3c5c2f87"
+    },
+    {
+      "source": "ttnet/runs/20261014-001008_local_smoke/evaluations/smoke.json",
+      "snapshot": "experiments/records/20261014-001008_local_smoke/history/evaluations/smoke.json",
+      "sha256": "e4ffed0b27e17f92cc51263121b837e3e3c8a351ba17c3e184dc4302e36a2b4a"
+    },
+    {
+      "source": "ttnet/runs/20261014-001008_local_smoke/run.json",
+      "snapshot": "experiments/records/20261014-001008_local_smoke/history/run.json",
+      "sha256": "26d889ed3cf0d5f5901dec8cd5e55671e6711a9470cfe75fc3227d63009e2035"
+    },
+    {
+      "source": "ttnet/runs/20261014-001042_local_ball/config.yaml",
+      "snapshot": "experiments/records/20261014-001042_local_ball/history/config.yaml",
+      "sha256": "d133c4dbdff6bcac6a453332779862b6e1c397c7f4a21991719971bd057e08d0"
+    },
+    {
+      "source": "ttnet/runs/20261014-001042_local_ball/environment.json",
+      "snapshot": "experiments/records/20261014-001042_local_ball/history/environment.json",
+      "sha256": "91e73602fbf96177033f92de49e6c223ea70e601b2c56a579cd06b2a9a3f0b14"
+    },
+    {
+      "source": "ttnet/runs/20261014-001042_local_ball/evaluations/best_selection.json",
+      "snapshot": "experiments/records/20261014-001042_local_ball/history/evaluations/best_selection.json",
+      "sha256": "4c90d17a7338dfe96b83895c931e900165d4935cfc35dcebbc398efa13bee88f"
+    },
+    {
+      "source": "ttnet/runs/20261014-001042_local_ball/evaluations/latest_threshold_sweep.json",
+      "snapshot": "experiments/records/20261014-001042_local_ball/history/evaluations/latest_threshold_sweep.json",
+      "sha256": "b98d6c7b1bec49a7f1c65eda0551fe2d2ab7736aa5ccf54cd646ded2d1063dd4"
+    },
+    {
+      "source": "ttnet/runs/20261014-001042_local_ball/evaluations/training_curve.svg",
+      "snapshot": "experiments/records/20261014-001042_local_ball/history/evaluations/training_curve.svg",
+      "sha256": "e9331b16660ea6f1503bf8642dc6e07bd0c3b81e974fe680774bbdc159b7c6ba"
+    },
+    {
+      "source": "ttnet/runs/20261014-001042_local_ball/evaluations/training_curve_identity.json",
+      "snapshot": "experiments/records/20261014-001042_local_ball/history/evaluations/training_curve_identity.json",
+      "sha256": "6bc15d63b047ae188c862de3d65a49f12b7bc8afec04ceb08699fa0480e2c94d"
+    },
+    {
+      "source": "ttnet/runs/20261014-001042_local_ball/run.json",
+      "snapshot": "experiments/records/20261014-001042_local_ball/history/run.json",
+      "sha256": "f6e96849c866fc517d440f00eb03227f57bda4f02845cd9356d1886766a6722d"
+    },
+    {
+      "source": "ttnet/runs/20261014-094900_global_fixed3_smoke/config.yaml",
+      "snapshot": "experiments/records/20261014-094900_global_fixed3_smoke/history/config.yaml",
+      "sha256": "b1335141940db679adaaed6c397f0827e20f9ab3a148fd57065336dc2966382a"
+    },
+    {
+      "source": "ttnet/runs/20261014-094900_global_fixed3_smoke/environment.json",
+      "snapshot": "experiments/records/20261014-094900_global_fixed3_smoke/history/environment.json",
+      "sha256": "7eec778ef778f8ff507b78d9e156bb45196405758ebace8b2c63c7b4c9f26250"
+    },
+    {
+      "source": "ttnet/runs/20261014-094900_global_fixed3_smoke/evaluations/smoke.json",
+      "snapshot": "experiments/records/20261014-094900_global_fixed3_smoke/history/evaluations/smoke.json",
+      "sha256": "e0fc5533420a6777117df1e4cda12b698073e76ad06ae023ee26d154beb24186"
+    },
+    {
+      "source": "ttnet/runs/20261014-094900_global_fixed3_smoke/input_cache.json",
+      "snapshot": "experiments/records/20261014-094900_global_fixed3_smoke/history/input_cache.json",
+      "sha256": "49c05dd561cec13ebdca0b24fe725d48df1edd4a1301ec086729a92bd9aff671"
+    },
+    {
+      "source": "ttnet/runs/20261014-094900_global_fixed3_smoke/run.json",
+      "snapshot": "experiments/records/20261014-094900_global_fixed3_smoke/history/run.json",
+      "sha256": "9791ea87082c9e80f8184755a8dd65c92b18e0c3e6851583a13e56d9bdc63e44"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/config.yaml",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/config.yaml",
+      "sha256": "4348477d7b097492524205aca6c713c237b66c8afc832a059ba054a54b3d5d6d"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/environment.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/environment.json",
+      "sha256": "902626a7b6a57a44671d1510e7996c7c108683312ec47d8820c3895ee0023468"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/evaluations/benchmark/metrics.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/evaluations/benchmark/metrics.json",
+      "sha256": "4ab6c206f3f9355f18dba7e3407c8e119c407cf0cce7216ddb0ad516ee3efa4b"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/evaluations/best_selection.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/evaluations/best_selection.json",
+      "sha256": "45ce6d3f9992474af2dc5dc5e435ff0d6c4d4f10d093cf786e22518720d33c9f"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/evaluations/best_val/errors.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/evaluations/best_val/errors.json",
+      "sha256": "a2c14e4bb6bcbf90ad53031f132a8b74a1a8e8658fe8f64609b724846c9f0506"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/evaluations/best_val/examples.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/evaluations/best_val/examples.json",
+      "sha256": "13e2df0bd8d1800ce0bd88d76de53b8f717ac886a7e96efe3af27c4a993bf7dd"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/evaluations/best_val/feature_interface_checks.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/evaluations/best_val/feature_interface_checks.json",
+      "sha256": "18b8729e01a0858f335fd176badabc4c8b27c37f361ecc77acb5073c7d6cd47c"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/evaluations/best_val/index.html",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/evaluations/best_val/index.html",
+      "sha256": "c11db492a84b752bce385d84c95361fff2843839f3e9c5201021c28cd83e57df"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/evaluations/best_val/metrics.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/evaluations/best_val/metrics.json",
+      "sha256": "132eb6517b88c15c25246ffb7729d052dc598a24184527632f3b9eb7fc7eb595"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/evaluations/best_val/per_video.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/evaluations/best_val/per_video.json",
+      "sha256": "9227be03e8fc61ec5679bfcb213278ba3510beb85563e4e85b04e2db5c1971b6"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/evaluations/latest_threshold_sweep.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/evaluations/latest_threshold_sweep.json",
+      "sha256": "e5b1c045f1fdcb63fdba4e8df56a8f4568e03306297b5fa3bd378941502fa3df"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/evaluations/training_curve.svg",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/evaluations/training_curve.svg",
+      "sha256": "f1300574c38ee843b6a9575f8063ca4eff3cd1a0d2efe3139c4941089d0dc747"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/evaluations/training_curve_identity.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/evaluations/training_curve_identity.json",
+      "sha256": "c3628a51b2304771c4de47c5ad70d0e0f1bde19c6a40ec8661e4ee4e02041e14"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/input_cache.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/input_cache.json",
+      "sha256": "49c05dd561cec13ebdca0b24fe725d48df1edd4a1301ec086729a92bd9aff671"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/run.json",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/run.json",
+      "sha256": "1feca846a6e11e69c502f44c0f2343291fc8b1c0cb954a5577b47947c1e667f1"
+    },
+    {
+      "source": "ttnet/runs/20261014-095202_global_fixed3_ball/summary.md",
+      "snapshot": "experiments/records/20261014-095202_global_fixed3_ball/history/summary.md",
+      "sha256": "032b76bfdcaa522ed567019f330390c728de50232fd3b16483a0f4f421afb37a"
+    },
+    {
+      "source": "ttnet/runs/20261014-095631_pipeline/run.json",
+      "snapshot": "experiments/records/20261014-095631_pipeline/history/run.json",
+      "sha256": "7b63ff9ece74e34e9fb01f78663270aaa7c17ff615211a04e2ff85ed0e128af5"
+    },
+    {
+      "source": "ttnet/runs/20261014-101434_pipeline/run.json",
+      "snapshot": "experiments/records/20261014-101434_pipeline/history/run.json",
+      "sha256": "bbc3d8ee22d741846a67f70973e7507489f264c94ff6da7f1c1f47d2122680b8"
+    },
+    {
+      "source": "ttnet/runs/20261014-101434_pipeline/summary.md",
+      "snapshot": "experiments/records/20261014-101434_pipeline/history/summary.md",
+      "sha256": "f7fd0a811bc517a98e9a71c61662f878d63a6ccb13dd7b7a8d5b9d1f590ce748"
+    },
+    {
+      "source": "ttnet/runs/20261014-102844_local_fixed3_smoke/config.yaml",
+      "snapshot": "experiments/records/20261014-102844_local_fixed3_smoke/history/config.yaml",
+      "sha256": "b328eccb1f0714e4792be83edca4d87e2d56c56d941a3aab232c979320f57871"
+    },
+    {
+      "source": "ttnet/runs/20261014-102844_local_fixed3_smoke/environment.json",
+      "snapshot": "experiments/records/20261014-102844_local_fixed3_smoke/history/environment.json",
+      "sha256": "9f53f352f8dc6458a9890ad2ee4c1fd2b4e8da494f07365351b09914ad574f22"
+    },
+    {
+      "source": "ttnet/runs/20261014-102844_local_fixed3_smoke/evaluations/smoke.json",
+      "snapshot": "experiments/records/20261014-102844_local_fixed3_smoke/history/evaluations/smoke.json",
+      "sha256": "e7df476b7929a4b67e95f0eb2e09493fc3e76a31dae2de2b48bac79c12f8a29c"
+    },
+    {
+      "source": "ttnet/runs/20261014-102844_local_fixed3_smoke/run.json",
+      "snapshot": "experiments/records/20261014-102844_local_fixed3_smoke/history/run.json",
+      "sha256": "9791ea87082c9e80f8184755a8dd65c92b18e0c3e6851583a13e56d9bdc63e44"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/config.yaml",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/config.yaml",
+      "sha256": "50ecfc189b395f21ff6e859fa64c2cd690609ddcc6e318e9f59b708dd336566f"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/environment.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/environment.json",
+      "sha256": "0c91c0ef3ac0a79715c6b77d888ec4006449e008ebbb6fd011dabafe0d7b62ea"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/benchmark/metrics.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/benchmark/metrics.json",
+      "sha256": "79251ff7fd56d96eee17bddbacebe0945399614073286be7a9c378940629e035"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_selection.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_selection.json",
+      "sha256": "e0d64e0a22d675923da4afcee82e1c9df50345d7bc22a02e5445b0d103e7f8c0"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/ERROR_REVIEW.md",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_val/ERROR_REVIEW.md",
+      "sha256": "240b8930b6aafd33b38d8cb9b6431c7b0ac2fd52933f5196b4be348ee381a86f"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/error_clips.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_val/error_clips.json",
+      "sha256": "2a325088e445ad989dd536aec3a21423daab69c6a011cb82d023cd8d8b25684f"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/error_review.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_val/error_review.json",
+      "sha256": "98975c16384e50eada05f9d2e3a5c007d0d681c25bbeb3fa311bf05790a2f467"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/error_review_summary.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_val/error_review_summary.json",
+      "sha256": "c78f66837c1adedb9e29db195e0e68dd0a177d78598df69408299d489b28d678"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/errors.html",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_val/errors.html",
+      "sha256": "f30ae954e14631b0feb15be4acac4190de76327cb64f745c2217382d91079fb3"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/errors.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_val/errors.json",
+      "sha256": "0d6edcd1e2fa5cb188f51c0509248cc38b74ddfd355e9ed537f0ec27ec89c446"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/examples.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_val/examples.json",
+      "sha256": "05519a615c890b33f8b4e347effa5398e0c34c8d8262bb9e9294c946a8746dea"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/feature_interface_checks.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_val/feature_interface_checks.json",
+      "sha256": "18b8729e01a0858f335fd176badabc4c8b27c37f361ecc77acb5073c7d6cd47c"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/index.html",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_val/index.html",
+      "sha256": "9943299e126b4fa93bb5d3b645a00ed40468e2e361a02274b35f954ce208a7b9"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/metrics.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_val/metrics.json",
+      "sha256": "340decf5d49323b1391da25e2e54776b0175ec1da509f837e6f07c1e2a874294"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/per_video.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/best_val/per_video.json",
+      "sha256": "03a7f63f2a52f44741156b41808851325da7e8f2ce807a7719cce5dff32759f3"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/latest_threshold_sweep.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/latest_threshold_sweep.json",
+      "sha256": "3a17b420ad42a2c7745ab517b717c542800673e398a6e9f05424ae0c33d298ae"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/training_curve.svg",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/training_curve.svg",
+      "sha256": "2aa8a3feb4d9b0c1d0c48d2b281394a2364f34234f4e7866db5c002f323da5d7"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/training_curve_identity.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/evaluations/training_curve_identity.json",
+      "sha256": "dc6d7d4016ade1666682abb1f169a463cbf807eca7cafb67a49d74552ce0c60f"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/run.json",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/run.json",
+      "sha256": "ad9b0ddf7f5d7c4970b8825a26fefe97299354bb49b7266522409360ea0f2cca"
+    },
+    {
+      "source": "ttnet/runs/20261014-103011_local_fixed3_ball/summary.md",
+      "snapshot": "experiments/records/20261014-103011_local_fixed3_ball/history/summary.md",
+      "sha256": "904656476cdcffcba06f1a9f7ac43eeb1e67ffd34a9537b51c9e57bd20295413"
+    },
+    {
+      "source": "ttnet/runs/latest.json",
+      "snapshot": "experiments/records/latest.json/history",
+      "sha256": "50968b232d5adcb8bcd00a6995841da81b8380ac4ced410a3219036a31844dcb"
+    }
+  ]
+}

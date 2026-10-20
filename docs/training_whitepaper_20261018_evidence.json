@@ -1,0 +1,560 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-18T09:30:21.829630+08:00",
+  "purpose": "Training white paper evidence and planning assumptions; no training was launched.",
+  "whitepaper": "docs/training_whitepaper_20261018.md",
+  "hardware": {
+    "measured_gpu": "NVIDIA RTX 5070 Ti",
+    "planned_gpu": "NVIDIA RTX 4090",
+    "measured_4090": false
+  },
+  "data": {
+    "pp_dataset_id": "f2552a61b4598b68b115854a6ec1995f61c1283eab673c7c376d47c2e2cf2c65",
+    "pp_split_hashes": {
+      "train": "2a09b6f47b95ff93ed1b6bd4ced3fab8c02f71601b1f66ba83e375ccb4c16b23",
+      "val": "badc1fc0c1f8f002683e3108443137b0210077e84ac1608ea60985540330749f"
+    },
+    "pp_videos": {
+      "train": 114,
+      "val": 40
+    },
+    "pp_frames_by_split": {
+      "train": 17398,
+      "val": 6292
+    },
+    "pp_ball_label_counts": {
+      "positive": 20846,
+      "unknown": 2844,
+      "ignore": 0,
+      "negative": 0
+    },
+    "pp_source_groups": {
+      "train": 19,
+      "val": 6
+    },
+    "pp_table": {
+      "train": {
+        "audit": {
+          "frames": 17398,
+          "valid": 17281,
+          "missing": 117,
+          "invalid": 0,
+          "multiple": 0
+        },
+        "groups": 19,
+        "thin_definition": "bbox height / original frame height < 0.06",
+        "thin_frames": 480,
+        "thin_fraction": 0.027776170360511544,
+        "height_quantiles_10_50_90": [
+          0.08958333333333333,
+          0.15591666666666665,
+          0.20468055555555556
+        ],
+        "adjacent_labeled_pairs": 17159,
+        "adjacent_iou_below_05": 0,
+        "cached_target_roundtrip_boxes": 17281,
+        "max_cached_target_roundtrip_error_px": 5.14984130859375e-05
+      },
+      "val": {
+        "audit": {
+          "frames": 6292,
+          "valid": 5101,
+          "missing": 1191,
+          "invalid": 0,
+          "multiple": 0
+        },
+        "groups": 6,
+        "thin_definition": "bbox height / original frame height < 0.06",
+        "thin_frames": 623,
+        "thin_fraction": 0.1221329151146834,
+        "height_quantiles_10_50_90": [
+          0.04652777777777778,
+          0.11597222222222223,
+          0.2263888888888889
+        ],
+        "adjacent_labeled_pairs": 4947,
+        "adjacent_iou_below_05": 0,
+        "cached_target_roundtrip_boxes": 5101,
+        "max_cached_target_roundtrip_error_px": 5.14984130859375e-05
+      }
+    },
+    "pp_events": {
+      "train": {
+        "events": 613,
+        "spatial_valid": 600,
+        "timing_quality": {
+          "coarse_manual": 613
+        }
+      },
+      "val": {
+        "events": 203,
+        "spatial_valid": 189,
+        "timing_quality": {
+          "coarse_manual": 203
+        }
+      }
+    },
+    "openttgames": {
+      "dataset_id": "470164adc9e57e3820a4fc7ce574f2baa4a42f2c30fb61ea6719aa9265ed976a",
+      "split_id": "openttgames_event25_match_v1",
+      "prepared": [
+        "game_1",
+        "game_2",
+        "game_3",
+        "game_4",
+        "game_5",
+        "test_1",
+        "test_2",
+        "test_3",
+        "test_4",
+        "test_5",
+        "test_6",
+        "test_7"
+      ],
+      "complete": true,
+      "pilot": false,
+      "updated": "2026-10-14T18:10:58.696118+09:00"
+    },
+    "frame_stores": {
+      "pp_ball_v2": {
+        "storage_id": "31be21667d34f45b0c7f6ff72bcd089af4a44244ecf16f485ba772cca3db38e2",
+        "manifest": "data/cache/frames/31be21667d34f45b0c7f/manifest.json",
+        "frames": 23690,
+        "videos": 154,
+        "actual_npy_bytes": 70423142384,
+        "actual_npy_gib": 65.58666227757931,
+        "rgb_chunk_files": 811,
+        "rgb_chunk_bytes": 70422514688,
+        "metadata_npy_bytes": 627696,
+        "frames_by_video": null
+      },
+      "openttgames_event25_v3": {
+        "storage_id": "d3299f59fa021c8c845ec8f7f8054dffa1aa4be04f75115a8d0bcec34f779ca4",
+        "manifest": "data/cache/frames/d3299f59fa021c8c845e/manifest.json",
+        "frames": 28883,
+        "videos": 12,
+        "actual_npy_bytes": 179676180424,
+        "actual_npy_gib": 167.33648294955492,
+        "rgb_chunk_files": 908,
+        "rgb_chunk_bytes": 179675482624,
+        "metadata_npy_bytes": 697800,
+        "frames_by_video": {
+          "game_1": 3169,
+          "game_2": 9774,
+          "game_3": 4089,
+          "game_4": 4017,
+          "game_5": 3688,
+          "test_1": 418,
+          "test_2": 416,
+          "test_3": 503,
+          "test_4": 894,
+          "test_5": 605,
+          "test_6": 785,
+          "test_7": 525
+        }
+      }
+    },
+    "frames_for_cache": {
+      "train": 38447,
+      "val": 9980,
+      "test": 4146
+    },
+    "total_npy_bytes": 250099322808
+  },
+  "historical_epoch_timings": {
+    "global_fixed3": {
+      "sources": [
+        "archive/20261015-102535_workspace/ttnet/runs/20261014-095202_global_fixed3_ball/logs/attempt_001/epochs.jsonl",
+        "archive/20261015-102535_workspace/ttnet/runs/20261014-095202_global_fixed3_ball/logs/attempt_002/epochs.jsonl"
+      ],
+      "completed_epochs": 20,
+      "epoch_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "sum_epoch_seconds": 1630.9648606369883,
+      "median_epoch_seconds": 81.3958784005008,
+      "min_epoch_seconds": 80.31980913600273,
+      "max_epoch_seconds": 84.48328531099833,
+      "note": "Epoch-log elapsed time; excludes any work outside the logged epoch interval."
+    },
+    "local_fixed3": {
+      "sources": [
+        "archive/20261015-102535_workspace/ttnet/runs/20261014-103011_local_fixed3_ball/logs/attempt_001/epochs.jsonl"
+      ],
+      "completed_epochs": 20,
+      "epoch_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "sum_epoch_seconds": 4098.30869935501,
+      "median_epoch_seconds": 204.63145340600022,
+      "min_epoch_seconds": 203.33185464599956,
+      "max_epoch_seconds": 209.45449746100348,
+      "note": "Epoch-log elapsed time; excludes any work outside the logged epoch interval."
+    },
+    "frozen_tcn": {
+      "sources": [
+        "out/experiments/20261016_table_ar/tcn_frames_lr0.0003_d0.1/attempts/001/epochs.jsonl"
+      ],
+      "completed_epochs": 28,
+      "epoch_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "sum_epoch_seconds": 93.93084924099821,
+      "median_epoch_seconds": 3.1938819704992056,
+      "min_epoch_seconds": 3.0122329229998286,
+      "max_epoch_seconds": 4.898884309004643,
+      "note": "Epoch-log elapsed time; excludes any work outside the logged epoch interval."
+    },
+    "historical_online_joint": {
+      "sources": [
+        "out/experiments/20261017-125829_scratch_joint_baseline/train/attempts/001/epochs.jsonl",
+        "out/experiments/20261017-125829_scratch_joint_baseline/train/attempts/002/epochs.jsonl"
+      ],
+      "completed_epochs": 15,
+      "epoch_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "sum_epoch_seconds": 33145.174232274,
+      "median_epoch_seconds": 2220.209702662003,
+      "min_epoch_seconds": 2088.1503559489993,
+      "max_epoch_seconds": 2326.8243197150005,
+      "note": "Epoch-log elapsed time; excludes any work outside the logged epoch interval."
+    }
+  },
+  "planning": {
+    "measured": false,
+    "unit": "wall-clock hours",
+    "excludes": [
+      "code implementation",
+      "manual label review",
+      "network transfer",
+      "new backend incompatibility development",
+      "large hyperparameter search"
+    ],
+    "assumptions": {
+      "table_sample_budget_per_epoch": 4000,
+      "table_epochs_max": 80,
+      "table_training_image_per_sec_hypothesis": [
+        40,
+        150
+      ],
+      "table_validation_and_save_overhead_hours_hypothesis": [
+        0.3,
+        0.8
+      ],
+      "feature_extraction_frames_per_sec_hypothesis": [
+        30,
+        100
+      ],
+      "finetune_windows_per_epoch": 1500,
+      "finetune_epochs_max": 5,
+      "event_seed42_ablations": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "paired_seeds_for_final_and_A": [
+        43,
+        44
+      ],
+      "event_epoch_validation": "all frames of all 40 validation videos via frozen frontend cache; shortlisted models replay raw videos",
+      "finetune_epoch_validation": "online frontend inference over all 40 validation videos"
+    },
+    "stages": [
+      {
+        "name": "preflight",
+        "low_hours": 0.25,
+        "high_hours": 0.75
+      },
+      {
+        "name": "global",
+        "low_hours": 0.5,
+        "high_hours": 1
+      },
+      {
+        "name": "local_including_predictions",
+        "low_hours": 1,
+        "high_hours": 2
+      },
+      {
+        "name": "independent_table",
+        "low_hours": 1,
+        "high_hours": 3
+      },
+      {
+        "name": "feature_cache",
+        "low_hours": 0.5,
+        "high_hours": 1.5
+      },
+      {
+        "name": "event_head_selection",
+        "low_hours": 0.5,
+        "high_hours": 1.5
+      },
+      {
+        "name": "small_data_finetune",
+        "low_hours": 0.5,
+        "high_hours": 1.5
+      },
+      {
+        "name": "final_eval_export_benchmark",
+        "low_hours": 0.5,
+        "high_hours": 1
+      }
+    ],
+    "summed_retrain_hours": [
+      4.75,
+      12.25
+    ],
+    "summed_reuse_hours": [
+      3.25,
+      9.25
+    ],
+    "recommended_retrain_hours": [
+      6,
+      13
+    ],
+    "recommended_reuse_hours": [
+      4,
+      10
+    ],
+    "table_training_only_hours_for_320k_exposures": [
+      0.5925925925925927,
+      2.2222222222222223
+    ],
+    "table_training_only_hours_for_full_80_epochs": [
+      2.560148148148148,
+      9.600555555555555
+    ],
+    "finetune_5_epochs_scaled_from_old_path_hours": 0.5980652806498371
+  },
+  "external_technical_references": [
+    {
+      "title": "PyTorch 2.1 AMP",
+      "url": "https://docs.pytorch.org/docs/2.1/amp.html",
+      "accessed": "2026-10-18"
+    },
+    {
+      "title": "Ultralytics YOLO11",
+      "url": "https://docs.ultralytics.com/models/yolo11/",
+      "accessed": "2026-10-18"
+    },
+    {
+      "title": "Ultralytics data augmentation",
+      "url": "https://docs.ultralytics.com/guides/yolo-data-augmentation/",
+      "accessed": "2026-10-18"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "AGENT.md",
+      "sha256": "9ebfbcaf54b708b4c3c8a2f0ce2272565aafb365f377f4a7a8f2029ae835e6da",
+      "bytes": 7182
+    },
+    {
+      "path": "TaskDescription.md",
+      "sha256": "abc80ebf94f2985220cdd07cbc88782985ddb85ec577bb5a03070f07949394b5",
+      "bytes": 13531
+    },
+    {
+      "path": "data/datasets/pp_ball_v2/metadata/dataset.json",
+      "sha256": "fc525aff6d44f28abc17d15351e1c07bb686ead492fc9c69a9284b1c4e9d0a76",
+      "bytes": 62577
+    },
+    {
+      "path": "data/datasets/pp_ball_v2/splits/train.jsonl",
+      "sha256": "2a09b6f47b95ff93ed1b6bd4ced3fab8c02f71601b1f66ba83e375ccb4c16b23",
+      "bytes": 39444
+    },
+    {
+      "path": "data/datasets/pp_ball_v2/splits/val.jsonl",
+      "sha256": "badc1fc0c1f8f002683e3108443137b0210077e84ac1608ea60985540330749f",
+      "bytes": 13760
+    },
+    {
+      "path": "data/datasets/openttgames_event25_v3/dataset.json",
+      "sha256": "cbc450ebeaab016874491f2a35558c0570629ce7c4557998c184f8661f49251a",
+      "bytes": 408
+    },
+    {
+      "path": "data/annotations/pp_bounce_confirmed_v1.json",
+      "sha256": "97ff70a411763f2944d7cd75e8fe1fc78b9ce40ddd0de8073b23275c98b273c5",
+      "bytes": 330278
+    },
+    {
+      "path": "data/datasets/pp_ball_v2/frame_store.json",
+      "sha256": "deed729f4f4a5353e4bb39cfab704ad812d2706031e9bcc5bf29cdd0a1f4d879",
+      "bytes": 297
+    },
+    {
+      "path": "data/datasets/openttgames_event25_v3/frame_store.json",
+      "sha256": "bfdf9f61ff1e71bc56e60e38d60df72feb0deec968b4eaaf1b3addd47c68dc56",
+      "bytes": 300
+    },
+    {
+      "path": "out/results/20261018_table_accuracy_audit/audit.json",
+      "sha256": "2f21fe6e4389030c81500398af5d5f9f22086ada5c194ef02cea2612ada8cddc",
+      "bytes": 3383
+    },
+    {
+      "path": "out/results/20261018_table_label_temporal/audit.json",
+      "sha256": "4c754173272f0562a5b8443984d662221db4cac89f087477a37c8da9446c8ef4",
+      "bytes": 202060
+    },
+    {
+      "path": "docs/event_head_improvement_20261018.md",
+      "sha256": "c9a36ffeebf77d8270e3c4eaff23aa69edb4ab3639246671bcd6ac2de5d25cee",
+      "bytes": 8636
+    },
+    {
+      "path": "docs/table_localization_improvement_20261018.md",
+      "sha256": "ec05eca23f5370a383034002a03c40d2b87a6ff4fbbe8eda3f3800cfaf6f9ee8",
+      "bytes": 8174
+    },
+    {
+      "path": "docs/table_label_temporal_20261018.md",
+      "sha256": "e119baa6b661c22c2e03a5647691248b84130ba21d0c358a303a8a5fce7a8194",
+      "bytes": 5112
+    },
+    {
+      "path": "result/20261017-112200_tcn_fast_refine/README.md",
+      "sha256": "e3ec866c254762d6558965df536e96a135c24e270c354dd4e317559a21718bdd",
+      "bytes": 2739
+    },
+    {
+      "path": "ttnet/src/events/continuous.py",
+      "sha256": "83c10523fdf5eff67abc546f2bc31d5906c4fa53d20ae9df15a50ce22c3f0637",
+      "bytes": 14282
+    },
+    {
+      "path": "ttnet/src/training/dataset.py",
+      "sha256": "452a4c7ba4a26b006170cebc261e353dccc1bf43db9e7fc526e0e659c87ab69d",
+      "bytes": 10260
+    },
+    {
+      "path": "experiments/records/20261014-095202_global_fixed3_ball/config.yaml",
+      "sha256": "4348477d7b097492524205aca6c713c237b66c8afc832a059ba054a54b3d5d6d",
+      "bytes": 2082
+    },
+    {
+      "path": "data/cache/frames/31be21667d34f45b0c7f/manifest.json",
+      "sha256": "b6c4cf85caafafb98a50131a123431232122a3b1e2c991ff7277fb57dd385a59",
+      "bytes": 20394
+    },
+    {
+      "path": "data/cache/frames/d3299f59fa021c8c845e/manifest.json",
+      "sha256": "3a5f16784235ac29a2edda67a8efd008df91fe4a2d5cf2d7de3d05a47d579709",
+      "bytes": 1857
+    },
+    {
+      "path": "archive/20261015-102535_workspace/ttnet/runs/20261014-095202_global_fixed3_ball/logs/attempt_001/epochs.jsonl",
+      "sha256": "40f3d0d77a790b397489020eba10abdf9b907e4f21264132be915c5a6a3036c0",
+      "bytes": 6662
+    },
+    {
+      "path": "archive/20261015-102535_workspace/ttnet/runs/20261014-095202_global_fixed3_ball/logs/attempt_002/epochs.jsonl",
+      "sha256": "385dfb619bfbfe1ded663c22e693fb848641a337b3e664edbe48958b7ad78177",
+      "bytes": 7867
+    },
+    {
+      "path": "archive/20261015-102535_workspace/ttnet/runs/20261014-103011_local_fixed3_ball/logs/attempt_001/epochs.jsonl",
+      "sha256": "795305360356bfaa428ce8c519d6dc1c45cc02fb1cd027cf8f4559a3098b92ad",
+      "bytes": 17981
+    },
+    {
+      "path": "out/experiments/20261016_table_ar/tcn_frames_lr0.0003_d0.1/attempts/001/epochs.jsonl",
+      "sha256": "681d5f4315fe08c06b35d6039f77ad587af3e1d26a596443b7045f354f0c9b36",
+      "bytes": 6111438
+    },
+    {
+      "path": "out/experiments/20261017-125829_scratch_joint_baseline/train/attempts/001/epochs.jsonl",
+      "sha256": "af17861086fe9f9736a0452a7d67fff9394e1271dc13242dc099ae0db70da786",
+      "bytes": 715130
+    },
+    {
+      "path": "out/experiments/20261017-125829_scratch_joint_baseline/train/attempts/002/epochs.jsonl",
+      "sha256": "1a5c0b42272742402a1b8c096d5a4bf517bb308d7d0d64c9efc93ef7e0204f33",
+      "bytes": 2248933
+    }
+  ]
+}

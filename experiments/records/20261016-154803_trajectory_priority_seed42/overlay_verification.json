@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "scheme": "A",
+      "videos": 40,
+      "frames": 6292,
+      "error_frames": 809,
+      "all_error_video_references_valid": true
+    },
+    {
+      "scheme": "B",
+      "videos": 40,
+      "frames": 6292,
+      "error_frames": 658,
+      "all_error_video_references_valid": true
+    }
+  ],
+  "paired_examples": [
+    {
+      "video_id": "02_001",
+      "frame_id": 8,
+      "tolerance_px": 50,
+      "change": "recovered",
+      "A_overlay": "A/02_001_overlay.mp4",
+      "B_overlay": "B/02_001_overlay.mp4"
+    },
+    {
+      "video_id": "02_001",
+      "frame_id": 49,
+      "tolerance_px": 50,
+      "change": "regressed",
+      "A_overlay": "A/02_001_overlay.mp4",
+      "B_overlay": "B/02_001_overlay.mp4"
+    }
+  ]
+}

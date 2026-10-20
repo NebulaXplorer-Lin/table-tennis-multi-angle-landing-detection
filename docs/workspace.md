@@ -1,99 +1,51 @@
-# 工作区使用说明
+# 工作区说明
 
-当前工程使用共享实现与显式方案配置。先查看 [方案与实验索引](../experiments/index.md)，模型改进路线见 [后续计划](next_steps.md)。
+组员先读 [Quick intro](quick_intro.md)；数据和训练命令集中在[训练指南](training_guide.md)。
 
-## 从哪里修改
+## 日常入口
 
-| 内容 | 入口 |
-|---|---|
-| 三帧 Global / Local 球定位 | `configs/experiments/ball_fixed3.json` |
-| 固定定位器、训练TCN事件头 | `configs/experiments/event_tcn_frozen.json` |
-| 定位器与TCN联合微调 | `configs/experiments/event_tcn_joint.json` |
-| 定位尺寸、三帧模式和裁剪视野 | `configs/components/ball_fixed3.json` |
-| 定位训练超参数 | `configs/components/ball_train.json` |
-| 事件训练超参数与初始化权重 | `configs/components/event_train.json` |
-| 数据位置及固定划分 | `configs/datasets/` |
-| 历史配置与YOLO入口说明 | `configs/legacy/README.md` |
+| 内容 | 位置 |
+| --- | --- |
+| 当前完整模型结果 | [result/README.md](../result/README.md) |
+| 保留实验及指标 | [experiments/index.md](../experiments/index.md) |
+| 三帧球定位方案 | `configs/experiments/ball_fixed3.json` |
+| 当前完整TCN参考 | `configs/experiments/event_tcn_reference.json` |
+| 100GB服务器配置 | `configs/server/ball_compact.json`、`event_reference.json` |
+| 下一步研发与完成条件 | [next_steps.md](next_steps.md) |
 
-实验文件引用组件默认值，再用 `parameters` 覆盖；命令行 `--set` 最后覆盖。嵌套对象合并、列表整体替换，未知键和未实现组件会报错。修改共享组件会影响所有引用它的新实验；单次对照优先修改实验文件或使用 `--set`。
+## 代码与配置
 
-```bash
-# 列举可运行方案
-.venv/bin/python -m ttnet.cli list
+`ttnet/__init__.py`把`ttnet/src/`作为包实现，入口为`python -m ttnet.cli`。定位、轨迹、桌框、事件、数据、评估分别在`models/`、`tracking/`、`scene/`、`events/`、`data_tools/`、`evaluation/`，不按实验复制整套代码。
 
-# 只查看展开后的参数、数据、输出位置和实际命令；不会启动训练或创建实验
-.venv/bin/python -m ttnet.cli train \
-  --config configs/experiments/event_tcn_frozen.json \
-  --set training.lr=0.0001 --set seed=42 --dry-run
+组合配置由`configs/components/`、`configs/datasets/`和`configs/experiments/`组成。参数按组件声明顺序合并，再应用实验`parameters`和命令行`--set`；嵌套对象合并、列表替换，未知键报错。单次实验用`--set`或新方案，不随意修改所有方案共享的默认值。
 
-# Global 或 Local 可以单独运行；all 会依次执行定位训练、评估、导出及测速
-.venv/bin/python -m ttnet.cli train \
-  --config configs/experiments/ball_fixed3.json --stage global --dry-run
-.venv/bin/python -m ttnet.cli train \
-  --config configs/experiments/ball_fixed3.json --stage local \
-  --global-checkpoint ttnet/output/20261014-103011_local_fixed3_ball/weights/global_best.pt --dry-run
-```
+`configs/legacy/`及`ttnet/src/configs/`保留checkpoint兼容与数据固定清单；其中fps_mask9、多尺度、旧joint属于历史接口，不是当前推荐训练路线。研究模型未替换`pingpang/participant/solution.py`的YOLO规则入口。
 
-确认配置后移除 `--dry-run` 才会执行。`--smoke` 用于显式Global/Local阶段或单个事件方案的小样本检查。Transformer 和轨迹关联已接入 `event_comparison_A/B/C/D` 配置；新对照须先提供已复核 PP 连续标注，详见 [运行说明](event_comparison.md)。
+## 数据与存储
 
-## 数据与缓存
+原视频位于`data/pp_train_data`、`data/pp_public_data`和`data/ttnet`。训练数据描述为`data/datasets/pp_ball_v2`、`pp_ball_events_v1`和`openttgames_event25_v3`；确认版连续事件在`data/annotations/pp_bounce_confirmed_v1.json`。
 
-- 原视频与标注保留在 `data/pp_train_data`、`data/pp_public_data` 和 `data/ttnet`。
-- 当前数据描述位于 `data/datasets/pp_ball_v2` 和 `data/datasets/openttgames_event25_v3`；标签、固定划分、真实时间戳和逻辑数据身份沿用历史版本。
-- 每个描述目录的 `frame_store.json` 指向 `data/cache/frames/<storage_id>/`。每视频一个目录，每块最多32帧，NPY形状为 `[N,H,W,3]`、RGB uint8，读取采用只读mmap。
-- `frame_ids.npy` 是真实帧号，`source_frame_ids.npy` 是源视频帧号，`timestamps.npy` 是真实秒数。事件数据是稀疏帧，数组行号不等于视频帧号。
-- 数据描述内原有 `frame_path` / `path` 字段保留为历史来源记录；实际读取统一由 `FrameStore` 根据视频和帧号定位。
-- `data/cache/inputs` 保存按模型输入尺寸生成的数组，增强与归一化在读取后执行；默认不一次生成所有可能的尺寸和裁剪。
-- `data/cache/features` 保存与定位权重、精度、采样及提取实现绑定的浮点视觉特征。历史NPZ是模型描述符，不是重复画面；旧缓存归档，身份变化后不会静默复用。
+FrameStore支持两种后端：本机已有RGB uint8分块NPY，以只读mmap读取；服务器用`video_store --publish`发布源视频索引，按真实PTS seek解码，内存有界。发布会保存原descriptor备份，不应在本机原版本上随意切换。稀疏数据的数组行号不等于视频帧号。
 
-两套当前有效数据的原分辨率画面共52,573帧，数组约233 GiB；PP 位置版与事件合并版共用同一帧库。2026-10-16 已校验并删除归档中的重复 PNG/JPEG、旧缩放输入和重复 PP 压缩包，释放约49.6 GiB，详见 [数据清理记录](data_cleanup.md)。兼容历史数据入口通过 `frame_store.json` 复用这套 NPY。未来重新解码视频应记录新的像素/解码身份。
+本机NPY库共52,573帧、约233GiB，PP位置/事件描述共用画面；它不是组员服务器的迁移前提。100GB服务器使用原视频及描述约33.74GiB，禁用图像磁盘缓存，见[服务器方案](server_100gb_20261018.md)。历史`frame_path`/`path`可能只是来源记录，实际读取通过FrameStore。
+
+`data/cache/features/`存冻结视觉描述符，身份绑定数据、权重、轨迹、精度、读取后端与实现；这些文件不同于原图缓存。身份变化后生成新缓存，不静默复用。
+
+## 记录与结果
+
+- `experiments/records/<id>/`：生效配置、轻量训练/评估记录。部分历史`run.json`早于完整评估，`evaluation_receipt.json`与实际metrics提供完成证据。
+- `experiments/curation.json`：保留结果快照与归档实验编号；刷新索引时读取实际运行评分，并避免把归档实验重新带回。
+- `out/experiments/<id>/`：实际权重、优化器、逐轮日志、完整评估与错误视频。
+- `out/launches/<id>/attempt_*/`：统一入口的stdout/stderr、命令及退出码。
+- `result/`：五套完整版本的交付入口。权重和视频不纳入Git，组内另传。
+- `archive/`：本机旧工作区和本次清理的可恢复副本，不是新机器必须克隆的数据。
 
 ```bash
-# 查询存储结构，或完整校验块文件SHA256
-.venv/bin/python -m ttnet.cli data verify --dataset data/datasets/pp_ball_v2
-.venv/bin/python -m ttnet.cli data verify --dataset data/datasets/pp_ball_v2 --full
-
-# 从数组导出一帧用于检查；frame是视频实际帧号
-.venv/bin/python -m ttnet.cli data preview --dataset data/datasets/pp_ball_v2 \
-  --video 02_001 --frame 8 --output out/preview/02_001_8.png
-
-# 查询迁移清单；migrate支持断点续跑，并校验已完成块
-.venv/bin/python -m ttnet.cli data plan
-```
-
-新机器先按原有 `scripts/prepare_data.py` 准备源视频与标注。旧帧准备工具仍作为历史兼容入口保留；`data migrate` 支持从已有帧库读取，不依赖已清理的旧图片。它不是自动下载或全量解码所有OpenTTGames视频的命令。
-
-## 实验、结果与历史兼容
-
-- `experiments/records/<run_id>`：实际生效的 `config.yaml`（JSON语法）、配置来源、状态及轻量评估记录。
-- 各记录目录的 `history/` 保留原先纳入Git的运行文件原文；迁移对应关系在 `experiments/legacy_record_paths.json`。实际图册请从统一索引或记录的主摘要进入归档报告。
-- `out/experiments/<run_id>`：权重、优化器状态、epoch日志、预测、错误图册和评估文件。
-- `out/launches/<run_id>/attempt_*`：统一入口启动的stdout/stderr及退出状态。
-- `out/results`：定位最终发布包；事件发布包位于其 `events` 子目录。
-- `experiments/index.md`：统一浏览入口；`workspace_comparison.csv` 是该页面的表格数据源。历史 `comparison.csv` 保留，不改写原协议与数值。
-- `archive/<批次>`：历史运行目录、标签、结果快照及整理前源码备份。重复训练图片和旧缩放缓存已清理，兼容数据入口复用现有 NPY；权重和报告仍保留。
-
-```bash
-# 从实验checkpoint评估 / 导出定位模型 / 测速
-.venv/bin/python -m ttnet.cli evaluate --run out/experiments/<run_id> --dry-run
-.venv/bin/python -m ttnet.cli export --run out/experiments/<ball_run_id> --dry-run
-.venv/bin/python -m ttnet.cli benchmark --run out/experiments/<run_id> --dry-run
-
-# 刷新索引只读历史结果，不重训、不推理、不重新发布历史快照
 .venv/bin/python -m ttnet.cli results
-
-# 恢复之前先检查展开结果；恢复不接受--set改变训练方案
-.venv/bin/python -m ttnet.cli train --run ttnet/runs/<paused_run_id> --resume --dry-run
 ```
 
-事件整套网络的ONNX导出目前未实现；定位器ONNX导出保持原有数值对齐检查。历史暂停实验保留原始数据路径、checkpoint和运行编号，实际恢复仍需显式执行。
+该命令刷新`index.md`、`index.json`和`workspace_comparison.csv`，不启动训练。历史`comparison.csv`、完整对照报告仍作为原协议的证据保留。已完成的负结果继续可查，smoke、失败启动、无完整验证的暂停实验不进入日常结果入口。
 
-赛事默认 `pingpang/participant/solution.py` 仍为YOLO与轨迹规则；研究工程尚未替换提交入口。受保护框架和固定赛事运行环境保持原样。
+旧`ttnet/data`、`ttnet/output`等本机软链接为历史兼容；服务器使用`configs/server/`与`weights/reference/`。定位模型支持既有ONNX导出检查，整个事件系统的ONNX导出与赛事部署仍待完成。
 
-## 验收记录
-
-迁移状态及逐像素核对汇总：`out/workspace/frame_migration.json`；模型、checkpoint与读取验证：`out/workspace/validation.json`；归档映射和历史文件校验：`out/workspace/current.json`。
-
-本轮轻量验收记录：[workspace_migration.json](../experiments/workspace_migration.json)。60项测试通过，两套赛事框架完整性校验通过；真实样本CPU FP32对比的最大输出差异为0。
-
-64帧固定随机样本的单进程读帧检查（含遍历全部RGB字节，OS缓存未控制）：PP图片约72.8帧/秒、NPY约234.6帧/秒；事件JPEG约184.5帧/秒、NPY约155.8帧/秒。该结果只描述本次读帧检查，不是训练吞吐或完整模型FPS。
+本次整理的范围、恢复方法与检查见[工作区整理记录](workspace_cleanup_20261020.md)。

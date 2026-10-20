@@ -125,7 +125,7 @@ class FrameStoreTests(unittest.TestCase):
 
 class ConfigurationTests(unittest.TestCase):
     def test_presets_and_overrides_are_explicit(self):
-        for name in ('ball_fixed3','event_tcn_frozen','event_tcn_joint'):
+        for name in ('ball_fixed3','event_tcn_frozen','event_tcn_joint','event_tcn_reference'):
             config,meta=load_config(f'configs/experiments/{name}.json')
             self.assertEqual(meta['name'],name)
             self.assertEqual(config['temporal_mode'],'fixed3')
@@ -134,6 +134,39 @@ class ConfigurationTests(unittest.TestCase):
         self.assertTrue(Path(config['dataset']).is_absolute())
         config,_=load_config('configs/experiments/ball_fixed3.json',['global_train_scales=[[384,216],[512,288]]'])
         self.assertEqual(len(config['global_train_scales']),2)
+
+    def test_result_index_uses_completed_evidence_and_respects_archival(self):
+        from ttnet.workspace import refresh_index
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);runs=root/'out/experiments'
+            for name,smoke in [('complete',False),('archived',False),('smoke',True)]:
+                run=runs/name
+                save(run/'config.yaml',dict(stage='event',scheme='fixture',smoke=smoke))
+                save(run/'run.json',dict(status='trained_pending_eval'))
+                save(run/'evaluations/continuous/metrics.json',dict(status='evaluated',
+                    metrics=dict(macro_f1=.8),e2e_fps=75))
+            # A stale legacy CSV must not bring an archived run back into view.
+            (root/'experiments').mkdir()
+            (root/'experiments/comparison.csv').write_text(
+                'experiment_id,model,task,status\narchived,legacy,event,failed\n')
+            save(root/'experiments/curation.json',dict(archived_experiment_ids=['archived']))
+            with patch('ttnet.workspace.PROJECT',root),patch('ttnet.workspace.ROOT',root/'ttnet'), \
+                 patch('ttnet.workspace.RUNS',runs),patch('ttnet.workspace.OUTPUT',root/'out/results'):
+                refresh_index()
+                rows=json.loads((root/'experiments/index.json').read_text())['experiments']
+                self.assertEqual([r['experiment_id'] for r in rows],['complete'])
+                self.assertEqual(rows[0]['status'],'evaluated')
+                self.assertEqual(rows[0]['f1'],.8)
+                self.assertEqual(rows[0]['metric_scope'],'pp_val_landing_macro_f1')
+                # A retained snapshot remains readable after its runtime is moved.
+                retained=dict(rows[0],experiment_id='retained',scheme='retained_reference')
+                save(root/'experiments/curation.json',dict(archived_experiment_ids=['archived'],
+                    retained_results=[retained]))
+                refresh_index()
+                rows=json.loads((root/'experiments/index.json').read_text())['experiments']
+                self.assertEqual([r['experiment_id'] for r in rows],['retained','complete'])
+            self.assertEqual(json.loads((runs/'complete/run.json').read_text())['status'],
+                             'trained_pending_eval')
 
     def test_unknown_unimplemented_and_mistyped_overrides_fail(self):
         for override in ('lrr=0.1','event_head.type=invalid','tracker.type=invalid','seed=true','window=25'):

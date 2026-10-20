@@ -1,0 +1,20 @@
+{
+  "experiment_id": "20261016_table_ar_transformer_frames_lr0.0001_d0.1",
+  "scheme": "retained_transformer_frames_lr0.0001_d0.1",
+  "stage": "event",
+  "status": "evaluated",
+  "smoke": false,
+  "dataset_id": "e3ebe4a71a0be7fef612f44f67b470785ef6d86176be2c2f4aa3e7111e820626",
+  "split_id": "openttgames_event25_match_v1",
+  "source": "out/experiments/20261016_table_ar/transformer_frames_lr0.0001_d0.1",
+  "summary": "result/transformer_frames_lr0.0001_d0.1/README.md",
+  "best_epoch": 21,
+  "config": "result/transformer_frames_lr0.0001_d0.1/config.yaml",
+  "checkpoint": "result/transformer_frames_lr0.0001_d0.1/best.pt",
+  "eval_id": "continuous",
+  "metric_scope": "pp_val_landing_macro_f1",
+  "f1": 0.7502647540194474,
+  "precision": null,
+  "recall": null,
+  "e2e_fps": 79.83073128902402
+}

@@ -1,0 +1,14 @@
+{
+  "name": "scene_box",
+  "seed": 42,
+  "event_head": "tcn",
+  "tracker": "association",
+  "scene": "box",
+  "cached_f1": 0.7872963502550699,
+  "full_f1": 0.7872963502550699,
+  "e2e_fps": 85.39157780153909,
+  "epoch": 15,
+  "head_parameters": 197858,
+  "checkpoint_sha256": "8edb010c63c7284511e746a70944bf2cde1bc8456d36a53063bb49766cd5a5a1",
+  "run": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/scene_box"
+}

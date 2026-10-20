@@ -1,0 +1,14 @@
+{
+  "name": "baseline_B_seed42",
+  "seed": 42,
+  "event_head": "tcn",
+  "tracker": "association",
+  "scene": "none",
+  "cached_f1": 0.7796296884684769,
+  "full_f1": 0.7796296884684769,
+  "e2e_fps": 79.75247464970155,
+  "epoch": 9,
+  "head_parameters": 175618,
+  "checkpoint_sha256": "2dc238ddbeee38cda9e3db33f5cefedc2f5a2ca61d8bb12a7ba54d10e944b068",
+  "run": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/baseline_B_seed42"
+}

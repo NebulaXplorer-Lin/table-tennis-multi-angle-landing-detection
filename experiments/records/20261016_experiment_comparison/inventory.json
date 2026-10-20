@@ -1,0 +1,274 @@
+[
+  {
+    "experiment_id": "20261013-234947_global_ball",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261013-234947_global_ball",
+    "recorded_status": "completed",
+    "derived_status": "completed",
+    "epochs_completed": 18,
+    "best_epoch": 6,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261013-235000_global_smoke",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261013-235000_global_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261013-235716_pipeline",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261013-235716_pipeline",
+    "recorded_status": "paused_by_user",
+    "derived_status": "paused_by_user",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-001008_local_smoke",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-001008_local_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-001042_local_ball",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-001042_local_ball",
+    "recorded_status": "paused_by_user",
+    "derived_status": "paused_by_user",
+    "epochs_completed": 2,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-094900_global_fixed3_smoke",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-094900_global_fixed3_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-095202_global_fixed3_ball",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-095202_global_fixed3_ball",
+    "recorded_status": "completed",
+    "derived_status": "completed",
+    "epochs_completed": 20,
+    "best_epoch": 20,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-095631_pipeline",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-095631_pipeline",
+    "recorded_status": "interrupted",
+    "derived_status": "interrupted",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-101434_pipeline",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-101434_pipeline",
+    "recorded_status": "completed",
+    "derived_status": "completed",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-102844_local_fixed3_smoke",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-102844_local_fixed3_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-103011_local_fixed3_ball",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-103011_local_fixed3_ball",
+    "recorded_status": "completed",
+    "derived_status": "completed",
+    "epochs_completed": 20,
+    "best_epoch": 13,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-174500_event_smoke_pipeline",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-174500_event_smoke_pipeline",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-181231_event25_frozen",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-181231_event25_frozen",
+    "recorded_status": "completed",
+    "derived_status": "completed",
+    "epochs_completed": null,
+    "best_epoch": 12,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-181231_event25_joint",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-181231_event25_joint",
+    "recorded_status": "paused_by_user",
+    "derived_status": "paused_by_user",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261014-181231_event_train_pipeline",
+    "run": "/home/radno/projects/pingpong/ttnet/runs/20261014-181231_event_train_pipeline",
+    "recorded_status": "paused_by_user",
+    "derived_status": "paused_by_user",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261016-152348_event_comparison_seed42_A",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-152348_event_comparison_seed42_A",
+    "recorded_status": "superseded_during_feature_preparation",
+    "derived_status": "superseded_during_feature_preparation",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261016-152348_event_comparison_seed42_A_smoke",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-152348_event_comparison_seed42_A_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261016-152348_event_comparison_seed42_B_smoke",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-152348_event_comparison_seed42_B_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261016-152348_event_comparison_seed42_C_smoke",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-152348_event_comparison_seed42_C_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261016-152348_event_comparison_seed42_D_smoke",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-152348_event_comparison_seed42_D_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261016-153213_event_comparison_b8_seed42_A",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_A",
+    "recorded_status": "trained_pending_eval",
+    "derived_status": "evaluated",
+    "epochs_completed": 30,
+    "best_epoch": null,
+    "continuous_metrics": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_A/evaluations/continuous/metrics.json"
+  },
+  {
+    "experiment_id": "20261016-153213_event_comparison_b8_seed42_A_smoke",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_A_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261016-153213_event_comparison_b8_seed42_B",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B",
+    "recorded_status": "trained_pending_eval",
+    "derived_status": "evaluated",
+    "epochs_completed": 14,
+    "best_epoch": null,
+    "continuous_metrics": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B/evaluations/continuous/metrics.json"
+  },
+  {
+    "experiment_id": "20261016-153213_event_comparison_b8_seed42_B_smoke",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261016-153213_event_comparison_b8_seed42_C",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_C",
+    "recorded_status": "trained_pending_eval",
+    "derived_status": "evaluated",
+    "epochs_completed": 15,
+    "best_epoch": null,
+    "continuous_metrics": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_C/evaluations/continuous/metrics.json"
+  },
+  {
+    "experiment_id": "20261016-153213_event_comparison_b8_seed42_C_smoke",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_C_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261016-153213_event_comparison_b8_seed42_D",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_D",
+    "recorded_status": "trained_pending_eval",
+    "derived_status": "evaluated",
+    "epochs_completed": 24,
+    "best_epoch": null,
+    "continuous_metrics": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_D/evaluations/continuous/metrics.json"
+  },
+  {
+    "experiment_id": "20261016-153213_event_comparison_b8_seed42_D_smoke",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_D_smoke",
+    "recorded_status": "completed_smoke",
+    "derived_status": "completed_smoke",
+    "epochs_completed": null,
+    "best_epoch": null,
+    "continuous_metrics": null
+  },
+  {
+    "experiment_id": "20261013-163117_yolo11n_ball-640",
+    "recorded_status": "completed",
+    "source": "experiments/comparison.csv"
+  },
+  {
+    "experiment_id": "20261013-212251_baseline_ball-position",
+    "recorded_status": "failed",
+    "source": "experiments/comparison.csv"
+  },
+  {
+    "experiment_id": "20261013-212318_baseline_ball-position",
+    "recorded_status": "completed",
+    "source": "experiments/comparison.csv"
+  },
+  {
+    "experiment_id": "20261013-215749_yolo11n_full1280_public",
+    "recorded_status": "evaluated_training_paused",
+    "source": "experiments/comparison.csv"
+  }
+]

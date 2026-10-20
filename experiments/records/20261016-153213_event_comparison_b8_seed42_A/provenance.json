@@ -1,0 +1,12 @@
+{
+  "legacy": true,
+  "sources": [
+    "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/configs/A.json"
+  ],
+  "config_hash": "ada6c4dd411267e8ea39140902789923ef061d474df4d5ca1fe7bbc7fa0ab75b",
+  "requested_config_hash": "ada6c4dd411267e8ea39140902789923ef061d474df4d5ca1fe7bbc7fa0ab75b",
+  "effective_config_hash": "ada6c4dd411267e8ea39140902789923ef061d474df4d5ca1fe7bbc7fa0ab75b",
+  "source_hashes": {
+    "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/configs/A.json": "62328b1415d1f0dffbd0f2a258d623405d1977fa625278eecacf9e1a565b8c7a"
+  }
+}

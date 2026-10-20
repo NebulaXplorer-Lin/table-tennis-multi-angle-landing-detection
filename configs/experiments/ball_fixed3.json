@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "ball_fixed3",
+  "task": "ball",
+  "components": {
+    "localizer": "../components/ball_fixed3.json",
+    "tracker": "../components/independent.json",
+    "training": "../components/ball_train.json"
+  },
+  "dataset": "../datasets/pp_ball_v2.json",
+  "parameters": {}
+}

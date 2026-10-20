@@ -1,0 +1,30 @@
+{
+  "frames": 6292,
+  "max_prediction_component_difference": 300.1531561228641,
+  "validity_changes": 0,
+  "old_summary_device": "cpu",
+  "status": "cross_backend_comparison_not_exact_alignment",
+  "note": "Historical full audit CPU FP32 versus current CUDA AMP. Exact equality is only required within the same backend/precision; A/B in this study both use CUDA AMP.",
+  "accepted_moved_over_1px": [
+    {
+      "video_id": "21_007",
+      "frame_id": 1,
+      "difference_px": 178.8343413681649
+    },
+    {
+      "video_id": "04_005",
+      "frame_id": 9,
+      "difference_px": 338.04172427024054
+    },
+    {
+      "video_id": "04_005",
+      "frame_id": 23,
+      "difference_px": 54.573793323713375
+    },
+    {
+      "video_id": "02_005",
+      "frame_id": 210,
+      "difference_px": 225.69071040304925
+    }
+  ]
+}

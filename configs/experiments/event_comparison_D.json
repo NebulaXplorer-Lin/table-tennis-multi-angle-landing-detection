@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "name": "event_comparison_D",
+  "task": "event",
+  "components": {
+    "localizer": "../components/ball_fixed3.json",
+    "tracker": "../components/association.json",
+    "event_head": "../components/transformer.json",
+    "training": "../components/event_comparison_train.json"
+  },
+  "dataset": "../datasets/openttgames_event25_v3.json",
+  "parameters": {
+    "mode": "frozen"
+  },
+  "description": "Frozen fixed3 localization; 13-frame events; reviewed PP validation selects landing macro F1."
+}

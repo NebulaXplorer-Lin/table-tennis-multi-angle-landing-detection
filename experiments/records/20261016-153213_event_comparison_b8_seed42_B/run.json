@@ -1,0 +1,25 @@
+{
+  "status": "preparing",
+  "source": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B",
+  "started": "2026-10-16T16:58:46.688177+09:00",
+  "commands": [
+    [
+      "/home/radno/projects/pingpong/.venv/bin/python",
+      "-u",
+      "-m",
+      "ttnet.events.train",
+      "--mode",
+      "frozen",
+      "--run",
+      "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B",
+      "--dataset",
+      "/home/radno/projects/pingpong/data/datasets/openttgames_event25_v3",
+      "--config",
+      "/home/radno/projects/pingpong/experiments/records/20261016-153213_event_comparison_b8_seed42_B/config.yaml",
+      "--device",
+      "cuda"
+    ]
+  ],
+  "resumed_by": "out/experiments/20261016-154803_trajectory_priority_seed42",
+  "resume_record": "experiments/records/20261016-154803_trajectory_priority_seed42/resume.json"
+}

@@ -1,0 +1,13 @@
+{
+  "status": "completed_merge_only",
+  "task": "coarse_event_annotation_merge",
+  "finished": "2026-10-16T15:00:30.316192+08:00",
+  "dataset": "/home/radno/projects/pingpong/data/datasets/pp_ball_events_v1",
+  "dataset_id": "c96cb96db39b940b2b41f3e990e723a421b30ecdd24e262a1626a4e15f1af2d6",
+  "base_dataset_id": "f2552a61b4598b68b115854a6ec1995f61c1283eab673c7c376d47c2e2cf2c65",
+  "code_sha256": "b769edc794ba266ea00576a206292db1dfabf700180e9c4c9d5a066bc1850530",
+  "source_identity": "9ea9f6f61aeb527bab33113b02242833c85e3f3703a8f8117cacfb96ba4ae72f",
+  "command": ".venv/bin/python -m ttnet.data_tools.merge_pp_events",
+  "training_started": false,
+  "policy": "explicit tags only; no inferred negatives; Net masked; no inferred contact coordinates"
+}

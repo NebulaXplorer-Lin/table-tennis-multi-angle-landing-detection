@@ -47,10 +47,11 @@ def main():
                      neg_correct=0, neg_false_ball=0)
             n = len(x)
             for t in range(n):
-                if not bool(target[t].any()):
-                    continue  # unknown label, not supervised
                 logp, emb = model.distribution(x[t:t+1], mask[t:t+1], h)
                 chosen = int(logp.argmax(-1).item())
+                h = model.advance(emb, h, torch.tensor([chosen], device=device))
+                if not bool(target[t].any()):
+                    continue  # Unknown labels mask metrics, never recurrent state updates.
                 is_positive = bool(target[t, :-1].any())
                 agg['supervised'] += 1
                 v['supervised'] += 1
@@ -75,7 +76,6 @@ def main():
                     else:
                         agg['neg_false_ball'] += 1
                         v['neg_false_ball'] += 1
-                h = model.advance(emb, h, torch.tensor([chosen], device=device))
             per_video.append(v)
 
     def rates(d, num, den):
@@ -91,6 +91,9 @@ def main():
         negative=agg['negative'],
         neg_accuracy=rates(agg['neg_correct'], 0, agg['negative']),
         neg_false_ball=rates(agg['neg_false_ball'], 0, agg['negative']),
+        null_precision=agg['neg_correct']/max(1,agg['neg_correct']+agg['pos_null']),
+        null_recall=agg['neg_correct']/max(1,agg['negative']),
+        null_f1=2*agg['neg_correct']/max(1,2*agg['neg_correct']+agg['pos_null']+agg['neg_false_ball']),
         per_video=per_video,
     )
     a.output.parent.mkdir(parents=True, exist_ok=True)

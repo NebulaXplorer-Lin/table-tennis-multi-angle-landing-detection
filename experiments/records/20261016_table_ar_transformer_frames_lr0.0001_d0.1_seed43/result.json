@@ -1,0 +1,14 @@
+{
+  "name": "transformer_frames_lr0.0001_d0.1_seed43",
+  "seed": 43,
+  "event_head": "transformer",
+  "tracker": "association",
+  "scene": "box",
+  "cached_f1": 0.7394662739931283,
+  "full_f1": 0.7394662739931283,
+  "e2e_fps": 82.42396406243518,
+  "epoch": 24,
+  "head_parameters": 314210,
+  "checkpoint_sha256": "9ae5b1ab997856fdfcee5046199daebf36b9dd2508c3833e3f0d928f60bc02d2",
+  "run": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/transformer_frames_lr0.0001_d0.1_seed43"
+}

@@ -1,0 +1,20 @@
+{
+  "experiment_id": "20261017-112200_tcn_fast_refine",
+  "scheme": "retained_20261017-112200_tcn_fast_refine",
+  "stage": "event",
+  "status": "evaluated",
+  "smoke": false,
+  "dataset_id": "e3ebe4a71a0be7fef612f44f67b470785ef6d86176be2c2f4aa3e7111e820626",
+  "split_id": "openttgames_event25_match_v1",
+  "source": "out/experiments/20261017-112200_tcn_fast_refine/tcn_smoothed",
+  "summary": "result/20261017-112200_tcn_fast_refine/README.md",
+  "best_epoch": 23,
+  "config": "result/20261017-112200_tcn_fast_refine/config.yaml",
+  "checkpoint": "result/20261017-112200_tcn_fast_refine/best.pt",
+  "eval_id": "continuous",
+  "metric_scope": "pp_val_landing_macro_f1",
+  "f1": 0.7969008116066939,
+  "precision": null,
+  "recall": null,
+  "e2e_fps": 86.8840107318258
+}

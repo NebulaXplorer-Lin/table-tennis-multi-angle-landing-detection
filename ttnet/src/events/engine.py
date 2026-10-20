@@ -23,7 +23,10 @@ class EventSystem(nn.Module):
     def __init__(self, config, device, initialize=True):
         super().__init__()
         self.config=config
-        if initialize:
+        random_init=config.get('initialization','pretrained')=='random'
+        if random_init and any(config.get(k) for k in ('global_checkpoint','local_checkpoint','table_checkpoint','ar_checkpoint')):
+            raise ValueError('random initialization must not specify pretrained checkpoints')
+        if initialize and not random_init:
             self.global_model,ginfo=load_model(Path(config['global_checkpoint']),device)
             self.local_model,linfo=load_model(Path(config['local_checkpoint']),device)
             if linfo['global_checkpoint_sha256']!=sha(config['global_checkpoint']):
@@ -37,14 +40,14 @@ class EventSystem(nn.Module):
             self.local_model=build_localizer(dict(config,temporal_mode='fixed3')).to(device)
         head_rng=torch.get_rng_state()
         self.table_head=None
-        if config.get('table_checkpoint'):
+        if config.get('table_checkpoint') or config.get('table_head',False):
             from ttnet.scene.table import TableHead
             self.table_head=TableHead().to(device)
-            if initialize:
+            if initialize and not random_init:
                 table_state=torch.load(config['table_checkpoint'],map_location=device,weights_only=False)
                 if table_state['config']['global_sha256']!=sha(config['global_checkpoint']):raise ValueError('table/global dependency mismatch')
                 self.table_head.load_state_dict(table_state['head'])
-            self.table_head.requires_grad_(False).eval()
+            self.table_head.requires_grad_(config.get('train_table_head',False)).eval()
         self.ar_model=None
         if config.get('tracker_type')=='autoregressive':
             from ttnet.tracking.autoregressive import CandidateGRU
@@ -53,7 +56,7 @@ class EventSystem(nn.Module):
                 ar_state=torch.load(config['ar_checkpoint'],map_location=device,weights_only=False)
                 self.ar_model.load_state_dict(ar_state['model'])
             self.ar_model.requires_grad_(False).eval()
-        torch.set_rng_state(head_rng)
+        if not random_init:torch.set_rng_state(head_rng)
         self.head=build_event_head(config).to(device)
         self.criterion=LocalizationLoss()
         self.mode='frozen'
@@ -74,7 +77,9 @@ class EventSystem(nn.Module):
         if mode not in ('frozen','joint'):raise ValueError(mode)
         self.mode=mode
         self.train(training)
-        if self.table_head is not None:self.table_head.eval()
+        if self.table_head is not None:
+            train_table=mode=='joint' and self.config.get('train_table_head',False)
+            self.table_head.requires_grad_(train_table).train(training and train_table)
         if self.ar_model is not None:self.ar_model.eval()
         for model in (self.global_model,self.local_model):
             model.requires_grad_(mode=='joint')
@@ -170,7 +175,7 @@ class EventSystem(nn.Module):
 
 
 def cache_identity(system,corpus):
-    return dict(schema=3,dataset_id=corpus.identity,
+    result=dict(schema=3,dataset_id=corpus.identity,
                 table=dict(checkpoint_sha256=sha(system.config['table_checkpoint']) if system.config.get('table_checkpoint') else None,source=system.config.get('table_source','predicted'),code=sha(SRC/'scene/table.py')),
                 autoregressive=dict(checkpoint_sha256=sha(system.config['ar_checkpoint']) if system.config.get('ar_checkpoint') else None,beam_size=system.config.get('ar_beam_size',8),use_table=system.config.get('ar_use_table',True)),
                 tracker=dict(type=system.config.get('tracker_type','independent'),
@@ -182,6 +187,10 @@ def cache_identity(system,corpus):
                     'training/dataset.py','data_tools/geometry.py','data_tools/frame_store.py','events/context.py','events/batched_features.py')},
                 extraction_batch=system.config.get('feature_batch',16),
                 sampling=dict(target_fps=system.config.get('target_fps',25),temporal_mode='fixed3',association_context='stream_source_with_existing_npy_precedence'))
+    backends={name:store.backend_identity() for name in ('frame_store','pp_frame_store')
+              if (store:=getattr(corpus,name,None)) is not None and getattr(store,'is_video',False)}
+    if backends:result['pixel_backends']=backends
+    return result
 
 
 def feature_cache_path(system,corpus):

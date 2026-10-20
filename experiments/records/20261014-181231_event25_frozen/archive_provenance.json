@@ -1,0 +1,7 @@
+{
+  "batch": "20261015-102535_workspace",
+  "source": "ttnet/runs/20261014-181231_event25_frozen",
+  "evidence": [
+    "ttnet/runs/20261014-181231_event25_frozen/evaluations/best/metrics.json"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "status": "gate_failed",
+  "finished": "2026-10-17T11:30:49.981225+09:00",
+  "epochs_completed": 20,
+  "best_selection": -0.22429906542056074,
+  "checkpoint_sha256": "9a7495ee4532f13569015d9fcb94e7be3d855472501c898e84a22660da9d07b8",
+  "selected_validation": {
+    "loss": 0.4433660530313949,
+    "weighted_loss": 0.4433660530313949,
+    "candidate_accuracy": 0.8594869860430027,
+    "supervised_frames": 5302,
+    "positive": 5005,
+    "positive_correct": 4509,
+    "positive_accuracy": 0.9008991008991009,
+    "null_targets": 297,
+    "null_tp": 48,
+    "null_fp": 83,
+    "null_fn": 249,
+    "null_precision": 0.366412213740458,
+    "null_recall": 0.16161616161616163,
+    "null_f1": 0.22429906542056074,
+    "augmented_null_frames": 0
+  },
+  "end_to_end_gate_passed": false,
+  "reason": "null recall below predeclared 20% gate; trajectory cache and event-head retraining not scheduled"
+}

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "dataset_id": "c96cb96db39b940b2b41f3e990e723a421b30ecdd24e262a1626a4e15f1af2d6",
+  "videos": 154,
+  "frames": 23690,
+  "ball_labels_unchanged": true,
+  "split_bytes_unchanged": true,
+  "temporal_windows_unchanged": true,
+  "frame_store_reused": true,
+  "supervised_frames": {
+    "bounce": 966,
+    "net": 0
+  }
+}

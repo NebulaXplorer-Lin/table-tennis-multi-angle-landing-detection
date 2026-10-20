@@ -1,0 +1,499 @@
+{
+  "status": "merged_coarse_annotations",
+  "dataset_id": "c96cb96db39b940b2b41f3e990e723a421b30ecdd24e262a1626a4e15f1af2d6",
+  "base_dataset_id": "f2552a61b4598b68b115854a6ec1995f61c1283eab673c7c376d47c2e2cf2c65",
+  "original_split_preserved": true,
+  "split_hashes": {
+    "train": "2a09b6f47b95ff93ed1b6bd4ced3fab8c02f71601b1f66ba83e375ccb4c16b23",
+    "val": "badc1fc0c1f8f002683e3108443137b0210077e84ac1608ea60985540330749f"
+  },
+  "source_files": 302,
+  "export_videos": 154,
+  "total_videos": 154,
+  "frames": 23690,
+  "per_split": {
+    "train": {
+      "frames": 17398,
+      "event_counts": {
+        "bounce_unknown": 16594,
+        "net_unknown": 17327,
+        "bounce_supervised": 763,
+        "net_supervised": 0,
+        "bounce_positive": 613,
+        "tagged_frames": 834,
+        "net_positive": 30,
+        "bounce_negative": 150,
+        "bounce_ignore": 41,
+        "net_ignore": 41
+      },
+      "raw_label_counts": {
+        "table_contact": 253,
+        "touch_table": 14,
+        "table": 16,
+        "net": 3,
+        "net_contact": 11,
+        "racket_hit": 139,
+        "table_bounce": 330,
+        "ignore": 41,
+        "net hit": 16,
+        "floor_bounce": 12
+      },
+      "videos": 114,
+      "with_tags": 114
+    },
+    "val": {
+      "frames": 6292,
+      "event_counts": {
+        "bounce_unknown": 6087,
+        "net_unknown": 6280,
+        "bounce_supervised": 203,
+        "net_supervised": 0,
+        "bounce_positive": 203,
+        "tagged_frames": 215,
+        "net_positive": 10,
+        "bounce_ignore": 2,
+        "net_ignore": 2
+      },
+      "raw_label_counts": {
+        "table_contact": 131,
+        "net_contact": 10,
+        "table_bounce": 72,
+        "ignore": 2
+      },
+      "videos": 40,
+      "with_tags": 39
+    }
+  },
+  "warnings": [
+    {
+      "video_id": "02_004",
+      "warning": "empty_event_export_all_frames_unknown"
+    },
+    {
+      "video_id": "02_004",
+      "warning": "export_has_no_image_entries"
+    },
+    {
+      "video_id": "22_002",
+      "warning": "duplicate_same_frame_label_deduplicated"
+    }
+  ],
+  "per_frame_issues": [
+    {
+      "video_id": "01_005",
+      "frame_id": 74,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "01_006",
+      "frame_id": 54,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "01_007",
+      "frame_id": 157,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "06_002",
+      "frame_id": 58,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "06_003",
+      "frame_id": 49,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "06_004",
+      "frame_id": 69,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "06_007",
+      "frame_id": 13,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "07_007",
+      "frame_id": 151,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "08_002",
+      "frame_id": 116,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "08_005",
+      "frame_id": 31,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "11_001",
+      "frame_id": 132,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "11_004",
+      "frame_id": 70,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "11_005",
+      "frame_id": 68,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "11_005",
+      "frame_id": 123,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "13_001",
+      "frame_id": 119,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "13_006",
+      "frame_id": 54,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "14_001",
+      "frame_id": 109,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "14_002",
+      "frame_id": 114,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "14_003",
+      "frame_id": 71,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "14_005",
+      "frame_id": 95,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "14_007",
+      "frame_id": 109,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "15_001",
+      "frame_id": 224,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "15_004",
+      "frame_id": 31,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "15_005",
+      "frame_id": 57,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "16_003",
+      "frame_id": 104,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "18_002",
+      "frame_id": 267,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "18_006",
+      "frame_id": 204,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "18_007",
+      "frame_id": 408,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "19_001",
+      "frame_id": 72,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "19_003",
+      "frame_id": 37,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "24_006",
+      "frame_id": 37,
+      "issues": [
+        "ignore_overrides_other_tags"
+      ],
+      "kinds": [
+        "ignore",
+        "racket_hit"
+      ]
+    },
+    {
+      "video_id": "02_006",
+      "frame_id": 43,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "03_001",
+      "frame_id": 41,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "03_002",
+      "frame_id": 50,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "03_003",
+      "frame_id": 45,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "03_004",
+      "frame_id": 34,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "03_005",
+      "frame_id": 55,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "03_007",
+      "frame_id": 95,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "04_001",
+      "frame_id": 49,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "04_002",
+      "frame_id": 124,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    },
+    {
+      "video_id": "04_005",
+      "frame_id": 139,
+      "issues": [
+        "net_pending_review"
+      ],
+      "kinds": [
+        "net"
+      ]
+    }
+  ],
+  "duplicate_representations": 147,
+  "ready_for_continuous_selection": false,
+  "contact_coordinates_annotated": false,
+  "net_supervision_enabled": false,
+  "interpretation": "Sparse coarse event evidence only. Unmarked frames remain unknown. Needs exhaustive review before continuous FP/threshold/checkpoint selection."
+}

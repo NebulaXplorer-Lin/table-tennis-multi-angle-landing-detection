@@ -1,0 +1,12 @@
+{
+  "tests_run": 86,
+  "skipped": 1,
+  "status": "passed",
+  "log": "out/experiments/20261016-154803_trajectory_priority_seed42/tests.log",
+  "new_checks": [
+    "GT-relative wrong jumps",
+    "complete miss run lengths",
+    "prediction state never counts as observation",
+    "unknown/video/gap boundaries"
+  ]
+}

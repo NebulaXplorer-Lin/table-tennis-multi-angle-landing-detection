@@ -11,8 +11,8 @@ from ttnet.evaluation.metrics import accept, decode_heatmap
 
 
 def associated_frames(system, corpus, vid, ids):
-    if system.mode != 'frozen':
-        raise ValueError('association is supported only with frozen locators')
+    if system.mode != 'frozen' and system.training:
+        raise ValueError('joint association training uses events.joint.joint_forward')
     cfg = system.config
     if system._tracking_video != vid:
         system.reset_tracking(vid)

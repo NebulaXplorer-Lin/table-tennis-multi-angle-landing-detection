@@ -1,0 +1,78 @@
+{
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "precision": "AMP",
+  "video": "22_001",
+  "frames": 128,
+  "feature": [
+    {
+      "batch": 1,
+      "fps": 79.6739153796029,
+      "elapsed_sec": 1.6065483839993249,
+      "peak_cuda_bytes": 43685888,
+      "descriptor_max_abs_difference": 0.0,
+      "geometry_changes_over_1px": 0
+    },
+    {
+      "batch": 8,
+      "fps": 133.79750055615858,
+      "elapsed_sec": 0.9566695899993647,
+      "peak_cuda_bytes": 300219392,
+      "descriptor_max_abs_difference": 0.00010311603546142578,
+      "geometry_changes_over_1px": 0
+    },
+    {
+      "batch": 16,
+      "fps": 133.09009593298407,
+      "elapsed_sec": 0.9617545100009011,
+      "peak_cuda_bytes": 596696064,
+      "descriptor_max_abs_difference": 0.00010287761688232422,
+      "geometry_changes_over_1px": 0
+    },
+    {
+      "batch": 32,
+      "fps": 132.29047908108757,
+      "elapsed_sec": 0.9675677409977652,
+      "peak_cuda_bytes": 1185979392,
+      "descriptor_max_abs_difference": 0.00010287761688232422,
+      "geometry_changes_over_1px": 0
+    },
+    {
+      "batch": 64,
+      "fps": 126.58815383881384,
+      "elapsed_sec": 1.011153067000123,
+      "peak_cuda_bytes": 2364548096,
+      "descriptor_max_abs_difference": 0.00010263919830322266,
+      "geometry_changes_over_1px": 0
+    }
+  ],
+  "event": [
+    {
+      "micro_batch": 1,
+      "effective_batch": 8,
+      "optimizer_group_ms": 12.210229824995622,
+      "peak_cuda_bytes": 24685056
+    },
+    {
+      "micro_batch": 2,
+      "effective_batch": 8,
+      "optimizer_group_ms": 5.255409700021119,
+      "peak_cuda_bytes": 24799232
+    },
+    {
+      "micro_batch": 4,
+      "effective_batch": 8,
+      "optimizer_group_ms": 2.6799676749760692,
+      "peak_cuda_bytes": 25027584
+    },
+    {
+      "micro_batch": 8,
+      "effective_batch": 8,
+      "optimizer_group_ms": 1.547681099964393,
+      "peak_cuda_bytes": 24782336
+    }
+  ],
+  "selected_feature_batch": 8,
+  "selected_micro_batch": 8,
+  "selected_validation_batch": 128,
+  "note": "Feature extraction throughput, not full video FPS. Event measurement is forward/backward per effective batch8, without optimizer steps. AMP batch-size numerical differences are reported."
+}

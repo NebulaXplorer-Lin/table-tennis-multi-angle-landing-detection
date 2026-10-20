@@ -1,0 +1,134 @@
+[
+  {
+    "name": "baseline_tcn",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/tcn_frames_lr0.0003_d0.1",
+    "eval_id": "continuous",
+    "metrics": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/tcn_frames_lr0.0003_d0.1/evaluations/continuous/metrics.json",
+    "checkpoint": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/tcn_frames_lr0.0003_d0.1/checkpoints/best.pt",
+    "checkpoint_sha256": "2ea4168bb7e7a499fb80fbd62a4cd8c83868acc7dcaa8e90329e648f02df328c",
+    "seed": 42,
+    "epoch": 23,
+    "macro_f1": 0.7956432971912849,
+    "tp": 144,
+    "fp": 34,
+    "fn": 45,
+    "threshold": 0.4,
+    "e2e_fps": 77.52790415010672,
+    "by_view": {
+      "side": {
+        "tp": 82,
+        "fp": 22,
+        "fn": 23,
+        "precision": 0.7884615384615384,
+        "recall": 0.780952380952381,
+        "f1": 0.7846889952153111
+      },
+      "diagonal": {
+        "tp": 38,
+        "fp": 12,
+        "fn": 14,
+        "precision": 0.76,
+        "recall": 0.7307692307692307,
+        "f1": 0.7450980392156863
+      },
+      "front": {
+        "tp": 24,
+        "fp": 0,
+        "fn": 8,
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.8571428571428571
+      }
+    },
+    "protocol_id": "39dbfc6ee7ad8d04a9a1dba8daf4bc3f823d4410c63c37a2de6b43ca03b7577d",
+    "status": "evaluated"
+  },
+  {
+    "name": "tcn_sampled",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_sampled",
+    "eval_id": "continuous",
+    "metrics": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_sampled/evaluations/continuous/metrics.json",
+    "checkpoint": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_sampled/checkpoints/best.pt",
+    "checkpoint_sha256": "8365fbb355fd9242faa7073fb811c2b39d8251e9c05e7beb8352a90325268153",
+    "seed": 42,
+    "epoch": 7,
+    "macro_f1": 0.7417276344500064,
+    "tp": 137,
+    "fp": 46,
+    "fn": 52,
+    "threshold": 0.5,
+    "e2e_fps": 86.45566887021492,
+    "by_view": {
+      "side": {
+        "tp": 74,
+        "fp": 17,
+        "fn": 31,
+        "precision": 0.8131868131868132,
+        "recall": 0.7047619047619048,
+        "f1": 0.7551020408163266
+      },
+      "diagonal": {
+        "tp": 34,
+        "fp": 20,
+        "fn": 18,
+        "precision": 0.6296296296296297,
+        "recall": 0.6538461538461539,
+        "f1": 0.6415094339622641
+      },
+      "front": {
+        "tp": 29,
+        "fp": 9,
+        "fn": 3,
+        "precision": 0.7631578947368421,
+        "recall": 0.90625,
+        "f1": 0.8285714285714286
+      }
+    },
+    "protocol_id": "39dbfc6ee7ad8d04a9a1dba8daf4bc3f823d4410c63c37a2de6b43ca03b7577d",
+    "status": "evaluated"
+  },
+  {
+    "name": "tcn_smoothed",
+    "run": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_smoothed",
+    "eval_id": "continuous",
+    "metrics": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_smoothed/evaluations/continuous/metrics.json",
+    "checkpoint": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_smoothed/checkpoints/best.pt",
+    "checkpoint_sha256": "e8c4a323f93d9e05514c4e0d2ed33232e8f087e37eeea413700ced892a644c7b",
+    "seed": 42,
+    "epoch": 23,
+    "macro_f1": 0.7969008116066939,
+    "tp": 144,
+    "fp": 33,
+    "fn": 45,
+    "threshold": 0.4,
+    "e2e_fps": 86.8840107318258,
+    "by_view": {
+      "side": {
+        "tp": 82,
+        "fp": 21,
+        "fn": 23,
+        "precision": 0.7961165048543689,
+        "recall": 0.780952380952381,
+        "f1": 0.7884615384615384
+      },
+      "diagonal": {
+        "tp": 38,
+        "fp": 12,
+        "fn": 14,
+        "precision": 0.76,
+        "recall": 0.7307692307692307,
+        "f1": 0.7450980392156863
+      },
+      "front": {
+        "tp": 24,
+        "fp": 0,
+        "fn": 8,
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.8571428571428571
+      }
+    },
+    "protocol_id": "39dbfc6ee7ad8d04a9a1dba8daf4bc3f823d4410c63c37a2de6b43ca03b7577d",
+    "status": "evaluated"
+  }
+]

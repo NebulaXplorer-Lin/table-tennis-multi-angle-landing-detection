@@ -1,0 +1,20 @@
+{
+  "experiment_id": "20261016_table_ar_baseline_B_seed42",
+  "scheme": "retained_baseline_B",
+  "stage": "event",
+  "status": "evaluated",
+  "smoke": false,
+  "dataset_id": "e3ebe4a71a0be7fef612f44f67b470785ef6d86176be2c2f4aa3e7111e820626",
+  "split_id": "openttgames_event25_match_v1",
+  "source": "out/experiments/20261016_table_ar/baseline_B_seed42",
+  "summary": "result/baseline_B/README.md",
+  "best_epoch": 9,
+  "config": "result/baseline_B/config.yaml",
+  "checkpoint": "result/baseline_B/best.pt",
+  "eval_id": "continuous",
+  "metric_scope": "pp_val_landing_macro_f1",
+  "f1": 0.7796296884684769,
+  "precision": null,
+  "recall": null,
+  "e2e_fps": 79.75247464970155
+}

@@ -1,0 +1,10 @@
+{
+  "status": "completed",
+  "finished": "2026-10-17T11:37:10.359897+09:00",
+  "elapsed_seconds": 1090.3599019050598,
+  "winner": "tcn_smoothed",
+  "notes": [
+    "AR stopped at fixed-cache gate; no trajectory cache or event-head training."
+  ],
+  "summary": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/summary.md"
+}

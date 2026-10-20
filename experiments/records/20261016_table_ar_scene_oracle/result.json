@@ -1,0 +1,14 @@
+{
+  "name": "scene_oracle",
+  "seed": 42,
+  "event_head": "tcn",
+  "tracker": "association",
+  "scene": "relative",
+  "cached_f1": 0.7903914451859658,
+  "full_f1": 0.7903914451859658,
+  "e2e_fps": 61.381965934113225,
+  "epoch": 9,
+  "head_parameters": 197858,
+  "checkpoint_sha256": "e8c73e90067681c1424c1a05fe20f97097854a9e19f4457e6d574e765ab7938c",
+  "run": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/scene_oracle"
+}

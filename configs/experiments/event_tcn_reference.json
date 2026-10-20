@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "name": "event_tcn_reference",
+  "task": "event",
+  "components": {
+    "localizer": "../components/ball_fixed3.json",
+    "tracker": "../components/association.json",
+    "event_head": "../components/tcn.json",
+    "training": "../components/event_comparison_train.json"
+  },
+  "dataset": "../datasets/openttgames_event25_v3.json",
+  "parameters": {
+    "mode": "frozen",
+    "table_checkpoint": "out/experiments/20261016_table_ar/table/best.pt",
+    "context_head": true,
+    "scene_mode": "box",
+    "table_source": "predicted",
+    "head_dropout": 0.1,
+    "time_encoding": true,
+    "event_window_mode": "frames"
+  },
+  "description": "Current three-seed reference: frozen fixed3 locators, rule association, legacy table-box geometry, time encoding and 13-frame TCN. No EMA or independent table encoder."
+}

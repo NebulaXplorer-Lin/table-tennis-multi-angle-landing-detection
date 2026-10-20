@@ -1,0 +1,9 @@
+{
+  "status": "completed",
+  "stage": "event",
+  "mode": "frozen",
+  "best_epoch": 12,
+  "checkpoint_sha256": "83d68d235bd423e807a5c1b9bf230f568158742147b4f9199df515c67ecc8bd4",
+  "eval_id": "best",
+  "finished": "2026-10-14T19:44:32.813814+09:00"
+}

@@ -1,0 +1,11 @@
+{
+  "finished": "2026-10-17T11:38:52.295828+09:00",
+  "report": "/home/radno/projects/pingpong/result/20261017-112200_tcn_fast_refine/README.md",
+  "config": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/config.yaml",
+  "checkpoint": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/selected/checkpoints/best.pt",
+  "checkpoint_sha256": "e8c4a323f93d9e05514c4e0d2ed33232e8f087e37eeea413700ced892a644c7b",
+  "errors": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_smoothed/evaluations/continuous/index.html",
+  "tests_passed": 31,
+  "status": "completed",
+  "git_commit_created": false
+}

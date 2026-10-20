@@ -1,0 +1,14 @@
+{
+  "name": "scene_none",
+  "seed": 42,
+  "event_head": "tcn",
+  "tracker": "association",
+  "scene": "none",
+  "cached_f1": 0.7797197440218736,
+  "full_f1": 0.7797197440218736,
+  "e2e_fps": 86.69488790067268,
+  "epoch": 11,
+  "head_parameters": 192386,
+  "checkpoint_sha256": "814ea8c1c3d6352a70e1f40a7102f961583564486dea43023d5efc86fcab19d7",
+  "run": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/scene_none"
+}

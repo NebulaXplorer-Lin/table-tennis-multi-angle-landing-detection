@@ -1,0 +1,115 @@
+{
+  "pp_ball_dataset_id": "f2552a61b4598b68b115854a6ec1995f61c1283eab673c7c376d47c2e2cf2c65",
+  "historical_pp_ball_v1_dataset_id": "4cd159537792c3b54edf7c3fea4768c2cfd7cc4b74ab46bdeef174ee060fb244",
+  "pp_split_hashes": {
+    "train": "2a09b6f47b95ff93ed1b6bd4ced3fab8c02f71601b1f66ba83e375ccb4c16b23",
+    "val": "badc1fc0c1f8f002683e3108443137b0210077e84ac1608ea60985540330749f"
+  },
+  "pp_ball_label_counts": {
+    "train": {
+      "positive": 15544,
+      "unknown": 1854
+    },
+    "val": {
+      "positive": 5302,
+      "unknown": 990
+    }
+  },
+  "pp_events": {
+    "train": {
+      "videos": 114,
+      "bounces": 613,
+      "spatial": 600,
+      "views": {
+        "front": 81,
+        "side": 15,
+        "diagonal": 18
+      }
+    },
+    "val": {
+      "videos": 40,
+      "bounces": 203,
+      "spatial": 189,
+      "views": {
+        "side": 18,
+        "diagonal": 14,
+        "front": 8
+      }
+    }
+  },
+  "pp_event_annotation_id": "f6fad6f8ae7b9cabb26ecf614b9b36d6d7e12480874f3cff9cdab8ba59990ad1",
+  "combined_training_dataset_id": "e3ebe4a71a0be7fef612f44f67b470785ef6d86176be2c2f4aa3e7111e820626",
+  "openttgames_dataset_id": "470164adc9e57e3820a4fc7ce574f2baa4a42f2c30fb61ea6719aa9265ed976a",
+  "openttgames_split": {
+    "split_id": "openttgames_event25_match_v1",
+    "train": [
+      "game_1",
+      "game_2",
+      "game_3",
+      "game_4"
+    ],
+    "val": [
+      "game_5"
+    ],
+    "test": [
+      "test_1",
+      "test_2",
+      "test_3",
+      "test_4",
+      "test_5",
+      "test_6",
+      "test_7"
+    ],
+    "policy": "Entire matches are disjoint. Test is never used for selection. Missing annotations are unknown."
+  },
+  "openttgames_counts": {
+    "train": {
+      "videos": [
+        "game_1",
+        "game_2",
+        "game_3",
+        "game_4"
+      ],
+      "expanded_windows": 12452,
+      "anchors": {
+        "bounce": 1289,
+        "net": 986,
+        "empty_event": 1077
+      }
+    },
+    "val": {
+      "videos": [
+        "game_5"
+      ],
+      "expanded_windows": 2178,
+      "anchors": {
+        "bounce": 248,
+        "net": 184,
+        "empty_event": 18
+      }
+    },
+    "test": {
+      "videos": [
+        "test_1",
+        "test_2",
+        "test_3",
+        "test_4",
+        "test_5",
+        "test_6",
+        "test_7"
+      ],
+      "expanded_windows": 2144,
+      "anchors": {
+        "bounce": 240,
+        "net": 180,
+        "empty_event": 44
+      }
+    }
+  },
+  "public": {
+    "videos": 15,
+    "frames": 2109,
+    "valid_events": 92,
+    "ignored_events": 12
+  }
+}

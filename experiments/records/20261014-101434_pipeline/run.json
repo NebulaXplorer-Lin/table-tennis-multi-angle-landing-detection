@@ -1,0 +1,7 @@
+{
+  "status": "completed",
+  "finished": "2026-10-14T11:48:36.699459+09:00",
+  "global_run": "runs/20261014-095202_global_fixed3_ball",
+  "local_run": "runs/20261014-103011_local_fixed3_ball",
+  "recovered_from_final_metadata_error": "ValueError(\"'ttnet/runs/20261014-095202_global_fixed3_ball' is not in the subpath of '/home/radno/projects/pingpong/ttnet' OR one path is relative and the other is absolute.\")"
+}

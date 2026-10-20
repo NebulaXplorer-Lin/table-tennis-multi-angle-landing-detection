@@ -15,7 +15,7 @@ import numpy as np
 import torch
 
 from ttnet.common import CONFIGS, EVENT_DATA, PROJECT, identity, now, save, save_jsonl, sha
-from ttnet.events.data import EventCorpus, assemble_window, balanced_samples, sample_identity
+from ttnet.events.data import EventCorpus, assemble_window, balanced_samples, sample_identity, window_signature
 from ttnet.events.engine import EventSystem, build_cache, load_cache, cache_identity, feature_cache_path
 from ttnet.events.metrics import classification, select_thresholds
 from ttnet.models.event import event_loss
@@ -42,7 +42,7 @@ def cached_forward(system,corpus,cache,sample):
 
 def cached_forward_batch(system,corpus,cache,samples):
     inputs=[]
-    signature=tuple((k,system.config.get(k)) for k in ('context_head','scene_mode','event_window_mode'))
+    signature=window_signature(system.config)
     if getattr(corpus,'_tensor_cache_source',None) is not cache or getattr(corpus,'_tensor_cache_signature',None)!=signature:
         corpus._tensor_cache_source=cache;corpus._tensor_cache_signature=signature;corpus._tensor_windows={}
     for sample in samples:
@@ -56,6 +56,9 @@ def cached_forward_batch(system,corpus,cache,samples):
 
 
 def online_forward(system,corpus,sample):
+    if system.config.get('joint_window_training',False):
+        from ttnet.events.joint import joint_forward
+        return joint_forward(system,corpus,sample)
     vid=sample['video_id'];center=sample['frame_id']
     ids=[i for i in corpus.window_ids(vid,center) if i is not None]
     # Extra predecessor makes first-slot velocity identical to the frozen cache.
@@ -65,10 +68,11 @@ def online_forward(system,corpus,sample):
     return logits,losses
 
 
-def infer_cache(system,corpus,part):
+def infer_cache(system,corpus,part,sources=None):
     cache={}; sums={'global':0.,'local':0.};counts={'global':0,'local':0}
     with torch.inference_mode(),torch.autocast(device_type=system.device.type,enabled=system.config['amp'] and system.device.type=='cuda'):
         for vid in corpus.split[part]:
+            if sources==['pp'] and not vid.startswith('pp_'):continue
             system.reset_tracking(vid)
             if system.config.get('tracker_type') in ('association','autoregressive'):
                 from ttnet.events.context import stream_context_features
@@ -93,7 +97,7 @@ def infer_cache(system,corpus,part):
 def validate(system,corpus,cache,part='val'):
     rows=[];loss_sum=weight=0.
     with torch.inference_mode(),torch.autocast(device_type=system.device.type,enabled=system.config['amp'] and system.device.type=='cuda'):
-        samples=corpus.samples[part];size=system.config.get('validation_batch',1)
+        samples=[s for s in corpus.samples[part] if s['video_id'] in cache];size=system.config.get('validation_batch',1)
         for start in range(0,len(samples),size):
             chosen=samples[start:start+size]
             logits=cached_forward_batch(system,corpus,cache,chosen) if len(chosen)>1 else cached_forward(system,corpus,cache,chosen[0])
@@ -131,8 +135,10 @@ def train(args):
         raise ValueError('sampling/target configuration differs from prepared data')
     continuous_selection=cfg.get('best_metric')=='pp_landing_macro_f1'
     if continuous_selection:
-        if args.mode!='frozen' or cfg.get('sampling_protocol')!='openttgames_pp_50_50':
-            raise ValueError('four-way protocol requires frozen localization and 50/50 source sampling')
+        if cfg.get('sampling_protocol')!='openttgames_pp_50_50':
+            raise ValueError('continuous selection requires 50/50 source sampling')
+        if args.mode=='joint' and not cfg.get('joint_window_training'):
+            raise ValueError('continuous joint training requires joint_window_training')
         if not cfg.get('pp_annotations'):raise ValueError('reviewed PP annotations are required')
         from ttnet.events.continuous import attach_pp
         attach_pp(corpus,cfg['pp_annotations'])
@@ -141,9 +147,26 @@ def train(args):
     dataset_path=cfg.get('dataset',str(args.dataset)) if args.resume else str(args.dataset.resolve())
     cfg.update(dataset_id=corpus.identity,split_id=corpus.split['split_id'],dataset=dataset_path,
                train_samples_sha256=sample_identity(corpus.samples['train']),val_samples_sha256=sample_identity(corpus.samples['val']),
-               global_sha256=sha(cfg['global_checkpoint']),local_sha256=sha(cfg['local_checkpoint']))
+               global_sha256=sha(cfg['global_checkpoint']) if cfg.get('global_checkpoint') else None,
+               local_sha256=sha(cfg['local_checkpoint']) if cfg.get('local_checkpoint') else None)
+    backends={name:store.backend_identity() for name in ('frame_store','pp_frame_store')
+              if (store:=getattr(corpus,name,None)) is not None and getattr(store,'is_video',False)}
+    if backends:cfg['pixel_backends']=backends
+    hard_negative_keys=set()
+    if cfg.get('pp_hard_negative_manifest'):
+        from ttnet.events.refinement import load_hard_negative_keys
+        manifest=Path(cfg['pp_hard_negative_manifest'])
+        hard_negative_keys=load_hard_negative_keys(manifest,corpus)
+        digest=sha(manifest)
+        if cfg.get('pp_hard_negative_manifest_sha256',digest)!=digest:
+            raise ValueError('hard-negative manifest content changed')
+        cfg['pp_hard_negative_manifest_sha256']=digest
     system=EventSystem(cfg,device)
     cfg['head_initial_sha256']=state_digest(system.head)
+    if cfg.get('initialization')=='random':
+        if args.mode!='joint' or not cfg.get('joint_window_training'):raise ValueError('random initialization requires online joint training')
+        cfg['initial_state_sha256']={name:state_digest(module) for name,module in (
+            ('global',system.global_model),('local',system.local_model),('table',system.table_head),('event',system.head)) if module is not None}
     system.config=cfg
     if args.run.exists() and not args.resume:raise FileExistsError(args.run)
     args.run.mkdir(parents=True,exist_ok=True)
@@ -162,8 +185,10 @@ def train(args):
     system.configure(args.mode,True)
     params=[dict(params=list(system.head.parameters()),lr=cfg['lr'])]
     if args.mode=='joint':params.append(dict(params=list(system.global_model.parameters())+list(system.local_model.parameters()),lr=cfg['locator_lr']))
+    if args.mode=='joint' and system.table_head is not None and cfg.get('train_table_head'):
+        params.append(dict(params=list(system.table_head.parameters()),lr=cfg.get('table_lr',cfg['lr'])))
     optimizer=torch.optim.AdamW(params,weight_decay=cfg['weight_decay'])
-    scaler=torch.amp.GradScaler(device.type,enabled=cfg['amp'] and device.type=='cuda')
+    scaler=torch.cuda.amp.GradScaler(enabled=cfg['amp'] and device.type=='cuda',init_scale=cfg.get('amp_init_scale',65536.))
     start=0;start_step=0;resume_totals=None;resume_elapsed=0.;best=float('inf');reference=float('inf');patience=0
     if continuous_selection:best=reference=(float('inf'),float('inf'))
     if args.resume and not (checkpoints/'last.pt').exists():
@@ -178,7 +203,11 @@ def train(args):
     cache=None
     if args.mode=='frozen' and not args.smoke:
         if args.cache is None:args.cache=feature_cache_path(system,corpus)
-        build_cache(system,corpus,args.cache)
+        # Completed feature caches are read-only, including their identity marker.
+        complete=(args.cache/'identity.json').exists() and all(
+            (args.cache/f'{vid}{suffix}').exists()
+            for part in ('train','val') for vid in corpus.split[part] for suffix in ('.npz','.jsonl'))
+        if not complete:build_cache(system,corpus,args.cache)
         cache=load_cache(corpus,args.cache,expected=cache_identity(system,corpus))
     locator_before=(state_digest(system.global_model),state_digest(system.local_model))
     if args.smoke:
@@ -205,11 +234,13 @@ def train(args):
     save(attempt/'checkpoint_policy.json',dict(initial_checkpoint=True,every_optimizer_steps=25,also_before_validation=True))
     for epoch in range(start,cfg['epochs']):
         started=time.perf_counter();system.configure(args.mode,True);optimizer.zero_grad(set_to_none=True)
+        system.training_epoch=epoch
         if continuous_selection:
             from ttnet.events.continuous import mixed_samples
-            schedule=mixed_samples(corpus.samples['train'],cfg['seed'],epoch)
+            schedule=mixed_samples(corpus.samples['train'],cfg['seed'],epoch,cfg,hard_negative_keys)
         else:schedule=balanced_samples(corpus.samples['train'],cfg['seed'],epoch)
         totals={k:0. for k in ('event','global','local','total')}
+        if cfg.get('train_table_head'):totals['table']=0.
         skip=start_step if epoch==start else 0
         carried_elapsed=resume_elapsed if epoch==start else 0.
         if skip:
@@ -233,6 +264,9 @@ def train(args):
             if not torch.isfinite(loss):raise FloatingPointError(f'nonfinite loss at epoch {epoch+1} step {step}')
             scaler.scale(loss*count/group_count).backward()
             if (step+count)%cfg['effective_batch']==0 or step+count==len(schedule):
+                if cfg.get('gradient_clip_norm'):
+                    scaler.unscale_(optimizer)
+                    torch.nn.utils.clip_grad_norm_(system.parameters(),cfg['gradient_clip_norm'])
                 scaler.step(optimizer);scaler.update();optimizer.zero_grad(set_to_none=True)
             for k,v in dict(event=e,**loc,total=loss).items():totals[k]+=float(v.detach())*count
             if (step+count)%(25*cfg['effective_batch'])==0 or step+count==len(schedule):
@@ -244,7 +278,7 @@ def train(args):
         save(args.run/'run.json',dict(status='validating',stage='event',mode=args.mode,epoch=epoch+1,
                                      step=len(schedule),samples=len(schedule),updated=now()))
         system.configure(args.mode,False)
-        val_cache,val_loc=(cache,{}) if args.mode=='frozen' else infer_cache(system,corpus,'val')
+        val_cache,val_loc=(cache,{}) if args.mode=='frozen' else infer_cache(system,corpus,'val',sources=cfg.get('validation_sources'))
         val_loss,rows=validate(system,corpus,val_cache)
         continuous=None;sweep=None;continuous_rows=None
         if continuous_selection:
@@ -254,8 +288,9 @@ def train(args):
             selection=(-continuous['macro_f1'],continuous['landing']['fp'])
             improved=selection<best
             if improved:best=reference=selection;patience=0
-            else:patience+=1
-            metrics=classification([r for r in rows if r.get('source')!='pp'],thresholds)
+            else:patience+=int(epoch+1>=cfg.get('early_stopping_start_epoch',0))
+            sparse_rows=[r for r in rows if r.get('source')!='pp']
+            metrics=classification(sparse_rows,thresholds) if sparse_rows else None
         else:
             thresholds=select_thresholds(rows,cfg['threshold_grid'])
             metrics=classification(rows,thresholds)
@@ -263,12 +298,20 @@ def train(args):
             if improved:best=val_loss
             if val_loss<reference*(1-cfg['loss_relative_min_delta']):reference=val_loss;patience=0
             else:patience+=1
+        pp_schedule=[s for s in schedule if s.get('source')=='pp']
+        sampling_counts=dict(total=len(schedule),pp=len(pp_schedule),
+                             pp_positive=sum(s['target'][0]>0 for s in pp_schedule),
+                             pp_hard_negative=sum((s['video_id'],s['frame_id']) in hard_negative_keys for s in pp_schedule))
         record=dict(epoch=epoch+1,train={k:v/len(schedule) for k,v in totals.items()},val_event_loss=val_loss,
+                    sampling_counts=sampling_counts,
                     val_localization_loss=val_loc,val=metrics,thresholds=thresholds,
                     lr=[g['lr'] for g in optimizer.param_groups],elapsed_sec=carried_elapsed+time.perf_counter()-started,
                     peak_cuda_bytes=torch.cuda.max_memory_allocated() if device.type=='cuda' else None,
                     schedule_sha256=sample_identity(schedule),patience=patience,
                     continuous=continuous,threshold_sweep=sweep,selection_metric=cfg.get('best_metric','val_event_masked_bce'))
+        if cfg.get('joint_window_training'):
+            from ttnet.events.joint import teacher_probability
+            record['gt_crop_probability']=teacher_probability(cfg,epoch)
         state=dict(system=system.state_dict(),optimizer=optimizer.state_dict(),scaler=scaler.state_dict(),epoch=epoch+1,
                    step=0,best=best,reference=reference,patience=patience,config=cfg,rng=rng_state(),thresholds=thresholds)
         if improved:

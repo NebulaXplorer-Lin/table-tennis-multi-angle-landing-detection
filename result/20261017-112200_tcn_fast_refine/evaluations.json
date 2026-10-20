@@ -1,0 +1,251 @@
+[
+  {
+    "name": "baseline_tcn",
+    "checkpoint_sha256": "2ea4168bb7e7a499fb80fbd62a4cd8c83868acc7dcaa8e90329e648f02df328c",
+    "annotation_id": "f6fad6f8ae7b9cabb26ecf614b9b36d6d7e12480874f3cff9cdab8ba59990ad1",
+    "dataset_id": "e3ebe4a71a0be7fef612f44f67b470785ef6d86176be2c2f4aa3e7111e820626",
+    "epoch": 23,
+    "metrics": {
+      "by_view": {
+        "side": {
+          "tp": 82,
+          "fp": 22,
+          "fn": 23,
+          "precision": 0.7884615384615384,
+          "recall": 0.780952380952381,
+          "f1": 0.7846889952153111
+        },
+        "diagonal": {
+          "tp": 38,
+          "fp": 12,
+          "fn": 14,
+          "precision": 0.76,
+          "recall": 0.7307692307692307,
+          "f1": 0.7450980392156863
+        },
+        "front": {
+          "tp": 24,
+          "fp": 0,
+          "fn": 8,
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571
+        }
+      },
+      "by_resolution": {
+        "1280x720": {
+          "tp": 122,
+          "fp": 25,
+          "fn": 39,
+          "precision": 0.8299319727891157,
+          "recall": 0.7577639751552795,
+          "f1": 0.7922077922077922
+        },
+        "1920x1080": {
+          "tp": 22,
+          "fp": 9,
+          "fn": 6,
+          "precision": 0.7096774193548387,
+          "recall": 0.7857142857142857,
+          "f1": 0.7457627118644068
+        }
+      },
+      "landing": {
+        "tp": 144,
+        "fp": 34,
+        "fn": 45,
+        "precision": 0.8089887640449438,
+        "recall": 0.7619047619047619,
+        "f1": 0.784741144414169
+      },
+      "continuous_bounce": {
+        "tp": 154,
+        "fp": 35,
+        "fn": 49,
+        "precision": 0.8148148148148148,
+        "recall": 0.7586206896551724,
+        "f1": 0.7857142857142857
+      },
+      "macro_f1": 0.7956432971912849,
+      "missing_views": 0,
+      "threshold": 0.4,
+      "protocol": {
+        "frame_tolerance": 1,
+        "original_pixel_tolerance": 50,
+        "matching": "maximum cardinality one-to-one",
+        "net": "masked unless reviewed"
+      }
+    },
+    "e2e_fps": 77.52790415010672,
+    "hardware": "NVIDIA GeForce RTX 5070 Ti",
+    "backend": "PyTorch",
+    "precision": "AMP",
+    "source": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/tcn_frames_lr0.0003_d0.1/evaluations/continuous/metrics.json"
+  },
+  {
+    "name": "tcn_sampled",
+    "checkpoint_sha256": "8365fbb355fd9242faa7073fb811c2b39d8251e9c05e7beb8352a90325268153",
+    "annotation_id": "f6fad6f8ae7b9cabb26ecf614b9b36d6d7e12480874f3cff9cdab8ba59990ad1",
+    "dataset_id": "e3ebe4a71a0be7fef612f44f67b470785ef6d86176be2c2f4aa3e7111e820626",
+    "epoch": 7,
+    "metrics": {
+      "by_view": {
+        "side": {
+          "tp": 74,
+          "fp": 17,
+          "fn": 31,
+          "precision": 0.8131868131868132,
+          "recall": 0.7047619047619048,
+          "f1": 0.7551020408163266
+        },
+        "diagonal": {
+          "tp": 34,
+          "fp": 20,
+          "fn": 18,
+          "precision": 0.6296296296296297,
+          "recall": 0.6538461538461539,
+          "f1": 0.6415094339622641
+        },
+        "front": {
+          "tp": 29,
+          "fp": 9,
+          "fn": 3,
+          "precision": 0.7631578947368421,
+          "recall": 0.90625,
+          "f1": 0.8285714285714286
+        }
+      },
+      "by_resolution": {
+        "1280x720": {
+          "tp": 122,
+          "fp": 32,
+          "fn": 39,
+          "precision": 0.7922077922077922,
+          "recall": 0.7577639751552795,
+          "f1": 0.7746031746031746
+        },
+        "1920x1080": {
+          "tp": 15,
+          "fp": 14,
+          "fn": 13,
+          "precision": 0.5172413793103449,
+          "recall": 0.5357142857142857,
+          "f1": 0.5263157894736843
+        }
+      },
+      "landing": {
+        "tp": 137,
+        "fp": 46,
+        "fn": 52,
+        "precision": 0.7486338797814208,
+        "recall": 0.7248677248677249,
+        "f1": 0.7365591397849462
+      },
+      "continuous_bounce": {
+        "tp": 149,
+        "fp": 44,
+        "fn": 54,
+        "precision": 0.772020725388601,
+        "recall": 0.7339901477832512,
+        "f1": 0.7525252525252525
+      },
+      "macro_f1": 0.7417276344500064,
+      "missing_views": 0,
+      "threshold": 0.5,
+      "protocol": {
+        "frame_tolerance": 1,
+        "original_pixel_tolerance": 50,
+        "matching": "maximum cardinality one-to-one",
+        "net": "masked unless reviewed"
+      }
+    },
+    "e2e_fps": 86.45566887021492,
+    "hardware": "NVIDIA GeForce RTX 5070 Ti",
+    "backend": "PyTorch",
+    "precision": "AMP",
+    "source": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_sampled/evaluations/continuous/metrics.json"
+  },
+  {
+    "name": "tcn_smoothed",
+    "checkpoint_sha256": "e8c4a323f93d9e05514c4e0d2ed33232e8f087e37eeea413700ced892a644c7b",
+    "annotation_id": "f6fad6f8ae7b9cabb26ecf614b9b36d6d7e12480874f3cff9cdab8ba59990ad1",
+    "dataset_id": "e3ebe4a71a0be7fef612f44f67b470785ef6d86176be2c2f4aa3e7111e820626",
+    "epoch": 23,
+    "metrics": {
+      "by_view": {
+        "side": {
+          "tp": 82,
+          "fp": 21,
+          "fn": 23,
+          "precision": 0.7961165048543689,
+          "recall": 0.780952380952381,
+          "f1": 0.7884615384615384
+        },
+        "diagonal": {
+          "tp": 38,
+          "fp": 12,
+          "fn": 14,
+          "precision": 0.76,
+          "recall": 0.7307692307692307,
+          "f1": 0.7450980392156863
+        },
+        "front": {
+          "tp": 24,
+          "fp": 0,
+          "fn": 8,
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571
+        }
+      },
+      "by_resolution": {
+        "1280x720": {
+          "tp": 122,
+          "fp": 24,
+          "fn": 39,
+          "precision": 0.8356164383561644,
+          "recall": 0.7577639751552795,
+          "f1": 0.7947882736156352
+        },
+        "1920x1080": {
+          "tp": 22,
+          "fp": 9,
+          "fn": 6,
+          "precision": 0.7096774193548387,
+          "recall": 0.7857142857142857,
+          "f1": 0.7457627118644068
+        }
+      },
+      "landing": {
+        "tp": 144,
+        "fp": 33,
+        "fn": 45,
+        "precision": 0.8135593220338984,
+        "recall": 0.7619047619047619,
+        "f1": 0.7868852459016393
+      },
+      "continuous_bounce": {
+        "tp": 154,
+        "fp": 34,
+        "fn": 49,
+        "precision": 0.8191489361702128,
+        "recall": 0.7586206896551724,
+        "f1": 0.7877237851662403
+      },
+      "macro_f1": 0.7969008116066939,
+      "missing_views": 0,
+      "threshold": 0.4,
+      "protocol": {
+        "frame_tolerance": 1,
+        "original_pixel_tolerance": 50,
+        "matching": "maximum cardinality one-to-one",
+        "net": "masked unless reviewed"
+      }
+    },
+    "e2e_fps": 86.8840107318258,
+    "hardware": "NVIDIA GeForce RTX 5070 Ti",
+    "backend": "PyTorch",
+    "precision": "AMP",
+    "source": "/home/radno/projects/pingpong/out/experiments/20261017-112200_tcn_fast_refine/tcn_smoothed/evaluations/continuous/metrics.json"
+  }
+]

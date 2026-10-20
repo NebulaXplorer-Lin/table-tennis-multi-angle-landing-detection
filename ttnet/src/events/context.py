@@ -14,6 +14,8 @@ def ensure_continuous_context(corpus, vid):
     video = corpus.videos[vid];meta = video['meta'];frames = video['frames']
     if sorted(frames) == list(range(meta['n_frames'])):
         return
+    if getattr(getattr(corpus,'frame_store',None),'is_video',False):
+        raise ValueError('source-video profile forbids dense RGB expansion; use stream_context_features')
     source = Path(meta['source'])
     key = identity(dict(source_sha256=sha(source),dataset=corpus.identity,video=vid,
                         fps=meta['fps'],version=1))
@@ -95,7 +97,8 @@ def stream_context_features(system,corpus,vid,needed_ids):
             if fid in existing:
                 row=existing[fid]
                 if row['source_frame_id']!=sid or abs(row['timestamp_sec']-actual)>1e-7:raise ValueError('source context mapping changed')
-                rgb=corpus.image(vid,fid)
+                store=getattr(corpus,'frame_store',None)
+                rgb=store.decoded_rgb(vid,frame) if store is not None and store.is_video else corpus.image(vid,fid)
             else:
                 row=dict(frame_id=fid,source_frame_id=sid,timestamp_sec=actual,label_status='unknown',xy=None)
                 rgb=frame.to_ndarray(format='rgb24')

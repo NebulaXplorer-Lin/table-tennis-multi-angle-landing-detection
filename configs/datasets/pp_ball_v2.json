@@ -1,0 +1,6 @@
+{
+  "name": "pp_ball_v2",
+  "kind": "ball",
+  "path": "data/datasets/pp_ball_v2",
+  "split_id": "ttnet_ball_v1_frozen_yolo_pilot"
+}

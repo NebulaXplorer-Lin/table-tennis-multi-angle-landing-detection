@@ -1,0 +1,10 @@
+{
+  "started_epoch": 1792203540.0,
+  "budget_seconds": 10800,
+  "new_training_cutoff_seconds": 9000,
+  "ar_cache_budget_seconds": 2100,
+  "baseline": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/tcn_frames_lr0.0003_d0.1",
+  "rule_cache": "/home/radno/projects/pingpong/data/cache/features/813bf2bd95403b7c9e69",
+  "seed": 42,
+  "plan": "20/20/60 PP; window EMA tau=.15; AR weight5/dropout5%/span3/beam1"
+}

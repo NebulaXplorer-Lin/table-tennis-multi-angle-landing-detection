@@ -1,0 +1,15 @@
+{
+  "status": "completed_documentation_snapshot",
+  "generated_at": "2026-10-16T17:10:25+08:00",
+  "main_document": "/home/radno/projects/pingpong/docs/experiment_comparison_20261016.md",
+  "comparison_rows": 47,
+  "dataset_registry": "/home/radno/projects/pingpong/experiments/records/20261016_experiment_comparison/datasets.json",
+  "sources": 81,
+  "verified_local_links": 48,
+  "checkpoint_hash_checks": "A/B/C/D passed",
+  "incomplete_experiments": [
+    "A/B seeds43/44",
+    "current A/B/C/D OpenTTGames independent test",
+    "current A/B/C/D PP public final transfer"
+  ]
+}

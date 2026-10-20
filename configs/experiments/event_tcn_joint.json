@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "name": "event_tcn_joint",
+  "task": "event",
+  "components": {
+    "localizer": "../components/ball_fixed3.json",
+    "tracker": "../components/independent.json",
+    "event_head": "../components/tcn.json",
+    "training": "../components/event_train.json"
+  },
+  "dataset": "../datasets/openttgames_event25_v3.json",
+  "parameters": {
+    "mode": "joint"
+  }
+}

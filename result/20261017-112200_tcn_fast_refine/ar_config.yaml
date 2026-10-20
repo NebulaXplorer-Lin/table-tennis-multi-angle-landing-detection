@@ -1,0 +1,79 @@
+{
+  "seed": 42,
+  "hidden": 128,
+  "epochs": 30,
+  "patience": 5,
+  "batch_videos": 8,
+  "truncated_steps": 32,
+  "lr": 0.0003,
+  "teacher_epochs": 5,
+  "rollout_ramp_epochs": 5,
+  "match_px": 10,
+  "use_table": true,
+  "cache_identity": {
+    "base": {
+      "schema": 2,
+      "dataset_id": "e3ebe4a71a0be7fef612f44f67b470785ef6d86176be2c2f4aa3e7111e820626",
+      "tracker": {
+        "type": "association",
+        "parameters": {
+          "top_k": 5,
+          "beam_size": 8,
+          "history": 6,
+          "reset_after": 3,
+          "min_confidence": 0.1,
+          "motion_scale_px": 80.0,
+          "motion_cap": 2.0,
+          "motion_weight": 0.6,
+          "appearance_weight": 0.2,
+          "missing_cost": 2.5,
+          "roi_merge_fraction": 0.5
+        }
+      },
+      "global_sha256": "db0cf628aff76c480c6bb6c393553ec5aa6c784bac0820ec72d0c5bcee3d8b25",
+      "local_sha256": "d7f78d207e013a090102e1d34e338b79dd7585f2cc9d466ae5a2199b5dd72db5",
+      "config": {
+        "global_input": [
+          512,
+          288
+        ],
+        "local_input": [
+          256,
+          256
+        ],
+        "local_crop_side_1080": 256,
+        "localization_threshold": 0.7,
+        "amp": true
+      },
+      "code_sha256": "5f6aa946910722e788ac18a024006d9017b3dccb875382f1e58be7be873a2a4c",
+      "implementation": {
+        "models/localizer.py": "6f97bbe367e49d2da18ca3fed64ce3bff37f04a59c1497de25cbb5ac6410187d",
+        "models/build.py": "fb4761b70f47dab6a6e50340ffebee5e68193a8f2a5992b6c0d53e35df04c8c1",
+        "tracking/independent.py": "ab47dc3b5f4c4619718dca451ee0797adc1cc3a0c7ad74aa88fb1e8f5583e40e",
+        "tracking/association.py": "cd761579256f17d945c4e83f6f9260884d8b257f8990be17227dab8b15453171",
+        "tracking/candidates.py": "02b1499461523c9ae324785213b7547b7e683720d6d69145f9fa397e6aa8025c",
+        "tracking/runtime.py": "b87ce780ea20afa34d236968de36fd09b8932a4600559890cbff6eba2be7a6e8",
+        "training/dataset.py": "452a4c7ba4a26b006170cebc261e353dccc1bf43db9e7fc526e0e659c87ab69d",
+        "data_tools/geometry.py": "358b4e1fa95da79a1e6a4fdb9d58139c274885066f647068c9698b186e60b83f",
+        "data_tools/frame_store.py": "c439fd92747fcd35c62805f013cca9af8b067f7a246963967eac2bbbe08771b6",
+        "events/context.py": "285a6935edd766b2e4768acc2e55d78bacaf2cd184660b7aa8833dc67aded0cd",
+        "events/batched_features.py": "f7e92e4118790e250905e04dfed9272fa8a4a03bed95f960d433374e12493da7"
+      },
+      "extraction_batch": 8,
+      "sampling": {
+        "target_fps": 25,
+        "temporal_mode": "fixed3",
+        "association_context": "stream_source_with_existing_npy_precedence"
+      }
+    },
+    "table_sha256": "8cead7ac73eff8b85f91e728a4279d2b7dce9c05db5ad339f4e3a1c462fb4ef1",
+    "source": "fixed_rule_candidates",
+    "match_px": 10
+  },
+  "null_loss_weight": 5.0,
+  "candidate_dropout_prob": 0.05,
+  "candidate_dropout_span": 3,
+  "selection_metric": "null_f1",
+  "reference_checkpoint_sha256": "8c98efd7e5fd882b8caa144c3b5cb1f514c5248641c0aecb01ade009a16fb7b3",
+  "minimum_positive_accuracy": 0.8970929070929071
+}

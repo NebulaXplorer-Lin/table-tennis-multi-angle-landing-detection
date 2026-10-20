@@ -1,5 +1,7 @@
 # 乒乓球定位与落点检测：已完成实验对比
 
+> 这是2026-10-16 A/B/C/D阶段的历史快照，后续三种子、桌框和外测结果见[当前结果](../result/README.md)，当前研发路线见[计划](next_steps.md)。中断记录已随[整理](workspace_cleanup_20261020.md)归档。
+
 截至 2026-10-16T17:10:25+08:00（北京时间）。汇总已有实际产物，本次不启动新训练、不重新选择阈值。
 
 当前结论：本轮同一 PP 内部验证集上，B（多候选轨迹关联＋TCN）最好，落点三视角宏平均 F1 为 **77.96%**，完整视频 **86.54 FPS**。这是一轮 seed42 验证成绩；多种子与当前四组的外部泛化评估尚未完成。
@@ -165,7 +167,7 @@ YOLO记录采用“先忽略再匹配”本地近似评分；历史TCN采用先�
 
 历史A0 public 43.20%与当前A0内部val 50.86%是**同一历史权重在两个不同数据集/阈值协议下的成绩**；不能把差值当成模型训练收益。当前新四组尚未运行public迁移评估。
 
-[YOLO public原始记录](</home/radno/projects/pingpong/experiments/records/20261013-215749_yolo11n_full1280_public/evaluations/epoch032_public_paused.json>)；[历史冻结TCN完整报告](</home/radno/projects/pingpong/ttnet/output/events/20261014-181231_event25_frozen/summary.md>)；[联合版第2轮public指标](</home/radno/projects/pingpong/ttnet/runs/20261014-181231_event25_joint/evaluations/epoch002_public/public/metrics.json>)。
+[YOLO public原始记录](</home/radno/projects/pingpong/archive/20261020-185047_workspace_cleanup/removed/experiments/records/20261013-215749_yolo11n_full1280_public/evaluations/epoch032_public_paused.json>)；[历史冻结TCN完整报告](</home/radno/projects/pingpong/ttnet/output/events/20261014-181231_event25_frozen/summary.md>)；[联合版第2轮public指标](</home/radno/projects/pingpong/archive/20261015-102535_workspace/ttnet/runs/20261014-181231_event25_joint/evaluations/epoch002_public/public/metrics.json>)。
 
 ## 8. 速度与batch测试：按范围区分
 

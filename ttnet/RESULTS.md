@@ -1,16 +1,7 @@
-[统一方案与实验索引](../experiments/index.md) · [后续计划](../docs/next_steps.md)
+# 研究结果入口
 
-# TTNet 结果入口
+当前完整版本见[结果首页](../result/README.md)，按任务和协议整理的记录见[实验索引](../experiments/index.md)。球定位、稀疏事件分类与完整视频落点分别报告。
 
-第二阶段 EventHead 已增加冻结定位与联合微调两版实验；运行与评估协议见 [说明](../docs/eventhead_training.md)，训练任务状态见 [本轮管线](runs/20261014-181231_event_train_pipeline/run.json)。最终结果单独汇总到 `output/events/README.md`，避免与球定位 F1 混用。
+当前开发主基线是三帧Global/Local、规则关联、旧桌框几何、时间编码与13帧TCN。三种子均值78.77%，EMA单种子候选79.69%；详细限制、外测、权重与错误视频在对应版本README中。
 
-更新于 2026-10-14T12:28:12.994679+09:00。
-
-[查看全部最终结果、权重、Recall / F1、测速和错误样本](output/README.md)
-
-最终文件集中在 `output/<任务编号>/`；每个 summary.md 提供直接链接。`runs/` 保存启动、续训、日志和中间产物。
-
-| 当前实验 | 运行状态 | 完成 epoch | 最终结果 |
-|---|---|---:|---|
-| 20261014-095202_global_fixed3_ball | completed | 20 | [汇总](output/20261014-095202_global_fixed3_ball/summary.md) |
-| 20261014-103011_local_fixed3_ball | completed | 20 | [汇总](output/20261014-103011_local_fixed3_ball/summary.md) |
+训练方法见[指南](../docs/training_guide.md)，下一阶段见[计划](../docs/next_steps.md)。历史输出软链接仅供本机追溯。

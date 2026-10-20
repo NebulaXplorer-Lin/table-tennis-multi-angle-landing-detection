@@ -39,6 +39,8 @@ def ensure_global_cache(dataset,sizes,workers=4):
     dm=json.loads((dataset/'metadata/dataset.json').read_text())
     policy=dict(dataset_id=dm['dataset_id'],sizes=sizes,geometry_sha256=sha(ROOT/'src/data_tools/geometry.py'),
                 policy='npy_rgb_u8_v1; letterbox before augmentation and normalization')
+    backend=FrameStore(dataset).backend_identity()
+    if backend:policy['pixel_backend']=backend
     key=identity(policy)
     root=CACHE/'inputs/global'/key[:20]
     groups={}
@@ -98,6 +100,8 @@ def ensure_local_cache(dataset,prediction_maps,global_sha256,config):
                 half_span=config.get('window_half_span_sec',1/30),gt_jitter_limit=config.get('augmentation',{}).get('gt_crop_jitter_fraction',.2),
                 source_sha256=sha(Path(__file__)),geometry_sha256=sha(ROOT/'src/data_tools/geometry.py'),
                 prediction_sha256=identity([{str(k):v for k,v in sorted(mapping.items())} for mapping in prediction_maps.values()]))
+    backend=FrameStore(dataset).backend_identity()
+    if backend:policy['pixel_backend']=backend
     root=CACHE/'inputs/local'/identity(policy)[:20]
     groups={};all_predictions={}
     for split in ('train','val'):

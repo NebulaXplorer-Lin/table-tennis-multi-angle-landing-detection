@@ -32,6 +32,7 @@ class FrameStore:
         self.dataset = Path(dataset)
         self.max_open_chunks = max_open_chunks
         self.root = None
+        self.format = None
         reference = self.dataset/'frame_store.json'
         if reference.is_file() and not legacy:
             ref = json.loads(reference.read_text())
@@ -39,14 +40,19 @@ class FrameStore:
             manifest = json.loads((self.root/'manifest.json').read_text())
             if manifest.get('status') != 'completed' or manifest['storage_id'] != ref['storage_id']:
                 raise ValueError('incomplete or mismatched frame store')
+            self.format = manifest.get('format','npy_rgb_u8_v1')
+            self.storage_id = manifest['storage_id']
         self._chunks = OrderedDict()
+        self._readers = OrderedDict()
         self._videos = {}
+        self._timestamps = {}
         self._pid = os.getpid()
         self._lock = threading.RLock()
 
     def __getstate__(self):
         state = dict(self.__dict__)
         state['_chunks'] = OrderedDict()
+        state['_readers'] = OrderedDict()
         state['_videos'] = {}
         state.pop('_lock',None)
         return state
@@ -58,6 +64,7 @@ class FrameStore:
     def _video(self, video_id):
         if self._pid != os.getpid():
             self._chunks.clear()
+            self.close()
             self._pid = os.getpid()
         if video_id not in self._videos:
             manifest = json.loads((self.root/video_id/'manifest.json').read_text())
@@ -86,6 +93,22 @@ class FrameStore:
         pos = int(np.searchsorted(ids, frame_id))
         if pos >= len(ids) or ids[pos] != frame_id:
             raise KeyError(f'missing frame: {video_id}/{frame_id}')
+        if self.is_video:
+            from .video_store import VideoReader
+            if video_id not in self._readers:
+                source = self.source_path(video_id)
+                if source.stat().st_size != manifest['source_bytes']:
+                    raise ValueError(f'source video size changed: {source}')
+                self._readers[video_id] = VideoReader(source,manifest['pixel_policy'])
+                while len(self._readers)>2:
+                    self._readers.popitem(last=False)[1].close()
+            self._readers.move_to_end(video_id)
+            if video_id not in self._timestamps:
+                self._timestamps[video_id] = np.load(self.root/video_id/'timestamps.npy',allow_pickle=False)
+            image = self._readers[video_id].get(self._timestamps[video_id][pos])
+            if list(image.shape) != manifest['shape']:
+                raise ValueError(f'video dimensions changed: {video_id}')
+            return image
         chunk_id, offset = divmod(pos, manifest['chunk_frames'])
         record = manifest['chunks'][chunk_id]
         key = (video_id, chunk_id)
@@ -104,6 +127,36 @@ class FrameStore:
 
     def row_rgb(self, row):
         return self.get_rgb(row['video_id'], row['frame_id'], path=row.get('frame_path', row.get('path')))
+
+    @property
+    def is_video(self):
+        return self.format == 'source_video_rgb_v1'
+
+    def source_path(self,video_id):
+        manifest,_ = self._video(video_id)
+        return (self.root/manifest['source']).resolve()
+
+    def backend_identity(self):
+        if not self.is_video:
+            return None
+        from .video_store import decoder_identity
+        return dict(storage_id=self.storage_id,**decoder_identity())
+
+    def decoded_rgb(self,video_id,frame):
+        from .video_store import frame_rgb
+        manifest,_ = self._video(video_id)
+        return frame_rgb(frame,manifest['pixel_policy'])
+
+    def close(self):
+        for reader in self._readers.values():
+            reader.close()
+        self._readers.clear()
+
+    def __del__(self):
+        try:
+            self.close()
+        except Exception:
+            pass
 
 
 def pack_video(root, video_id, rows, reader, *, chunk_frames=32, source_identity=None):

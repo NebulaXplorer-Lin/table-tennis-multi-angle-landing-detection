@@ -9,7 +9,7 @@ import av
 import numpy as np
 import torch
 
-from ttnet.events.data import assemble_window
+from ttnet.events.data import assemble_window, window_signature
 from ttnet.events.prepare import nearest_index
 
 
@@ -43,7 +43,7 @@ def predict_windows(system,corpus,vid,features,records,centers=None,batch=64):
     centers=sorted(features) if centers is None else sorted(set(centers))
     output=[]
     if not hasattr(corpus,'_prediction_windows'):corpus._prediction_windows={}
-    signature=tuple((k,system.config.get(k)) for k in ('context_head','scene_mode','event_window_mode'))
+    signature=window_signature(system.config)
     entry=corpus._prediction_windows.get(vid)
     if entry is None or entry[0] is not features or entry[1] is not records or entry[2]!=signature:
         entry=(features,records,signature,{})

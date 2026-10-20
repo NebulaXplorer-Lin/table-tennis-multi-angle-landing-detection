@@ -1,0 +1,9 @@
+{
+  "status": "completed_locator_diagnostic_only",
+  "metrics_sha256": "734a7691691e89ccfb49f74a2aa28e34af2257ef21eb2c96dc1e327f48c3f3d1",
+  "runtime_sha256": "2091c377f8be26d2098cb2333764bf5464b62816937f3fa3da67f4c60af9e9c2",
+  "frames": 6292,
+  "videos": 40,
+  "queue_status": "/home/radno/projects/pingpong/out/experiments/20261016-154803_trajectory_priority_seed42/status.json",
+  "next": "A/B frozen event training and continuous evaluation"
+}

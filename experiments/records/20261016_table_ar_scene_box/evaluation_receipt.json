@@ -1,0 +1,20 @@
+{
+  "experiment_id": "20261016_table_ar_scene_box",
+  "scheme": "retained_scene_box",
+  "stage": "event",
+  "status": "evaluated",
+  "smoke": false,
+  "dataset_id": "e3ebe4a71a0be7fef612f44f67b470785ef6d86176be2c2f4aa3e7111e820626",
+  "split_id": "openttgames_event25_match_v1",
+  "source": "out/experiments/20261016_table_ar/scene_box",
+  "summary": "result/scene_box/README.md",
+  "best_epoch": 15,
+  "config": "result/scene_box/config.yaml",
+  "checkpoint": "result/scene_box/best.pt",
+  "eval_id": "continuous",
+  "metric_scope": "pp_val_landing_macro_f1",
+  "f1": 0.7872963502550699,
+  "precision": null,
+  "recall": null,
+  "e2e_fps": 85.39157780153909
+}

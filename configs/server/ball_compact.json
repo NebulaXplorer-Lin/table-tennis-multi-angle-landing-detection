@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "name": "server_ball_compact",
+  "task": "ball",
+  "components": {
+    "localizer": "../components/ball_fixed3.json",
+    "training": "../components/ball_train.json"
+  },
+  "dataset": "../datasets/pp_ball_v2.json",
+  "parameters": {
+    "resize_cache": false,
+    "local_crop_cache": false,
+    "workers": 2
+  },
+  "description": "100GB disk: decode original MP4s by recorded PTS; disable all Global/Local disk image caches. Requires video_store --publish."
+}

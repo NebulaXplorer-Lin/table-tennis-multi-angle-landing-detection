@@ -1,0 +1,7 @@
+{
+  "unit_tests": 79,
+  "passed": true,
+  "tests_log": "/home/radno/projects/pingpong/out/results/20261016_pp_event_merge/tests.log",
+  "preview": "/home/radno/projects/pingpong/out/results/20261016_pp_event_merge/label_merge_preview.jpg",
+  "real_input_alignment_samples": 462
+}

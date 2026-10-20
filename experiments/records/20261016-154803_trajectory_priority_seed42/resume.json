@@ -1,0 +1,17 @@
+{
+  "status": "running",
+  "pid": 98180,
+  "root": "/home/radno/projects/pingpong/out/experiments/20261016-154803_trajectory_priority_seed42",
+  "resumed_at": "2026-10-16T16:08:58.272463+08:00",
+  "device": "NVIDIA GeForce RTX 5070 Ti",
+  "previous_completed": [
+    "A_smoke",
+    "B_smoke",
+    "C_smoke",
+    "D_smoke",
+    "trajectory_AB_diagnostic",
+    "A_train"
+  ],
+  "next_step": "B_train",
+  "queue_archive": "/home/radno/projects/pingpong/out/experiments/20261016-154803_trajectory_priority_seed42/queue_attempts/001"
+}

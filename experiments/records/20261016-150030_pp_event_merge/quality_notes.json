@@ -1,0 +1,7 @@
+{
+  "bounce_without_ball_reference": {
+    "train": 13,
+    "val": 14
+  },
+  "note": "All contact_xy remain null; no neighbor interpolation or inferred spatial contact labels were created."
+}

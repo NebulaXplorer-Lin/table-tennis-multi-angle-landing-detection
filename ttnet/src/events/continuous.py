@@ -90,6 +90,7 @@ def attach_pp(corpus, annotation_path, ball_root=DATA):
     document=json.loads(Path(annotation_path).read_text())
     audit=validate_annotations(document,ball_root)
     store=FrameStore(ball_root);base_image=corpus.image
+    corpus.pp_frame_store=store
     pp_ids=set();corpus.pp_annotations={}
     labels={p:jsonl(Path(ball_root)/f'labels/{p}.jsonl') for p in ('train','val')}
     for annotation in document['videos']:
@@ -119,13 +120,20 @@ def attach_pp(corpus, annotation_path, ball_root=DATA):
     return audit
 
 
-def mixed_samples(samples, seed, epoch):
+def mixed_samples(samples, seed, epoch, config=None, hard_negative_keys=None):
     from ttnet.events.data import balanced_samples
     public=[s for s in samples if s.get('source')!='pp']
     pp=[s for s in samples if s.get('source')=='pp' and any(s['supervised'])]
     if not pp:raise ValueError('50/50 sampling requires reviewed PP training times')
     public=balanced_samples(public,seed,epoch)
     rng=np.random.default_rng(np.random.SeedSequence([seed,epoch,2026]))
+    config=config or {}
+    if config.get('pp_positive_fraction') is not None:
+        from ttnet.events.refinement import stratified_pp_samples
+        chosen=stratified_pp_samples(pp,len(public),rng,config['pp_positive_fraction'],
+                                     config.get('pp_hard_negative_fraction',0.),hard_negative_keys or set())
+        paired=public+chosen
+        return [paired[i] for i in rng.permutation(len(paired))]
     indexes=[]
     while len(indexes)<len(public):indexes.extend(rng.permutation(len(pp)).tolist())
     paired=public+[pp[i] for i in indexes[:len(public)]]

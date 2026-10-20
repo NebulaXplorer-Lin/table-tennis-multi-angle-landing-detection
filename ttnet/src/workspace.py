@@ -47,6 +47,13 @@ def refresh_index():
                    config=relative(run/'config.yaml'),checkpoint=relative(run/'checkpoints/best.pt') if (run/'checkpoints/best.pt').exists() else None)
             scores=[]
             if stage=='event':
+                continuous=read(run/'evaluations/continuous/metrics.json')
+                if continuous.get('status')=='evaluated':
+                    base_entry['status']='evaluated'
+                    base_entry['summary']=relative(run/'evaluations/continuous/metrics.json')
+                    scores.append(dict(eval_id='continuous',metric_scope='pp_val_landing_macro_f1',
+                        f1=continuous['metrics']['macro_f1'],precision=None,recall=None,
+                        e2e_fps=continuous.get('e2e_fps')))
                 m=read(run/'evaluations/best/metrics.json')
                 for part in ('val','test'):
                     if part in m:scores.append(dict(eval_id=f'best_{part}_anchors',metric_scope=f'{part}_sparse_event_classification',
@@ -86,20 +93,30 @@ def refresh_index():
                     metric_scope='legacy_'+row.get('protocol','unknown'),f1=number('center_f1') if row.get('task')=='ball_localisation' else number('touch_f1'),
                     precision=number('center_p'),recall=number('center_r'),e2e_fps=number('e2e_fps')))
     root=PROJECT/'experiments';root.mkdir(exist_ok=True)
+    # Keep reviewed, portable result snapshots even when the original runtime
+    # lives in a machine-local archive. Never reintroduce removed experiments
+    # through a stale legacy CSV or compatibility link.
+    curation=read(root/'curation.json')
+    retained=curation.get('retained_results',[])
+    replaced={row['experiment_id'] for row in retained}
+    archived=set(curation.get('archived_experiment_ids',[]))
+    entries=[row for row in entries if row['experiment_id'] not in archived|replaced
+             and not (curation and row.get('smoke'))]
+    entries=retained+entries
     save(root/'index.json',dict(schema=1,updated=now(),experiments=entries))
     fields=list(entries[0]) if entries else ['experiment_id','scheme','metric_scope','f1']
     with (root/'workspace_comparison.csv').open('w',newline='') as stream:
         writer=csv.DictWriter(stream,fieldnames=fields);writer.writeheader();writer.writerows(entries)
     def number(value):return '—' if value is None else f'{float(value):.4f}'
-    lines=['# 方案与实验索引','', '指标按任务和评估协议分别展示；稀疏事件分类F1不能替代完整落点F1。', '',
-           '[工作区说明](../docs/workspace.md) · [后续计划](../docs/next_steps.md) · [CSV数据源](workspace_comparison.csv)', '']
+    lines=['# 方案与实验索引','', '保留完整版本与已评估对照；中断和预检记录已移出日常入口。指标按任务和评估协议分别展示，稀疏事件分类F1不能替代完整落点F1。', '',
+           '[Quick intro](../docs/quick_intro.md) · [当前推荐结果](../result/README.md) · [后续计划](../docs/next_steps.md) · [CSV数据源](workspace_comparison.csv)', '']
     for group in sorted({e['scheme'] for e in entries}):
         lines.extend([f'## {group}', '', '| 实验 | 阶段 | 状态 | 评估协议 | F1 | FPS |','|---|---|---|---|---:|---:|'])
         for row in entries:
             if row['scheme']!=group:continue
             lines.append(f'| [{row["experiment_id"]}](../{row["summary"]}) | {row["stage"]} | {row["status"]} | {row["metric_scope"]} | {number(row["f1"])} | {number(row["e2e_fps"])} |')
         lines.append('')
-    (root/'index.md').write_text('\n'.join(lines)+'\n')
+    (root/'index.md').write_text('\n'.join(lines).rstrip()+'\n')
     return root/'index.md'
 
 

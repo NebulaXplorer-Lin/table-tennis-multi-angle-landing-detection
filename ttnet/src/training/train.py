@@ -57,6 +57,13 @@ def train(args,run,config,attempt):
     meta=json.loads((args.dataset/"metadata/dataset.json").read_text())
     if meta["status"]!="completed":
         raise RuntimeError("full dataset audit must complete before training")
+    from ttnet.data_tools.frame_store import FrameStore
+    backend=FrameStore(args.dataset).backend_identity()
+    if backend:
+        path=run/'pixel_backend.json'
+        if path.exists() and json.loads(path.read_text())!=backend:
+            raise RuntimeError('resume source-video decoder identity changed')
+        save(path,backend)
     global_model=None;global_info=None;global_maps={};global_candidates=None
     mode=temporal_mode(config)
     input_cache=None
@@ -119,7 +126,7 @@ def train(args,run,config,attempt):
     model=build_localizer(config).to(device)
     optimizer=torch.optim.AdamW(model.parameters(),lr=config["lr"],weight_decay=config["weight_decay"])
     criterion=LocalizationLoss()
-    scaler=torch.amp.GradScaler("cuda",enabled=config["amp"] and device.type=="cuda")
+    scaler=torch.cuda.amp.GradScaler(enabled=config["amp"] and device.type=="cuda")
     start_epoch=0;best_key=(-1.,-1e12);patience=0;best_epoch=None;threshold=None
     policy=config.get('early_stopping')
     monitor=JointEarlyStopping(policy) if policy and policy.get('mode')=='loss_and_f1' else None

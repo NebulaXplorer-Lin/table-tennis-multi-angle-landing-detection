@@ -2,6 +2,8 @@
 
 在规则关联 + TCN 基础上加入桌框位置/尺度几何分支（scene_mode=box），相对无场景基线 +0.76pp，是场景融合的正收益代表。
 
+2026-10-18桌框精度检查：[检查说明](TABLE_REVIEW.md) · [18组原图/局部放大及40视频图册](../../out/results/20261018_table_box_review/index.html) · [六组代表帧总览](../../out/results/20261018_table_box_review/overview.png)。绿色为桌框GT，红色为桌框预测；与下面的落点事件叠图区分。
+
 ## 结果（内部 PP 验证集，完整视频，落点宏 F1）
 
 | 指标 | 值 |

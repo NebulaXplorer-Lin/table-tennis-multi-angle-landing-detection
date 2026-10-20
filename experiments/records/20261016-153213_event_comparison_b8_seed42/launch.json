@@ -1,0 +1,34 @@
+{
+  "status": "running",
+  "live_status": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/status.json",
+  "annotation_sha256": "97ff70a411763f2944d7cd75e8fe1fc78b9ce40ddd0de8073b23275c98b273c5",
+  "counts": {
+    "train": {
+      "videos": 114,
+      "bounce_events": 613,
+      "spatial_gt_scored": 600,
+      "spatial_gt_missing": 13
+    },
+    "val": {
+      "videos": 40,
+      "bounce_events": 203,
+      "spatial_gt_scored": 189,
+      "spatial_gt_missing": 14
+    }
+  },
+  "settings": {
+    "seed": 42,
+    "mode": "frozen",
+    "window": 13,
+    "lr": 0.0003,
+    "effective_batch": 8,
+    "micro_batch": 8,
+    "feature_batch": 8,
+    "validation_batch": 128,
+    "max_epochs": 30,
+    "patience": 5
+  },
+  "validation_scope": "user confirmed exhaustive Bounce; Net masked; contact position metric uses original ball GT reference; 02_004 remains unknown",
+  "tests": "84 total:83 passed,1 removed-PNG historical check skipped",
+  "gpu": "RTX 5070 Ti"
+}

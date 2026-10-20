@@ -1,0 +1,14 @@
+{
+  "name": "scene_relative",
+  "seed": 42,
+  "event_head": "tcn",
+  "tracker": "association",
+  "scene": "relative",
+  "cached_f1": 0.7833693870862013,
+  "full_f1": 0.7833693870862013,
+  "e2e_fps": 85.10743619577228,
+  "epoch": 9,
+  "head_parameters": 197858,
+  "checkpoint_sha256": "6a1c38ba8ce3dd1d2bf8d07a7d601efc642c2ab23da2ae531b2e3bd1fd651f5f",
+  "run": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/scene_relative"
+}

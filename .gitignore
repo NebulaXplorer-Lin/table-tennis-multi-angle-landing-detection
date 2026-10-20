@@ -102,4 +102,12 @@ ttnet/runs/*/analysis/*.jpg
 /ttnet/runs/*/evaluations/**/*_events_without_coordinates.jsonl
 /ttnet/runs/*/evaluations/**/predictions.jsonl
 
-experiments/
+# experiments/ stores lightweight, reviewable records; weights and media are
+# excluded above, and working artifacts belong in out/.
+
+# Training recipes are source code, even though their directory names match
+# the broad data/experiment exclusions above.
+!/configs/datasets/
+!/configs/datasets/**
+!/configs/experiments/
+!/configs/experiments/**

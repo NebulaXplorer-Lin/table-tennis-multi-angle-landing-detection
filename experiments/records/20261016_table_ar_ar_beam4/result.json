@@ -1,0 +1,14 @@
+{
+  "name": "ar_beam4",
+  "seed": 42,
+  "event_head": "tcn",
+  "tracker": "autoregressive",
+  "scene": "box",
+  "cached_f1": 0.6595601291364003,
+  "full_f1": 0.6595601291364003,
+  "e2e_fps": 77.40135468010337,
+  "epoch": 8,
+  "head_parameters": 197858,
+  "checkpoint_sha256": "0139fa96081dd75b34bc1e7b1d26d3cebeb7c2991d80d7a00715a37ce61ba448",
+  "run": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/ar_beam4"
+}

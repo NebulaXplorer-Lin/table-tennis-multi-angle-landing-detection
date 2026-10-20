@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "status": "completed",
+  "completed": "2026-10-15T10:52:41.313295+09:00",
+  "batch": "20261015-102535_workspace",
+  "archive": "archive/20261015-102535_workspace",
+  "datasets": {
+    "pp_ball_v2": {
+      "dataset": "data/datasets/pp_ball_v2",
+      "store": "data/cache/frames/31be21667d34f45b0c7f",
+      "storage_id": "31be21667d34f45b0c7f6ff72bcd089af4a44244ecf16f485ba772cca3db38e2",
+      "frames": 23690,
+      "videos": 154
+    },
+    "openttgames_event25_v3": {
+      "dataset": "data/datasets/openttgames_event25_v3",
+      "store": "data/cache/frames/d3299f59fa021c8c845e",
+      "storage_id": "d3299f59fa021c8c845ec8f7f8054dffa1aa4be04f75115a8d0bcec34f779ca4",
+      "frames": 28883,
+      "videos": 12
+    }
+  },
+  "frames": 52573,
+  "array_bytes": 250099322808,
+  "pixel_verification": "all frames array_equal to legacy RGB decoder",
+  "tests": {
+    "passed": 60,
+    "failed": 0
+  },
+  "model_parity": {
+    "backend": "CPU FP32",
+    "max_abs_error": 0.0
+  },
+  "historical_artifacts_verified": 122,
+  "resume_validation": {
+    "passed": true,
+    "joint_config_unchanged_after_archive": true,
+    "stopped_before_first_write": true,
+    "training_steps": 0,
+    "historical_artifacts_verified": 122,
+    "local_resume": {
+      "passed": true,
+      "stopped_before_first_write": true,
+      "training_steps": 0,
+      "stage": "local",
+      "config_changed_keys": []
+    }
+  },
+  "framework_integrity": {
+    "pingpang": true,
+    "basketball": true
+  },
+  "new_training_started": false,
+  "reports": {
+    "migration": "out/workspace/frame_migration.json",
+    "model_and_reader_validation": "out/workspace/validation.json",
+    "archive_map": "out/workspace/current.json"
+  },
+  "versioned_historical_records_preserved": 80
+}

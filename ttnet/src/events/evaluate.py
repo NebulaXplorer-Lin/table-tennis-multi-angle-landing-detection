@@ -213,6 +213,9 @@ def head_benchmark(system,dest):
             w,h=system.config[name+'_input']
             count(name,module,(torch.zeros(1,3,3,h,w,device=device),torch.ones(1,3,dtype=torch.bool,device=device),
                                torch.tensor([[-.04,0.,.04]],device=device)))
+        if system.table_head is not None:
+            gw,gh=system.config['global_input']
+            count('table',system.table_head,(torch.zeros(1,32,gh//2,gw//2,device=device),))
         for _ in range(50):system.head(f,m,v)
         for _ in range(3):
             for _ in range(200):
@@ -221,12 +224,34 @@ def head_benchmark(system,dest):
                 if device.type=='cuda':torch.cuda.synchronize()
                 samples.append((time.perf_counter()-start)*1000)
     stats=dict(parameters={name:sum(p.numel() for p in module.parameters()) for name,module in
-                           [('global',system.global_model),('local',system.local_model),('head',system.head)]},
+                           [('global',system.global_model),('local',system.local_model),('head',system.head),('table',system.table_head)] if module is not None},
                head_forward_p50_ms=float(np.percentile(samples,50)),head_forward_p95_ms=float(np.percentile(samples,95)),
                input_shapes=[[1,13,256],[1,13,motion_dim],[1,13]],batch=1,device=str(device),amp=system.config['amp'],
                hardware=torch.cuda.get_device_name() if device.type=='cuda' else 'CPU',warmup=50,measured=600)
     stats.update(macs=macs,flops={k:2*v for k,v in macs.items()},
                  compute_coverage='Partial Conv1d/Conv2d/Linear hooks; 1 MAC=2 FLOPs; excludes functional/fused attention and projections, normalization, activation, pooling, resize and decoding; local assumes one ROI (association uses up to two)')
+    if system.config.get('benchmark_all_components',system.config.get('initialization')=='random'):
+        component_samples={};component_stats={}
+        with torch.inference_mode(),torch.autocast(device_type=device.type,enabled=system.config['amp'] and device.type=='cuda'):
+            for name,module in [('global',system.global_model),('local',system.local_model),('table',system.table_head)]:
+                if module is None:continue
+                if name=='table':
+                    gw,gh=system.config['global_input'];inputs=(torch.zeros(1,32,gh//2,gw//2,device=device),)
+                else:
+                    w,h=system.config[name+'_input']
+                    inputs=(torch.zeros(1,3,3,h,w,device=device),torch.ones(1,3,dtype=torch.bool,device=device),torch.tensor([[-.04,0.,.04]],device=device))
+                for _ in range(50):module(*inputs)
+                measured=[]
+                for _ in range(3):
+                    for _ in range(200):
+                        if device.type=='cuda':torch.cuda.synchronize()
+                        start=time.perf_counter();module(*inputs)
+                        if device.type=='cuda':torch.cuda.synchronize()
+                        measured.append((time.perf_counter()-start)*1000)
+                component_samples[name]=measured
+                component_stats[name]=dict(p50_ms=float(np.percentile(measured,50)),p95_ms=float(np.percentile(measured,95)),warmup=50,measured=600)
+        stats['component_forward']=component_stats
+        save(dest/'component_benchmark_samples_ms.json',component_samples)
     save(dest/'benchmark.json',stats);save(dest/'benchmark_samples_ms.json',samples)
     return stats
 

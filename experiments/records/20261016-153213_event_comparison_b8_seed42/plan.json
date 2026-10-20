@@ -1,0 +1,315 @@
+{
+  "status": "ready",
+  "root": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42",
+  "steps": [
+    {
+      "name": "A_smoke",
+      "kind": "smoke",
+      "scheme": "A",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_A_smoke",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "train",
+        "--config",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/configs/A.json",
+        "--device",
+        "cuda",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_A_smoke",
+        "--smoke"
+      ]
+    },
+    {
+      "name": "B_smoke",
+      "kind": "smoke",
+      "scheme": "B",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B_smoke",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "train",
+        "--config",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/configs/B.json",
+        "--device",
+        "cuda",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B_smoke",
+        "--smoke"
+      ]
+    },
+    {
+      "name": "C_smoke",
+      "kind": "smoke",
+      "scheme": "C",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_C_smoke",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "train",
+        "--config",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/configs/C.json",
+        "--device",
+        "cuda",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_C_smoke",
+        "--smoke"
+      ]
+    },
+    {
+      "name": "D_smoke",
+      "kind": "smoke",
+      "scheme": "D",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_D_smoke",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "train",
+        "--config",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/configs/D.json",
+        "--device",
+        "cuda",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_D_smoke",
+        "--smoke"
+      ]
+    },
+    {
+      "name": "A_train",
+      "kind": "train",
+      "scheme": "A",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_A",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "train",
+        "--config",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/configs/A.json",
+        "--device",
+        "cuda",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_A"
+      ]
+    },
+    {
+      "name": "C_train",
+      "kind": "train",
+      "scheme": "C",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_C",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "train",
+        "--config",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/configs/C.json",
+        "--device",
+        "cuda",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_C"
+      ]
+    },
+    {
+      "name": "B_train",
+      "kind": "train",
+      "scheme": "B",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "train",
+        "--config",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/configs/B.json",
+        "--device",
+        "cuda",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B"
+      ]
+    },
+    {
+      "name": "D_train",
+      "kind": "train",
+      "scheme": "D",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_D",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "train",
+        "--config",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/configs/D.json",
+        "--device",
+        "cuda",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_D"
+      ]
+    },
+    {
+      "name": "A_evaluate",
+      "kind": "evaluate",
+      "scheme": "A",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_A",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "evaluate",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_A",
+        "--device",
+        "cuda"
+      ]
+    },
+    {
+      "name": "B_evaluate",
+      "kind": "evaluate",
+      "scheme": "B",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "evaluate",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B",
+        "--device",
+        "cuda"
+      ]
+    },
+    {
+      "name": "C_evaluate",
+      "kind": "evaluate",
+      "scheme": "C",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_C",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "evaluate",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_C",
+        "--device",
+        "cuda"
+      ]
+    },
+    {
+      "name": "D_evaluate",
+      "kind": "evaluate",
+      "scheme": "D",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_D",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.cli",
+        "evaluate",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_D",
+        "--device",
+        "cuda"
+      ]
+    },
+    {
+      "name": "A0_evaluate",
+      "kind": "evaluate",
+      "scheme": "A0",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.events.comparison",
+        "evaluate",
+        "--scheme",
+        "A0",
+        "--checkpoint",
+        "/home/radno/projects/pingpong/ttnet/output/events/20261014-181231_event25_frozen/checkpoints/best.pt",
+        "--annotations",
+        "/home/radno/projects/pingpong/data/annotations/pp_bounce_confirmed_v1.json",
+        "--output",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/A0_continuous",
+        "--device",
+        "cuda"
+      ]
+    },
+    {
+      "name": "comparison",
+      "kind": "report",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.events.comparison",
+        "report",
+        "--results",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_A/evaluations/continuous/metrics.json",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_B/evaluations/continuous/metrics.json",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_C/evaluations/continuous/metrics.json",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42_D/evaluations/continuous/metrics.json",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/A0_continuous/metrics.json",
+        "--output",
+        "/home/radno/projects/pingpong/out/experiments/20261016-153213_event_comparison_b8_seed42/comparison"
+      ]
+    }
+  ],
+  "seed": 42,
+  "annotation": "/home/radno/projects/pingpong/data/annotations/pp_bounce_confirmed_v1.json",
+  "annotation_sha256": "97ff70a411763f2944d7cd75e8fe1fc78b9ce40ddd0de8073b23275c98b273c5",
+  "source_hashes": {
+    "/home/radno/projects/pingpong/ttnet/src/events/epoch_public.py": "bf4a6e721bceec419b9fc95bb48296a8842db181a531dd5d06e3dcd9ae924925",
+    "/home/radno/projects/pingpong/ttnet/src/events/confirmed_pp.py": "d9dcd6664b62e0274e37c41e22bfb08ef16c85e2336ead12a10903c77b954c6d",
+    "/home/radno/projects/pingpong/ttnet/src/events/batched_features.py": "f7e92e4118790e250905e04dfed9272fa8a4a03bed95f960d433374e12493da7",
+    "/home/radno/projects/pingpong/ttnet/src/events/pipeline.py": "d46b7445dd587b84bae8d084efd482bf8bf9bbc4c836ee1f9497f2eb2a1b2267",
+    "/home/radno/projects/pingpong/ttnet/src/events/__init__.py": "195bf8a1741c145d94a810e8688f42aebf73fc849eb544d6becd79d3e1916a93",
+    "/home/radno/projects/pingpong/ttnet/src/events/context.py": "285a6935edd766b2e4768acc2e55d78bacaf2cd184660b7aa8833dc67aded0cd",
+    "/home/radno/projects/pingpong/ttnet/src/events/evaluate.py": "69aaf61cf77176b086f21066bdad19295fd7fd3faf1a9fb815508a72d33ef17d",
+    "/home/radno/projects/pingpong/ttnet/src/events/study.py": "bff7e6b2c83b2c2bf180cfce4de244acdefcac905fafdad3c250b2dddef3f3d7",
+    "/home/radno/projects/pingpong/ttnet/src/events/inference.py": "c77de93ac591f50f3568974d4fddc10b5e7fa4258f5d474d99f2af374a89e3d1",
+    "/home/radno/projects/pingpong/ttnet/src/events/continuous.py": "59f8f69f809d037b51ac74a92e973ade7c03937edbdd6fb243f176cdb5a3dda0",
+    "/home/radno/projects/pingpong/ttnet/src/events/prepare.py": "762112b825fc00bc0bfeae2efb6c1dabefb9a92a9ffdefa92c7a2e6ddf90de5c",
+    "/home/radno/projects/pingpong/ttnet/src/events/train.py": "b0e907f5e9725d5dee57ea3285b8569d16d3ad87e71dbc442eefbc06720ba274",
+    "/home/radno/projects/pingpong/ttnet/src/events/data.py": "63a779ab633f9297b6f8ba219538b0fdef1c8b7003c8dfdd3f9374b4420d972e",
+    "/home/radno/projects/pingpong/ttnet/src/events/metrics.py": "141434ae5efd3f9d1b9d0ad8e60f3ef0b4e8bccccf295528636d4070efe6b92c",
+    "/home/radno/projects/pingpong/ttnet/src/events/report.py": "f36810247f10dda8afb500ceab016a42b3f58da3f9602e9e0a8eab869b93b578",
+    "/home/radno/projects/pingpong/ttnet/src/events/batch_benchmark.py": "b5f5bcc0a8d6018a687bcd2dba955da476b110d912e5570d1027b9b210260c50",
+    "/home/radno/projects/pingpong/ttnet/src/events/benchmark_comparison.py": "9edb322c3c1d9442de6169b66115c1efea7ddfa3cf8439ae062d6061cbc4785a",
+    "/home/radno/projects/pingpong/ttnet/src/events/comparison.py": "54c21c8fcecad6d4596920022ba2277f90eee9f0d6431896174fcb9cd37e7819",
+    "/home/radno/projects/pingpong/ttnet/src/events/engine.py": "5f6aa946910722e788ac18a024006d9017b3dccb875382f1e58be7be873a2a4c",
+    "/home/radno/projects/pingpong/ttnet/src/events/verify_comparison.py": "2fe7a5b8d619c353f44445d4fbf5f803626779c3a0880bf714975fc35525a02a",
+    "/home/radno/projects/pingpong/ttnet/src/models/__init__.py": "ecd9357a4c0d93801b3959f71b91b55b16a93b6e59842ac7aff55892efc16162",
+    "/home/radno/projects/pingpong/ttnet/src/models/event.py": "34d6b6d81ed2806bde7c73e826442f328d7124525f01b34c3e65ffd5f3f804df",
+    "/home/radno/projects/pingpong/ttnet/src/models/build.py": "fb4761b70f47dab6a6e50340ffebee5e68193a8f2a5992b6c0d53e35df04c8c1",
+    "/home/radno/projects/pingpong/ttnet/src/models/features.py": "f055ffe819d15321309b5d98eaead40298fff94c3940a1f08109d0382f264da4",
+    "/home/radno/projects/pingpong/ttnet/src/models/localizer.py": "6f97bbe367e49d2da18ca3fed64ce3bff37f04a59c1497de25cbb5ac6410187d",
+    "/home/radno/projects/pingpong/ttnet/src/tracking/__init__.py": "a00e4fb3b72cb26aed98060116c2689c6d717a721bca42c3869479bc8b872bff",
+    "/home/radno/projects/pingpong/ttnet/src/tracking/candidates.py": "02b1499461523c9ae324785213b7547b7e683720d6d69145f9fa397e6aa8025c",
+    "/home/radno/projects/pingpong/ttnet/src/tracking/independent.py": "ab47dc3b5f4c4619718dca451ee0797adc1cc3a0c7ad74aa88fb1e8f5583e40e",
+    "/home/radno/projects/pingpong/ttnet/src/tracking/runtime.py": "b87ce780ea20afa34d236968de36fd09b8932a4600559890cbff6eba2be7a6e8",
+    "/home/radno/projects/pingpong/ttnet/src/tracking/association.py": "cd761579256f17d945c4e83f6f9260884d8b257f8990be17227dab8b15453171",
+    "/home/radno/projects/pingpong/ttnet/src/cli.py": "4d04883d6e6bf6aa00b5e11df6bde33fe93c7039415a6615d2c83c4f0bc694a2",
+    "/home/radno/projects/pingpong/ttnet/src/configuration.py": "a58a2caa2b2804d0ddf99f368d7992bd6fc154ce1ef79455d50c4ffc7d23e2af",
+    "/home/radno/projects/pingpong/data/annotations/pp_bounce_confirmed_v1.json": "97ff70a411763f2944d7cd75e8fe1fc78b9ce40ddd0de8073b23275c98b273c5"
+  },
+  "remaining_after_seed42": [
+    "A and best new method seeds43/44",
+    "OpenTTGames test and PP public final generalization",
+    "final per-view and speed review"
+  ],
+  "metric_note": "PP exhaustive Bounce confirmed by user; spatial reference is original event-frame ball GT, excluding missing coordinates; camera buckets are coarse visual metadata"
+}

@@ -1,0 +1,8 @@
+{
+  "batch": "20261015-102535_workspace",
+  "source": "ttnet/runs/20261014-103011_local_fixed3_ball",
+  "evidence": [
+    "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/benchmark/metrics.json",
+    "ttnet/runs/20261014-103011_local_fixed3_ball/evaluations/best_val/metrics.json"
+  ]
+}

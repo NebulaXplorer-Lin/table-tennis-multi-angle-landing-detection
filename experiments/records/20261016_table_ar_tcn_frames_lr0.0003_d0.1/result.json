@@ -1,0 +1,14 @@
+{
+  "name": "tcn_frames_lr0.0003_d0.1",
+  "seed": 42,
+  "event_head": "tcn",
+  "tracker": "association",
+  "scene": "box",
+  "cached_f1": 0.7956432971912849,
+  "full_f1": 0.7956432971912849,
+  "e2e_fps": 77.52790415010672,
+  "epoch": 23,
+  "head_parameters": 197858,
+  "checkpoint_sha256": "2ea4168bb7e7a499fb80fbd62a4cd8c83868acc7dcaa8e90329e648f02df328c",
+  "run": "/home/radno/projects/pingpong/out/experiments/20261016_table_ar/tcn_frames_lr0.0003_d0.1"
+}

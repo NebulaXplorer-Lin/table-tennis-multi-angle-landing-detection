@@ -1,0 +1,6 @@
+{
+  "pid": 79811,
+  "status": "running",
+  "root": "/home/radno/projects/pingpong/out/experiments/20261016-154803_trajectory_priority_seed42",
+  "reason": "trajectory association diagnostic first; A/B training before C/D"
+}

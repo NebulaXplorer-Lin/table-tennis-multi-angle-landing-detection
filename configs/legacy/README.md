@@ -1,16 +1,13 @@
-# 历史方案
+# 历史兼容配置
 
-此处保留整理前配置，供核查及旧入口使用。新的完整方案从 `../experiments/` 选择。
+当前完整方案从[配置入口](../README.md)选择；训练先读[指南](../../docs/training_guide.md)。本目录与`ttnet/src/configs/`仅用于历史checkpoint/接口兼容，不以存在配置文件代表已经完成训练验证。
 
-| 方案 | 实现 / 历史入口 | 状态 |
-|---|---|---|
-| 单帧Residual FPN | `ttnet/src/models/localizer.py`；历史checkpoint自带配置 | Global完成，Local暂停 |
-| fixed3 | `fixed3.json` | 当前定位基线 |
-| fps_mask9 | `fps_mask9.json` | 已有接口，未完成训练验证 |
-| 空间多尺度 | `multiscale.json` | 已有配置，未验证收益 |
-| TCN frozen / joint | `event.json` + `ttnet.events.train --mode ...` | frozen完成，joint暂停 |
-| 官方球定位ONNX参考 | `pingpang/participant/ball_detector.py`；历史评估脚本 | 历史对照 |
-| YOLO球定位 | `scripts/run_yolo_ball*.py` | 历史实验，原结果保留 |
-| YOLO + 落点规则 | `pingpang/participant/solution.py`、`solution_local.py` | 当前赛事入口 |
+| 配置或路径 | 历史用途 |
+| --- | --- |
+| default.json | 单帧Residual FPN |
+| fixed3.json | 三帧定位原始平铺配置 |
+| fps_mask9.json | 九槽时序接口，未形成完整训练版本 |
+| multiscale.json | 空间多尺度候选，未验证收益 |
+| event.json、event_tcn_joint.json | 旧冻结/联合事件路径；中断实验已归档 |
 
-历史权重、划分和评估协议从 [统一实验索引](../../experiments/index.md) 查询。旧路径通过兼容链接保留；根目录源数据和赛事框架不变。
+保留的完整实验从[实验索引](../../experiments/index.md)查看。未来新路线以[当前计划](../../docs/next_steps.md)为准。
