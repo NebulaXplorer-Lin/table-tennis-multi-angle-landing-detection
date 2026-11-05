@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-03",
+  "timezone": "Asia/Shanghai",
+  "purpose": "Read-only evidence for table training and visual fusion planning; no training launched or model selected.",
+  "table_dataset": {
+    "path": "data/datasets/pp_table_reannotated_v1",
+    "dataset_id": "b0e8814616abec0fb69523d4711a2872172e219b2434db49028a7bb12e1377ee",
+    "metadata_sha256": "99815d52995b36d2088ea7e7a457e4da41451350f1c71b922440a7aa9ad02030",
+    "split_hashes": {
+      "train": "2a09b6f47b95ff93ed1b6bd4ced3fab8c02f71601b1f66ba83e375ccb4c16b23",
+      "val": "badc1fc0c1f8f002683e3108443137b0210077e84ac1608ea60985540330749f"
+    },
+    "label_hashes": {
+      "train": "b2467255791637477be8570a40662d83f9cb673b7777d0124240bac1efbc8c0b",
+      "val": "65e1c3a85944f2d2b14a919c5e6db41434af27a5ef3a420d01798db9003e0486"
+    },
+    "thin_definition": "(y2-y1)/image_height < 0.06",
+    "splits": {
+      "train": {
+        "videos": 114,
+        "frames": 17398,
+        "positive": 17281,
+        "unknown": 117,
+        "thin": 480,
+        "thin_ratio": 0.027776170360511544
+      },
+      "val": {
+        "videos": 40,
+        "frames": 6292,
+        "positive": 5101,
+        "unknown": 1191,
+        "thin": 629,
+        "thin_ratio": 0.12330915506763379
+      }
+    }
+  },
+  "ball_training": {
+    "task": "out/experiments/20261103-140723_mixed_ball_comparison/task.json",
+    "task_sha256": "f124ed13e3c45a5b19f73cda3fb48c70318229afbb9100f6d069b9064a6bb8c5",
+    "task_status": "evaluating",
+    "task_updated": "2026-11-03T23:23:13.958090+09:00",
+    "runs": {
+      "A": {
+        "global": {
+          "run": "out/experiments/20261103-142106_mixed_ball_A_global",
+          "run_status": "evaluated_pending_export",
+          "selection_file": "out/experiments/20261103-142106_mixed_ball_A_global/evaluations/best_selection.json",
+          "selection_sha256": "c77f1e8276a16892291ba8a8ee6c175307016c78c06944a3fb71c41d83bdc175",
+          "selected_epoch": 8,
+          "threshold": 0.9,
+          "tolerance_px": 50,
+          "f1": 0.8757489441115803,
+          "roi_coverage": 0.0
+        },
+        "local": {
+          "run": "out/experiments/20261103-142106_mixed_ball_A_local",
+          "run_status": "evaluated_pending_export",
+          "selection_file": "out/experiments/20261103-142106_mixed_ball_A_local/evaluations/best_selection.json",
+          "selection_sha256": "6d388053c50220dba825c922ad3e08d434953d3ae5aba72ccf37b689a7fc6b75",
+          "selected_epoch": 18,
+          "threshold": 0.9,
+          "tolerance_px": 10,
+          "f1": 0.873784500540222,
+          "roi_coverage": 0.8545831761599396
+        }
+      },
+      "B": {
+        "global": {
+          "run": "out/experiments/20261103-142106_mixed_ball_B_global",
+          "run_status": "trained_pending_eval",
+          "selection_file": "out/experiments/20261103-142106_mixed_ball_B_global/evaluations/best_selection.json",
+          "selection_sha256": "25a9cb383779c8d72d8ec11176dcd33367b9a4fc03573f8209030fd800e53507",
+          "selected_epoch": 13,
+          "threshold": 0.7,
+          "tolerance_px": 50,
+          "f1": 0.9098453413806111,
+          "roi_coverage": 0.0
+        },
+        "local": {
+          "run": "out/experiments/20261103-142106_mixed_ball_B_local",
+          "run_status": "trained_pending_eval",
+          "selection_file": "out/experiments/20261103-142106_mixed_ball_B_local/evaluations/best_selection.json",
+          "selection_sha256": "af6a9794894e3731b82e230f565da18c11e990c38d39213a93bf3cd9694a1d88",
+          "selected_epoch": 19,
+          "threshold": 0.9,
+          "tolerance_px": 10,
+          "f1": 0.9045643153526971,
+          "roi_coverage": 0.9251225952470766
+        }
+      }
+    },
+    "feature_compatibility": {
+      "A": {
+        "file": "out/results/20261103_mixed_ball_export_recovery/A_feature_compatibility.json",
+        "sha256": "b8f6ffdd6c0c87c9d59597ff02c9432944ba629923f6f041c1bb2e83325aa9a9",
+        "status": "passed",
+        "global_sha256": "345ce8e77767da8dcccebf9e7bf0fb938482902a4df1f081b34180f9ad261c08",
+        "local_sha256": "e1252b829979862574f53a61c421f011c31a2e432d6a4a1a508b0c4a918be5a7",
+        "cases": [
+          {
+            "source": "pp",
+            "shape": [
+              1,
+              13,
+              256
+            ],
+            "gradient_abs_sum": {
+              "global": 688.0727631673217,
+              "local": 881.1818040907383
+            }
+          },
+          {
+            "source": "event25",
+            "shape": [
+              1,
+              13,
+              256
+            ],
+            "gradient_abs_sum": {
+              "global": 746.753332965076,
+              "local": 611.8193583153188
+            }
+          }
+        ]
+      },
+      "B": {
+        "file": "out/results/20261103_mixed_ball_export_recovery/B_feature_compatibility.json",
+        "sha256": "660a474ec275e3786ce65b1fbff51b29d4239f034cbe974f0ebc356c8084053e",
+        "status": "passed",
+        "global_sha256": "04e2bdc4c50b15e40d663fc6170f6902a6ffda806a05a74554d88a4aaf7f865a",
+        "local_sha256": "ddbe968cf4eb69ce5e7ea9fa3f4fa2ac119d466d8919e618cc781470228cc8bb",
+        "cases": [
+          {
+            "source": "pp",
+            "shape": [
+              1,
+              13,
+              256
+            ],
+            "gradient_abs_sum": {
+              "global": 893.5189292579889,
+              "local": 751.3828808963299
+            }
+          },
+          {
+            "source": "event25",
+            "shape": [
+              1,
+              13,
+              256
+            ],
+            "gradient_abs_sum": {
+              "global": 616.4582412312739,
+              "local": 1565.0212388336658
+            }
+          }
+        ]
+      }
+    }
+  },
+  "source_files": {
+    "docs/next_steps.md": "7228db2c6ef0745393d6f0315fad503582a5037d5b7f2ac083d8bd1da6ae0671",
+    "docs/table_reannotation_20261103.md": "f6c77b7c006787885757d5cf6185451b7711dcc8f5e5594b4485f66f1f00cd88",
+    "docs/train_table_audit_20261103.md": "c459a70c0a63c272ac4aa96f8c2e6c329f7cef7795ac938e54e61f985a154e3d",
+    "docs/table_localization_improvement_20261018.md": "ec05eca23f5370a383034002a03c40d2b87a6ff4fbbe8eda3f3800cfaf6f9ee8",
+    "docs/event_head_improvement_20261018.md": "c9a36ffeebf77d8270e3c4eaff23aa69edb4ab3639246671bcd6ac2de5d25cee",
+    "docs/public_locator_heuristic_20261103.md": "f9255f7179dcd0e503f72addb168051731094707558e4f526b0561d3935da51d",
+    "configs/experiments/event_comparison_C.json": "f8c2e2b278ffebdd9bbbede1da932e4453bf8722cf25b87dbc063aaf2ed98e57",
+    "configs/experiments/event_tcn_reference.json": "f61670cb572c8bdb32a1f0abd771467bf269329b7ba2951ae0668407bd498b7b",
+    "ttnet/src/scene/train.py": "15da65f5dd4b35ee2c8610cbaf8deea1af2d37a6f4bf4c3ef21ce7ee6eccc0db",
+    "ttnet/src/scene/table.py": "a2a86c3e900c30530534a6d6373da4c75508ff101cd1a3625957a02374d3a9a3",
+    "ttnet/src/events/engine.py": "af2e3113cddfc24ae9ac97307cfbc1e4c209aba1811df17704e636e5989e843e",
+    "ttnet/src/events/data.py": "8d381ad79952dc708e962f8e81858a73e28ef401d011adb035f4bb8593ae9742",
+    "ttnet/src/events/batched_features.py": "5a53c7fe4abe3795923d99072c8c2f04f5ec7fbfac8ffdc8c866faa9b279e38c",
+    "ttnet/src/models/event.py": "c020d3cad370e7adc6fa96adaf4613058c68105f719c9421a428243b00b53bf0"
+  },
+  "capture_note": "Source hashes capture the planning state; next_steps.md includes the plan entry added in this task. Runtime task/run status is a captured observation, not a live status service."
+}

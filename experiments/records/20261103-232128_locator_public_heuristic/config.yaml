@@ -1,0 +1,73 @@
+{
+  "cases": {
+    "A": {
+      "variant": "A",
+      "global_threshold": 0.9,
+      "local_threshold": 0.9,
+      "global_input": [
+        512,
+        288
+      ],
+      "local_input": [
+        256,
+        256
+      ],
+      "local_crop_side_1080": 256,
+      "training_dataset_id": "1d4b900ab6d57687a576001e3723a069bd3e33a243699ad9824daa362e443dc7",
+      "threshold_selection": "PP only; public never used to tune",
+      "timestamps_path": "/home/radno/projects/pingpong/out/experiments/20261103-232128_locator_public_heuristic/public_timestamps.json",
+      "timestamps_sha256": "84517d48bd6258d5f927772c4e1234c443e57b775ab36b887d0677d5f86ffdac",
+      "inference": "ORT CUDA FP32, TF32 disabled; independent peak and trained Local, Global fallback",
+      "global_onnx": "/home/radno/projects/pingpong/out/experiments/20261103-232128_locator_public_heuristic/models/A/global.onnx",
+      "global_onnx_sha256": "9e771dc8ee4d0616bcfb72692d96431507aa12590d1245621bc3c1cc64db9542",
+      "global_checkpoint": "/home/radno/projects/pingpong/out/experiments/20261103-142106_mixed_ball_A_global/checkpoints/best.pt",
+      "global_checkpoint_sha256": "345ce8e77767da8dcccebf9e7bf0fb938482902a4df1f081b34180f9ad261c08",
+      "local_onnx": "/home/radno/projects/pingpong/out/experiments/20261103-232128_locator_public_heuristic/models/A/local.onnx",
+      "local_onnx_sha256": "1223b25cd7670b97a01554838076170ad0056085bbc1edc41de2d2541bd76652",
+      "local_checkpoint": "/home/radno/projects/pingpong/out/experiments/20261103-142106_mixed_ball_A_local/checkpoints/best.pt",
+      "local_checkpoint_sha256": "e1252b829979862574f53a61c421f011c31a2e432d6a4a1a508b0c4a918be5a7"
+    },
+    "B": {
+      "variant": "B",
+      "global_threshold": 0.7,
+      "local_threshold": 0.9,
+      "global_input": [
+        512,
+        288
+      ],
+      "local_input": [
+        256,
+        256
+      ],
+      "local_crop_side_1080": 256,
+      "training_dataset_id": "1d4b900ab6d57687a576001e3723a069bd3e33a243699ad9824daa362e443dc7",
+      "threshold_selection": "PP only; public never used to tune",
+      "timestamps_path": "/home/radno/projects/pingpong/out/experiments/20261103-232128_locator_public_heuristic/public_timestamps.json",
+      "timestamps_sha256": "84517d48bd6258d5f927772c4e1234c443e57b775ab36b887d0677d5f86ffdac",
+      "inference": "ORT CUDA FP32, TF32 disabled; independent peak and trained Local, Global fallback",
+      "global_onnx": "/home/radno/projects/pingpong/out/experiments/20261103-232128_locator_public_heuristic/models/B/global.onnx",
+      "global_onnx_sha256": "cc8fa5d0ceff65ed4e5956cabf46f4718575945991e3abf720b4f51e956f90d6",
+      "global_checkpoint": "/home/radno/projects/pingpong/out/experiments/20261103-142106_mixed_ball_B_global/checkpoints/best.pt",
+      "global_checkpoint_sha256": "04e2bdc4c50b15e40d663fc6170f6902a6ffda806a05a74554d88a4aaf7f865a",
+      "local_onnx": "/home/radno/projects/pingpong/out/experiments/20261103-232128_locator_public_heuristic/models/B/local.onnx",
+      "local_onnx_sha256": "3adb2b573c5834a60b5e16174a6ff60bc60060c350d73beb9e72a1781a802bdc",
+      "local_checkpoint": "/home/radno/projects/pingpong/out/experiments/20261103-142106_mixed_ball_B_local/checkpoints/best.pt",
+      "local_checkpoint_sha256": "ddbe968cf4eb69ce5e7ea9fa3f4fa2ac119d466d8919e618cc781470228cc8bb"
+    }
+  },
+  "heuristic": {
+    "MIN_GAP": 10,
+    "FALL_AMP": 2,
+    "RISE_AMP": 1,
+    "CONF_TH": 0.05
+  },
+  "baseline_onnx_sha256": "7e8392b9054755ec11e622caed52835184459131ecc93e2ca584ed4ea1c6c63e",
+  "source_hashes": {
+    "pingpang/participant/solution.py": "d487df6c3a1f97667f41412c1dec5f0fb8535c04a106229ab0bf0b7c96810ce6",
+    "pingpang/participant/solution_local.py": "5a54c65f79db65927fcbd36487740760e9615346f9abdc3b3a7be4aec280a532",
+    "pingpang/participant/solution_locator_local.py": "611c2645e67d9126b94cb095cf45126b1f01e51ef76a764995709842793fa42e",
+    "ttnet/src/data_tools/geometry.py": "358b4e1fa95da79a1e6a4fdb9d58139c274885066f647068c9698b186e60b83f",
+    "ttnet/src/tracking/independent.py": "ab47dc3b5f4c4619718dca451ee0797adc1cc3a0c7ad74aa88fb1e8f5583e40e",
+    "/home/radno/projects/pingpong/scripts/evaluate_locator_public.py": "67e6001321cc5f46ee2d0de550d50af3b667d331f89674714ed9ed0fdb14a413"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "status": "failed",
+  "started": "2026-11-03T23:19:54.186543+09:00",
+  "stage": "public_landing",
+  "experiment_id": "20261103-231953_locator_public_heuristic",
+  "command": [
+    "scripts/evaluate_locator_public.py",
+    "--output",
+    "/home/radno/projects/pingpong/out/experiments/20261103-231953_locator_public_heuristic"
+  ],
+  "finished": "2026-11-03T23:19:54.247679+09:00",
+  "error": "ValueError('public source does not support frame_id/fps timing')"
+}

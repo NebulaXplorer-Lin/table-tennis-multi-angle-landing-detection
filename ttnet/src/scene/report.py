@@ -6,11 +6,14 @@ import numpy as np
 from ttnet.common import DATA,save
 from ttnet.evaluation.ball_corpus import BallCorpus
 from ttnet.data_tools.geometry import letterbox_transform
-from ttnet.scene.table import decode_table,annotations
+from ttnet.scene.table import decode_table,annotations,annotation_identity
 
 
 def render(run):
-    corpus=BallCorpus(DATA,'val');labels,_=annotations('val');rows=json.loads((run/'val_predictions.json').read_text());by={}
+    config=json.loads((run/'config.yaml').read_text()) if (run/'config.yaml').exists() else {}
+    if config.get('table_dataset') and annotation_identity(config['table_dataset'])!=config['table_annotations']:
+        raise ValueError('table overlay labels differ from training labels')
+    corpus=BallCorpus(DATA,'val');labels,_=annotations('val',dataset=config.get('table_dataset'));rows=json.loads((run/'val_predictions.json').read_text());by={}
     for r in rows:by.setdefault(r['video_id'],{})[r['frame_id']]=r
     dest=run/'overlays';dest.mkdir(exist_ok=True);errors=[]
     for vid,frames in by.items():

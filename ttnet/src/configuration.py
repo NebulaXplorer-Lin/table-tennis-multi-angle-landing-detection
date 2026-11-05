@@ -11,7 +11,12 @@ COMPONENT_KEYS = {'localizer','tracker','event_head','training'}
 EXPERIMENT_KEYS = {'schema_version','name','task','components','dataset','parameters','description'}
 EXTRA_PARAMETERS = {'context_head','scene_mode','head_dropout','time_encoding','event_window_mode','table_checkpoint','table_source','ar_checkpoint','ar_beam_size','ar_use_table','mode','localizer_type','tracker_type','event_head_type','local_crop_side_1080',
                     'feature_batch','validation_batch','association','transformer','pp_annotations','sampling_protocol','local_crop_cache','global_train_scales','local_train_scales','data','dataset','global_checkpoint','local_checkpoint'}
+EXTRA_PARAMETERS |= {'global_localizer_type', 'local_localizer_type', 'source_sampling'}
+EXTRA_PARAMETERS |= {'global_threshold','local_threshold','table_frontend','table_fusion',
+                     'table_geometry_version','motion_max_step_fraction','table_pool'}
+EXTRA_PARAMETERS |= {'public_validation_root'}
 PATH_KEYS = {'global_checkpoint','local_checkpoint','data','dataset','pp_annotations'}
+PATH_KEYS |= {'public_validation_root'}
 ALIASES = {'localizer.type':'localizer_type','localizer.temporal_mode':'temporal_mode',
            'tracker.type':'tracker_type','event_head.type':'event_head_type'}
 
@@ -114,8 +119,9 @@ def load_config(path, overrides=()):
     for key in PATH_KEYS:
         if config.get(key):config[key] = str(project_path(config[key]))
     config['data' if document['task']=='ball' else 'dataset'] = str(project_path(dataset['path']))
-    if config.get('localizer_type','residual_fpn') != 'residual_fpn':
-        raise ValueError('only localizer_type=residual_fpn is implemented')
+    for key in ('localizer_type', 'global_localizer_type', 'local_localizer_type'):
+        if key in config and config[key] not in ('residual_fpn', 'high_resolution_se'):
+            raise ValueError(f'unsupported {key}')
     if config.get('tracker_type','independent') not in ('independent','association'):
         raise ValueError('unsupported tracker_type')
     if config.get('tracker_type') == 'association':
@@ -123,6 +129,26 @@ def load_config(path, overrides=()):
         from ttnet.tracking.association import BeamTracker
         BeamTracker(config.get('association'))
     if document['task']=='event':
+        if config.get('table_frontend'):
+            from ttnet.scene.visual_cache import validate_frontend
+            validate_frontend(config['table_frontend'])
+            if config.get('table_checkpoint') or config.get('table_source','predicted')!='predicted':
+                raise ValueError('spatial table frontend cannot use legacy/oracle table input')
+            config['table_frontend']['checkpoint'] = str(project_path(config['table_frontend']['checkpoint']))
+            if config['table_frontend']['source']=='shared_global' and config['table_frontend']['input']!=config['global_input']:
+                raise ValueError('shared table input must match Global')
+        if config.get('table_fusion'):
+            spec = config['table_fusion']
+            if set(spec)!={'mode','channels'} or spec['mode'] not in ('none','geometry','concat','zero','gated') or type(spec['channels']) is not int or spec['channels']<1:
+                raise ValueError('invalid table_fusion configuration')
+            if config.get('event_head_type')!='tcn' or not config.get('context_head') or config.get('mode')!='frozen':
+                raise ValueError('table fusion currently requires frozen context TCN')
+            if spec['mode']!='none' and not config.get('table_frontend'):
+                raise ValueError('table geometry/visual fusion requires a trained frontend')
+            if config.get('table_frontend') and spec['channels']!=config['table_frontend']['channels']:
+                raise ValueError('table head/frontend channel mismatch')
+            if config.get('table_geometry_version')!='stable_v1' or config.get('table_smoothing'):
+                raise ValueError('first spatial table fusion requires stable_v1 geometry without smoothing')
         if config.get('event_head_type') not in ('tcn','transformer'):
             raise ValueError('unsupported event_head_type')
         if config.get('event_head_type') == 'transformer':

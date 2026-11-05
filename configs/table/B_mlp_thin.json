@@ -1,0 +1,22 @@
+{
+  "seed": 42,
+  "epochs": 60,
+  "patience": 10,
+  "batch": 128,
+  "feature_batch": 8,
+  "lr": 0.0003,
+  "weight_decay": 0.0001,
+  "table_pool": [16, 4],
+  "thin_fraction": 0.1,
+  "max_thin_frame_repeats": 4,
+  "max_thin_video_fraction": 0.3,
+  "relative_y_weight": 0.25,
+  "log_height_weight": 0.25,
+  "height_floor": 0.02,
+  "height_epsilon": 0.0001,
+  "smooth_l1_beta": 1.0,
+  "selection": "val_frame_mean_iou",
+  "global_checkpoint": "out/experiments/20261103-142106_mixed_ball_B_global/checkpoints/best.pt",
+  "table_dataset": "data/datasets/pp_table_reannotated_v1",
+  "baseline_run": "out/experiments/20261104-142741_B_legacy_mlp_control/B"
+}

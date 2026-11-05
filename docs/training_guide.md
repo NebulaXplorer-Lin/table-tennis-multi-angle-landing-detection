@@ -1,6 +1,10 @@
 # 数据准备与训练指南
 
-更新：2026-10-20。先读 [Quick intro](quick_intro.md) 理解模型和评估口径。本页命令在仓库根目录执行；训练示例会新建实验，不覆盖保留版本。
+更新：2026-11-05。先读 [Quick intro](quick_intro.md) 理解模型和评估口径。本页命令在仓库根目录执行；训练示例会新建实验，不覆盖保留版本。
+
+当前协议为 [PP154训练 / pp_public最终落点验证](public_event_study_20261105.md)，split_id=`pp154_public15_event_v1`。旧PP40已并入事件训练；OpenTT game5仅作稀疏辅助诊断，最终epoch与Bounce阈值按public宏F1选择。public无监督训练样本，后文PP114/40与public只外测的旧命令属于历史协议。本轮九组已完成，结果见[交付页](../result/public_event_20261105/README.md)。
+
+同配方新实验可用 `configs/experiments/event_public_B_gated_seed43.json`（另有F0/concat与42/43/44配对配置），通过 `ttnet.cli train` 新建运行；`ttnet.cli evaluate --run ...` 会路由完整public评估。YOLO桌面分支使用仓库既有 `out/yolo-deps` 中固定的ultralytics 8.3.225。已完成任务无需重启协调器；独立审计与打包入口分别是 `scripts.report_public_event_study` 和 `scripts.package_public_event_best`。
 
 ## 1. 环境与文件准备
 
@@ -76,6 +80,7 @@ python3 scripts/prepare_data.py --check-only
 - `pp_ball_events_v1` 保留人工粗事件及 unknown；实际事件训练配置指向 `data/annotations/pp_bounce_confirmed_v1.json`。该版仅在确认完整区间将未标 Bounce 当负类，ignore、空导出保持 unknown，PP Net 屏蔽。
 - OpenTTGames `game_1–4` 训练、`game_5` 验证、`test_1–7` 外测；真实 PTS 采样到 25fps。原生帧号、source frame id、数组行号分别记录。
 - 球位置缺失不等于无球；桌框缺失不等于无桌。PP 事件帧球心不是人工接触点。
+- 桌框已发布`pp_table_reannotated_v1`（2026-11-03），修复原val中的六个错框，train标签不变；使用`ttnet.scene.train --table-dataset data/datasets/pp_table_reannotated_v1`显式读取。它是桌框专用格式，不替换球定位/事件数据集，详见[修订与读取说明](table_reannotation_20261103.md)。
 - 标签修改建立新数据版本及修订记录，重建相关监督/特征缓存；前端权重、读取后端或实现身份变化后也不复用旧特征身份。
 
 数据规模与证据见[训练白皮书](training_whitepaper_20261018.md)，事件补标细节见[合并说明](pp_event_merge.md)。

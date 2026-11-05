@@ -1,0 +1,15 @@
+{
+  "status": "completed",
+  "stage": "local",
+  "started": "2026-11-03T16:35:10.105518+09:00",
+  "finished": "2026-11-03T17:28:03.024758+09:00",
+  "epochs_completed": 20,
+  "best_epoch": 18,
+  "threshold": 0.9,
+  "dataset_id": "1d4b900ab6d57687a576001e3723a069bd3e33a243699ad9824daa362e443dc7",
+  "stop_reason": "max_epochs",
+  "best_sha256": "e1252b829979862574f53a61c421f011c31a2e432d6a4a1a508b0c4a918be5a7",
+  "last_sha256": "431cd403ac47a957159d915a7bd07c29e37ae72eb22516bcfe6e53f7e3eb4ef0",
+  "evaluation": "evaluations/best_val",
+  "completed": "2026-11-04T15:27:25.448593+09:00"
+}

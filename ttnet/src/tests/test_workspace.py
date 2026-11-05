@@ -14,7 +14,7 @@ from unittest.mock import patch
 import cv2
 import numpy as np
 
-from ttnet.common import PROJECT,identity,save,save_jsonl
+from ttnet.common import PROJECT,identity,save,save_jsonl,sha
 from ttnet.configuration import load_config,merge
 from ttnet.data_tools.frame_store import FrameStore,pack_video,image_rgb
 from ttnet.data_tools.storage_check import verify_store
@@ -167,6 +167,101 @@ class ConfigurationTests(unittest.TestCase):
                 self.assertEqual([r['experiment_id'] for r in rows],['retained','complete'])
             self.assertEqual(json.loads((runs/'complete/run.json').read_text())['status'],
                              'trained_pending_eval')
+
+    def public_index_fixture(self,root):
+        run=root/'out/experiments/public_run'
+        record=root/'experiments/records/public_run'
+        save(run/'config.yaml',dict(stage='event',scheme='public_fixture',smoke=False,
+            dataset_id='pp154_public15',split_id='pp154_public15_event_v1',
+            public_validation_root=str(root/'public')))
+        save(run/'run.json',dict(status='trained_pending_eval'))
+        checkpoint=run/'checkpoints/best.pt';checkpoint.parent.mkdir()
+        checkpoint.write_bytes(b'fixed-checkpoint')
+        # The report references a later successful attempt. Earlier output must
+        # not be selected by directory naming or score.
+        save(run/'evaluations/public/metrics.json',dict(status='evaluated',macro_f1=.99))
+        save(run/'evaluations/continuous/metrics.json',dict(status='evaluated',
+            metrics=dict(macro_f1=.98),e2e_fps=90))
+        metrics=run/'evaluations/public_attempt003/metrics.json'
+        save(metrics,dict(status='evaluated',validation_set='pp_public',macro_f1=.61,
+            checkpoint_sha256=sha(checkpoint),e2e_fps=45,
+            cache_online_parity=dict(passed=True,decisions_equal=True,landing_decisions_equal=True)))
+        study=root/'out/study/completion.json'
+        save(study,dict(status='completed',validation_set='pp_public',all_checks_passed=True))
+        reference=dict(status='completed',validation_set='pp_public',eval_id='public',
+            metrics=str(metrics),metrics_sha256=sha(metrics),checkpoint=str(checkpoint),
+            checkpoint_sha256=sha(checkpoint),best_epoch=7)
+        completion=record/'public_completion.json'
+        save(completion,dict(schema='public_event_run_completion_v1',status='completed',
+            experiment_id=run.name,evaluation=reference,study_completion=str(study),
+            study_completion_sha256=sha(study)))
+        summary=record/'summary.md';summary.write_text('# Completed public result\n')
+        return dict(run=run,record=record,metrics=metrics,checkpoint=checkpoint,
+                    completion=completion,study=study,summary=summary)
+
+    def public_index_rows(self,root):
+        from ttnet.workspace import refresh_index
+        with patch.multiple('ttnet.workspace',PROJECT=root,ROOT=root/'ttnet',
+                RUNS=root/'out/experiments',OUTPUT=root/'out/results'):
+            refresh_index()
+        return json.loads((root/'experiments/index.json').read_text())['experiments']
+
+    def test_public_index_uses_bound_completion_attempt_and_preserves_training_state(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);files=self.public_index_fixture(root)
+            state_hash=sha(files['run']/'run.json')
+            rows=self.public_index_rows(root)
+            self.assertEqual(len(rows),1)
+            row=rows[0]
+            self.assertEqual(row['status'],'completed')
+            self.assertEqual(row['metric_scope'],'pp_public_validation_landing_macro_f1')
+            self.assertEqual(row['eval_id'],'public')
+            self.assertEqual(row['f1'],.61)
+            self.assertEqual(row['e2e_fps'],45)
+            self.assertEqual(row['best_epoch'],7)
+            self.assertEqual(row['summary'],'experiments/records/public_run/summary.md')
+            self.assertEqual(sha(files['run']/'run.json'),state_hash)
+
+    def test_public_index_does_not_promote_missing_failed_or_changed_evidence(self):
+        cases=('missing_receipt','failed_parity','changed_metrics','changed_checkpoint',
+               'failed_study','missing_summary','wrong_run','outside_run','malformed_receipt')
+        for case in cases:
+            with self.subTest(case=case),tempfile.TemporaryDirectory() as temp:
+                root=Path(temp);files=self.public_index_fixture(root)
+                receipt=json.loads(files['completion'].read_text())
+                if case=='missing_receipt':
+                    files['completion'].unlink()
+                elif case=='failed_parity':
+                    metric=json.loads(files['metrics'].read_text())
+                    metric['cache_online_parity']['landing_decisions_equal']=False
+                    save(files['metrics'],metric)
+                    receipt['evaluation']['metrics_sha256']=sha(files['metrics'])
+                    save(files['completion'],receipt)
+                elif case=='changed_metrics':
+                    files['metrics'].write_text(files['metrics'].read_text()+'\n')
+                elif case=='changed_checkpoint':
+                    files['checkpoint'].write_bytes(b'replaced-checkpoint')
+                elif case=='failed_study':
+                    save(files['study'],dict(status='completed',validation_set='pp_public',all_checks_passed=False))
+                    receipt['study_completion_sha256']=sha(files['study'])
+                    save(files['completion'],receipt)
+                elif case=='missing_summary':
+                    files['summary'].unlink()
+                elif case=='wrong_run':
+                    receipt['experiment_id']='another-run';save(files['completion'],receipt)
+                elif case=='outside_run':
+                    outside=root/'different-run/metrics.json'
+                    save(outside,json.loads(files['metrics'].read_text()))
+                    receipt['evaluation']['metrics']=str(outside)
+                    receipt['evaluation']['metrics_sha256']=sha(outside)
+                    save(files['completion'],receipt)
+                elif case=='malformed_receipt':
+                    save(files['completion'],[])
+                rows=self.public_index_rows(root)
+                self.assertEqual(len(rows),1)
+                self.assertEqual(rows[0]['metric_scope'],'unscored')
+                self.assertIsNone(rows[0]['f1'])
+                self.assertEqual(rows[0]['status'],'trained_pending_eval')
 
     def test_unknown_unimplemented_and_mistyped_overrides_fail(self):
         for override in ('lrr=0.1','event_head.type=invalid','tracker.type=invalid','seed=true','window=25'):

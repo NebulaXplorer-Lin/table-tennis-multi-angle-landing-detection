@@ -17,14 +17,30 @@ from ttnet.data_tools.geometry import crop_image,crop_transform,letterbox
 from ttnet.training.dataset import normalize,read_rgb
 from ttnet.training.scales import input_size
 from ttnet.training.dataset import BallDataset
+from ttnet.models.high_resolution import export_stable_norms
 from ttnet.temporal import temporal_mode,slots_for_mode
-from .inference import load_model
+from .inference import load_model,validate_evaluation_source
+
+
+class DescriptorExport(torch.nn.Module):
+    """Use short spatial reductions for the unchanged 2x2 descriptor bins."""
+    def __init__(self,model):
+        super().__init__()
+        self.model=model
+
+    def forward(self,images,frame_valid=None,time_offsets_sec=None):
+        heat,_,spatial=self.model(images,frame_valid,time_offsets_sec,return_spatial=True)
+        b,c,h,w=spatial.shape
+        features=spatial.float().reshape(b,c,2,h//2,2,w//2).mean(5).mean(3).to(spatial.dtype).flatten(1)
+        return heat,features
 
 
 def export_one(checkpoint,dataset,dest,stage):
     torch.set_num_threads(4)
     model,info=load_model(checkpoint,torch.device('cpu'))
-    if info['dataset_id']!=json.loads((dataset/'metadata/dataset.json').read_text())['dataset_id']:raise ValueError('export dataset identity differs')
+    # Export-only normalization uses shorter reductions; runtime GroupNorm is unchanged.
+    export_stable_norms(model)
+    validate_evaluation_source(info,json.loads((dataset/'metadata/dataset.json').read_text()))
     w,h=input_size(info.get('config'),stage)
     model.export_pool_kernel=(h//4,w//4)
     mode=temporal_mode(info.get('config'));slots=slots_for_mode(mode)
@@ -36,7 +52,7 @@ def export_one(checkpoint,dataset,dest,stage):
         dummy=torch.zeros((1,3,h,w));names=['input']
     path=dest/f'{stage}.onnx'
     with torch.inference_mode():
-        torch.onnx.export(model,dummy,path,input_names=names,output_names=['heatmap','features'],
+        torch.onnx.export(DescriptorExport(model),dummy,path,input_names=names,output_names=['heatmap','features'],
                           opset_version=17,dynamic_axes={name:{0:'batch'} for name in names+['heatmap','features']},dynamo=False)
     graph=onnx.load(path);onnx.checker.check_model(graph,full_check=True)
     opts=ort.SessionOptions();opts.intra_op_num_threads=4;opts.inter_op_num_threads=1
@@ -69,6 +85,12 @@ def export_one(checkpoint,dataset,dest,stage):
                                                info.get('config',{}).get('local_crop_side_1080',256)))
         inputs.append(dict(input=normalize(rgb)[None]))
     inputs.append({k:np.concatenate([v,v],axis=0) for k,v in inputs[-1].items()})
+    if multi:
+        center_only=[False]*slots;center_only[slots//2]=True
+        for mask in (center_only,[False]*slots):
+            masked={k:v.copy() for k,v in inputs[1].items()}
+            masked['frame_valid'][:]=mask
+            inputs.append(masked)
     for feeds in inputs:
         with torch.inference_mode():expected=[v.numpy() for v in model(*(torch.from_numpy(feeds[k]) for k in names))]
         actual=session.run(None,feeds)
@@ -79,6 +101,8 @@ def export_one(checkpoint,dataset,dest,stage):
     return dict(stage=stage,checkpoint_sha256=sha(checkpoint),onnx_sha256=sha(path),opset=17,
                 temporal_mode=mode,input_shape=[None,slots,3,h,w] if multi else [None,3,h,w],input_names=names,
                 mask_shape=[None,slots] if multi else None,output_shapes=[[None,1,h//2,w//2],[None,128]],threshold=info['threshold'],
+                export_transform=dict(group_norm='sequential spatial/channel reductions, unchanged runtime',
+                                      descriptor='same 2x2 bins, sequential FP32 spatial means',implementation_sha256=sha(__file__)),
                 parity=dict(backend='ONNX Runtime CPU FP32 vs PyTorch CPU FP32',atol=2e-4,rtol=2e-4,cases=errors,passed=True))
 
 

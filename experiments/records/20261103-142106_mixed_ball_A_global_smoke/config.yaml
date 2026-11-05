@@ -1,0 +1,91 @@
+{
+  "model": "temporal residual FPN, shared per-frame encoder + ordered spatial fusion at all 4 scales",
+  "global_input": [
+    512,
+    288
+  ],
+  "local_input": [
+    256,
+    256
+  ],
+  "pretrained": null,
+  "sigma": 1.5,
+  "window_half_span_sec": 0.03333333333333333,
+  "temporal_mode": "fixed3",
+  "localizer_type": "residual_fpn",
+  "local_crop_side_1080": 256,
+  "optimizer": "AdamW",
+  "lr": 0.0003,
+  "weight_decay": 0.0001,
+  "effective_batch": 16,
+  "micro_batch": 8,
+  "epochs": 20,
+  "patience": 5,
+  "gt_crop_epochs": 10,
+  "seed": 42,
+  "amp": true,
+  "workers": 2,
+  "torch_threads": 2,
+  "lr_schedule": "constant",
+  "warmup_epochs": 0,
+  "global_best_tolerance_px": 50,
+  "local_best_tolerance_px": 10,
+  "augmentation": {
+    "horizontal_flip": 0.5,
+    "brightness_scale": [
+      0.85,
+      1.15
+    ],
+    "brightness_offset": [
+      -8,
+      8
+    ],
+    "gt_crop_jitter_fraction": 0.2
+  },
+  "loss": "foreground/background separately normalized Gaussian heatmap MSE",
+  "event_head": false,
+  "resize_cache": true,
+  "early_stopping": {
+    "mode": "loss_and_f1",
+    "patience": 5,
+    "loss_relative_min_delta": 0.01,
+    "f1_min_delta": 0.002,
+    "loss_metric": "epoch_mean_train_loss"
+  },
+  "global_localizer_type": "residual_fpn",
+  "local_localizer_type": "residual_fpn",
+  "source_sampling": "pp_opentt_50_50",
+  "local_crop_cache": true,
+  "data": "/home/radno/projects/pingpong/data/datasets/pp_opentt_ball_v1",
+  "scheme": "ball_mixed_baseline",
+  "stage": "global",
+  "smoke": true,
+  "device": "cuda",
+  "frame_stride": 1,
+  "frame_window": 3,
+  "feature_window_slots": 3,
+  "batch": 8,
+  "gradient_accumulation": 2,
+  "global_checkpoint": null,
+  "dataset_id": "1d4b900ab6d57687a576001e3723a069bd3e33a243699ad9824daa362e443dc7",
+  "split_id": "pp_opentt_ball_mixed_v1",
+  "split_hashes": {
+    "train": "ebe890491863c867432cfd8dd066735c08bd73049f422e517a2204f8ba57222d",
+    "val": "f044c71ea9500b4c7c615132718cf0fb910e4b74e21b60135707f4dc1b6e2213",
+    "test": "cb9c79b0d39a525b903b409ed179fad0a73891d02a68d18df02463863c0d6827"
+  },
+  "train_videos": 118,
+  "val_videos": 41,
+  "train_frames": 55966,
+  "val_frames": 13685,
+  "data_policy": "all decoded frames preserved; only positive/confirmed negative labels supervised; unknown/ignore masked",
+  "source_datasets": {
+    "pp": {
+      "dataset_id": "f2552a61b4598b68b115854a6ec1995f61c1283eab673c7c376d47c2e2cf2c65",
+      "split_hashes": {
+        "train": "2a09b6f47b95ff93ed1b6bd4ced3fab8c02f71601b1f66ba83e375ccb4c16b23",
+        "val": "badc1fc0c1f8f002683e3108443137b0210077e84ac1608ea60985540330749f"
+      }
+    }
+  }
+}

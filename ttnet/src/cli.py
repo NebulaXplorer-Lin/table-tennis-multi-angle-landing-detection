@@ -61,7 +61,12 @@ def execution_plan(args):
     elif task=='event':
         if args.dataset or args.global_checkpoint or args.local_checkpoint:
             raise ValueError('event evaluation uses the dataset and full system weights saved in the run')
-        if args.command=='evaluate' and config.get('best_metric')=='pp_landing_macro_f1':
+        if args.command=='evaluate' and config.get('public_validation_root'):
+            if args.resume:raise ValueError('use a new public evaluation output directory')
+            add('scripts.evaluate_public_event','--checkpoint',run/'checkpoints/best.pt',
+                '--public',config['public_validation_root'],'--output',run/'evaluations/public',
+                '--device',args.device)
+        elif args.command=='evaluate' and config.get('best_metric')=='pp_landing_macro_f1':
             if args.resume:raise ValueError('use a new evaluation output directory for continuous comparison')
             add('ttnet.events.comparison','evaluate','--checkpoint',run/'checkpoints/best.pt',
                 '--annotations',config['pp_annotations'],'--output',run/'evaluations/continuous',

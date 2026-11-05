@@ -9,6 +9,7 @@ import numpy as np
 import torch
 
 from ttnet.configuration import load_config
+from ttnet.common import save
 from ttnet.models.build import build_event_head
 from ttnet.models.event import event_loss
 from ttnet.tracking.association import BeamTracker
@@ -303,6 +304,8 @@ class ContextAndProtocolTests(unittest.TestCase):
                 self.samples=dict(val=[],train=[dict(video_id='a',anchor=i,frame_id=i,group=k,target=[1.,0.],supervised=[True,True]) for i,k in enumerate(('bounce','net','empty_event'))])
         def attach(corpus,path):
             corpus.samples['train'].append(dict(video_id='pp_a',anchor=0,frame_id=0,group='pp_continuous',source='pp',target=[0.,0.],supervised=[True,False]))
+        def prepare_cache(system,corpus,dest):
+            save(dest/'identity.json',cache_identity(system,corpus))
         class System(torch.nn.Module):
             def __init__(self,cfg,device):
                 super().__init__();self.config=cfg;self.mode='frozen';self.global_model=torch.nn.Linear(2,2);self.local_model=torch.nn.Linear(2,2);self.head=torch.nn.Linear(9,2)
@@ -320,7 +323,7 @@ class ContextAndProtocolTests(unittest.TestCase):
             args=Namespace(config=path,dataset=root,cache=root/'cache',run=root/'run',device='cpu',mode='frozen',smoke=False,resume=False,restart_incomplete=False)
             continuous=[(dict(macro_f1=f,landing=dict(fp=2),threshold=.6),[],{}) for f in (.2,.8)]
             with patch('ttnet.events.train.EventCorpus',Corpus),patch('ttnet.events.train.EventSystem',System),\
-                 patch('ttnet.events.continuous.attach_pp',side_effect=attach),patch('ttnet.events.train.build_cache'),\
+                 patch('ttnet.events.continuous.attach_pp',side_effect=attach),patch('ttnet.events.train.build_cache',side_effect=prepare_cache),\
                  patch('ttnet.events.train.load_cache',return_value={}),patch('ttnet.events.train.cached_forward',side_effect=lambda s,c,k,x:s.head(torch.ones(1,9))),\
                  patch('ttnet.events.train.validate',side_effect=[(.1,anchors),(.9,anchors)]),\
                  patch('ttnet.events.continuous.validate_continuous',side_effect=continuous):

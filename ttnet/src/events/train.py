@@ -51,7 +51,8 @@ def cached_forward_batch(system,corpus,cache,samples):
             features,records=cache[vid]
             corpus._tensor_windows[key]=assemble_window(corpus,vid,sample['frame_id'],features,records,torch.device('cpu'),system.config)
         inputs.append(corpus._tensor_windows[key])
-    tensors=[torch.cat([item[k] for item in inputs]).to(system.device,non_blocking=True) for k in range(3)]
+    from ttnet.scene.visual_cache import batch_windows
+    tensors=batch_windows(inputs,system.device)
     return system.head(*tensors)
 
 
@@ -142,6 +143,9 @@ def train(args):
         if not cfg.get('pp_annotations'):raise ValueError('reviewed PP annotations are required')
         from ttnet.events.continuous import attach_pp
         attach_pp(corpus,cfg['pp_annotations'])
+        if cfg.get('public_validation_root'):
+            from ttnet.events.public_validation import attach_public_validation
+            attach_public_validation(corpus,cfg['public_validation_root'],cfg)
     if not corpus.metadata['complete'] or corpus.metadata['pilot']:
         if not args.smoke:raise ValueError('formal training requires complete, non-pilot dataset')
     dataset_path=cfg.get('dataset',str(args.dataset)) if args.resume else str(args.dataset.resolve())
@@ -172,6 +176,8 @@ def train(args):
     args.run.mkdir(parents=True,exist_ok=True)
     if args.resume and json.loads((args.run/'config.yaml').read_text())!=cfg:raise ValueError('resume config/data mismatch')
     save(args.run/'config.yaml',cfg)
+    if cfg.get('public_validation_root'):
+        save(args.run/'public_split_audit.json',corpus.public_split_audit)
     attempts=args.run/'attempts';attempts.mkdir(exist_ok=True)
     attempt=attempts/f'{len(list(attempts.iterdir()))+1:03d}';attempt.mkdir()
     save(attempt/'environment.json',dict(started=now(),torch=torch.__version__,cuda=torch.version.cuda,
@@ -209,6 +215,12 @@ def train(args):
             for part in ('train','val') for vid in corpus.split[part] for suffix in ('.npz','.jsonl'))
         if not complete:build_cache(system,corpus,args.cache)
         cache=load_cache(corpus,args.cache,expected=cache_identity(system,corpus))
+        save(attempt/'feature_cache.json',dict(
+            schema='event_training_feature_cache_v1',path=str(args.cache.resolve()),
+            identity=cache_identity(system,corpus),identity_sha256=sha(args.cache/'identity.json'),
+            derivation_sha256=sha(args.cache/'derivation.json') if (args.cache/'derivation.json').is_file() else None,
+            public_split_derivation_sha256=sha(args.cache/'public_split_derivation.json') if (args.cache/'public_split_derivation.json').is_file() else None,
+            recorded=now(),note='Actual cache accepted by load_cache before the first optimizer step.'))
     locator_before=(state_digest(system.global_model),state_digest(system.local_model))
     if args.smoke:
         if args.mode=='frozen':
@@ -282,8 +294,12 @@ def train(args):
         val_loss,rows=validate(system,corpus,val_cache)
         continuous=None;sweep=None;continuous_rows=None
         if continuous_selection:
-            from ttnet.events.continuous import validate_continuous
-            continuous,sweep,continuous_rows=validate_continuous(system,corpus,val_cache,cfg['threshold_grid'])
+            if cfg.get('public_validation_root'):
+                from ttnet.events.public_validation import validate_public_cached
+                continuous,sweep,continuous_rows=validate_public_cached(system,corpus,val_cache,cfg['threshold_grid'])
+            else:
+                from ttnet.events.continuous import validate_continuous
+                continuous,sweep,continuous_rows=validate_continuous(system,corpus,val_cache,cfg['threshold_grid'])
             thresholds=[continuous['threshold'],.5]
             selection=(-continuous['macro_f1'],continuous['landing']['fp'])
             improved=selection<best

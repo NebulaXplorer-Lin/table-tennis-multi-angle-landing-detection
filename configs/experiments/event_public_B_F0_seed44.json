@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "name": "event_public_B_F0_seed44",
+  "task": "event",
+  "components": {
+    "localizer": "../components/ball_fixed3.json",
+    "tracker": "../components/association.json",
+    "event_head": "../components/tcn.json",
+    "training": "../components/event_comparison_train.json"
+  },
+  "dataset": "../datasets/openttgames_event25_v3.json",
+  "parameters": {
+    "mode": "frozen",
+    "table_checkpoint": null,
+    "context_head": true,
+    "scene_mode": "relative",
+    "table_source": "predicted",
+    "head_dropout": 0.1,
+    "time_encoding": true,
+    "event_window_mode": "frames",
+    "global_checkpoint": "out/experiments/20261103-142106_mixed_ball_B_global/checkpoints/best.pt",
+    "local_checkpoint": "out/experiments/20261103-142106_mixed_ball_B_local/checkpoints/best.pt",
+    "global_localizer_type": "high_resolution_se",
+    "local_localizer_type": "residual_fpn",
+    "global_threshold": 0.7,
+    "local_threshold": 0.7,
+    "epochs": 40,
+    "patience": 8,
+    "table_geometry_version": "stable_v1",
+    "motion_max_step_fraction": 0.25,
+    "table_fusion": {
+      "mode": "none",
+      "channels": 32
+    },
+    "seed": 44,
+    "public_validation_root": "data/pp_public_data"
+  },
+  "description": "New explicit PP154 train/public15 validation split. Seed44 F0; frozen B paired locators, identical source sampling/AdamW/40epochs patience8. Public is validation, not independent test. Old PP40 validation is training."
+}

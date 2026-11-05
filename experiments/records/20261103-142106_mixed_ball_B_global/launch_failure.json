@@ -1,0 +1,6 @@
+{
+  "status": "launcher_failed",
+  "source": "/home/radno/projects/pingpong/out/experiments/20261103-142106_mixed_ball_B_global",
+  "error": "CalledProcessError(-6, ['/home/radno/projects/pingpong/.venv/bin/python', '-u', '-m', 'ttnet.training.train', '--stage', 'global', '--run', '/home/radno/projects/pingpong/out/experiments/20261103-142106_mixed_ball_B_global', '--dataset', '/home/radno/projects/pingpong/data/datasets/pp_opentt_ball_v1', '--config', '/home/radno/projects/pingpong/experiments/records/20261103-142106_mixed_ball_B_global/config.yaml', '--device', 'cuda'])",
+  "finished": "2026-11-03T17:46:51.762147+09:00"
+}

@@ -1,0 +1,31 @@
+{
+  "legacy": false,
+  "name": "event_public_B_F0_seed43",
+  "task": "event",
+  "dataset": {
+    "name": "openttgames_event25_v3",
+    "kind": "event",
+    "path": "data/datasets/openttgames_event25_v3",
+    "split_id": "openttgames_event25_match_v1"
+  },
+  "sources": [
+    "/home/radno/projects/pingpong/configs/experiments/event_public_B_F0_seed43.json",
+    "/home/radno/projects/pingpong/configs/components/ball_fixed3.json",
+    "/home/radno/projects/pingpong/configs/components/association.json",
+    "/home/radno/projects/pingpong/configs/components/tcn.json",
+    "/home/radno/projects/pingpong/configs/components/event_comparison_train.json",
+    "/home/radno/projects/pingpong/configs/datasets/openttgames_event25_v3.json"
+  ],
+  "overrides": [],
+  "config_hash": "a66f27f2f71e14aa354e3a25026c35397f952accbc043f4135374d41ac0d7bb0",
+  "requested_config_hash": "a66f27f2f71e14aa354e3a25026c35397f952accbc043f4135374d41ac0d7bb0",
+  "effective_config_hash": "5db5de5c03c8b1e969c607dd87ca06964e70554f5c1e0b5bb7fbac4125e36bb0",
+  "source_hashes": {
+    "/home/radno/projects/pingpong/configs/experiments/event_public_B_F0_seed43.json": "eecd0f586fecbda32a4035c4222642c2788fba848000aaea1b8871828e1e9526",
+    "/home/radno/projects/pingpong/configs/components/ball_fixed3.json": "0a78151fd832d85f2b6c71843ac1d3a32a40101a5792a23c6fef9c89483f6002",
+    "/home/radno/projects/pingpong/configs/components/association.json": "31903ed475f560723742c3dfca26577cc22513b059753deb72a12e381473e231",
+    "/home/radno/projects/pingpong/configs/components/tcn.json": "d4ea1e039430215905757a9f6515956d5e41bb0a309fce1e284e7a44129ed326",
+    "/home/radno/projects/pingpong/configs/components/event_comparison_train.json": "f33e25bee56f67da088932124a812c541f0d32022079469d99fd265272a0a78b",
+    "/home/radno/projects/pingpong/configs/datasets/openttgames_event25_v3.json": "e4b76a14560c66b9da0d8db0afe992b1f245d01853827d1c6181c0c7f353bb8b"
+  }
+}

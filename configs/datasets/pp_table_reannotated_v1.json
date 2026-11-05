@@ -1,0 +1,7 @@
+{
+  "name": "pp_table_reannotated_v1",
+  "kind": "table",
+  "path": "data/datasets/pp_table_reannotated_v1",
+  "split_id": "ttnet_ball_v1_frozen_yolo_pilot",
+  "description": "Explicit table-label revision. Six confirmed floor boxes in val are reannotated. Train video lists and table labels remain unchanged. Use scene.train --table-dataset; this is not a replacement ball/event dataset."
+}

@@ -65,7 +65,8 @@ def sparse_evaluation(system,corpus,part,dest,thresholds,cache=None):
         samples=[s for s in corpus.samples[part] if s['video_id']==vid]
         dense=predict_windows(system,corpus,vid,features,records,[s['frame_id'] for s in samples])
         dense_map={r['frame_id']:r for r in dense}
-        save_jsonl(dest/f'{vid}_localizations.jsonl',[dict(frame_id=fid,**{k:v for k,v in r.items() if k!='frame_id'}) for fid,r in records.items()])
+        from ttnet.scene.visual_cache import trajectory_records
+        save_jsonl(dest/f'{vid}_localizations.jsonl',trajectory_records(records.values()))
         for row in video['frames'].values():
             loc_rows.append(dict(video_id=vid,frame_id=row['frame_id'],label_status=row['label_status'],
                                  ball_centers=[row['xy']] if row['xy'] else []))
@@ -196,6 +197,11 @@ def head_benchmark(system,dest):
     device=system.device
     motion_dim = 18 if system.config.get('context_head') else 9
     f=torch.zeros(1,13,256,device=device);m=torch.zeros(1,13,motion_dim,device=device);v=torch.ones(1,13,dtype=torch.bool,device=device)
+    head_inputs = (f,m,v)
+    if system.config.get('table_fusion'):
+        channels = system.config['table_fusion']['channels']
+        head_inputs += (dict(roi=torch.zeros(1,13,16*channels,device=device),context=torch.zeros(1,13,channels,device=device),
+                             roi_valid=v.clone(),context_valid=v.clone()),)
     samples=[];macs={}
     def count(name,module,inputs):
         total=[0];handles=[]
@@ -208,7 +214,7 @@ def head_benchmark(system,dest):
         for h in handles:h.remove()
         macs[name]=total[0]
     with torch.inference_mode(),torch.autocast(device_type=device.type,enabled=system.config['amp'] and device.type=='cuda'):
-        count('head',system.head,(f,m,v))
+        count('head',system.head,head_inputs)
         for name,module in [('global',system.global_model),('local',system.local_model)]:
             w,h=system.config[name+'_input']
             count(name,module,(torch.zeros(1,3,3,h,w,device=device),torch.ones(1,3,dtype=torch.bool,device=device),
@@ -216,15 +222,20 @@ def head_benchmark(system,dest):
         if system.table_head is not None:
             gw,gh=system.config['global_input']
             count('table',system.table_head,(torch.zeros(1,32,gh//2,gw//2,device=device),))
-        for _ in range(50):system.head(f,m,v)
+        if system.table_encoder is not None:
+            spec = system.config['table_frontend']
+            tw,th = spec['input']
+            table_input = torch.zeros(1,32,th//2,tw//2,device=device) if spec['source']=='shared_global' else torch.zeros(1,3,th,tw,device=device)
+            count('table_visual',system.table_encoder,(table_input,))
+        for _ in range(50):system.head(*head_inputs)
         for _ in range(3):
             for _ in range(200):
                 if device.type=='cuda':torch.cuda.synchronize()
-                start=time.perf_counter();system.head(f,m,v)
+                start=time.perf_counter();system.head(*head_inputs)
                 if device.type=='cuda':torch.cuda.synchronize()
                 samples.append((time.perf_counter()-start)*1000)
     stats=dict(parameters={name:sum(p.numel() for p in module.parameters()) for name,module in
-                           [('global',system.global_model),('local',system.local_model),('head',system.head),('table',system.table_head)] if module is not None},
+                           [('global',system.global_model),('local',system.local_model),('head',system.head),('table',system.table_head),('table_visual',system.table_encoder)] if module is not None},
                head_forward_p50_ms=float(np.percentile(samples,50)),head_forward_p95_ms=float(np.percentile(samples,95)),
                input_shapes=[[1,13,256],[1,13,motion_dim],[1,13]],batch=1,device=str(device),amp=system.config['amp'],
                hardware=torch.cuda.get_device_name() if device.type=='cuda' else 'CPU',warmup=50,measured=600)

@@ -101,7 +101,8 @@ def evaluate_pp(checkpoint, annotations, output, device='cpu', scheme='A0', thre
         rows_by_video[vid]=rows;records_by_video[vid]=records;performance.append(speed)
         ann[vid]=dict(a,resolution=f"{meta['width']}x{meta['height']}")
         loc[vid]=localization_diagnostics(corpus.rows[vid],records,a)
-        save_jsonl(dest/f'{vid}_predictions.jsonl',rows);save_jsonl(dest/f'{vid}_trajectory.jsonl',records.values())
+        from ttnet.scene.visual_cache import trajectory_records
+        save_jsonl(dest/f'{vid}_predictions.jsonl',rows);save_jsonl(dest/f'{vid}_trajectory.jsonl',trajectory_records(records.values()))
     if thresholds is None:
         metrics,sweep=select_continuous_threshold(rows_by_video,ann,cfg['threshold_grid'],cfg['nms_sec'])
     else:metrics=score_continuous(rows_by_video,ann,thresholds[0],cfg['nms_sec']);sweep=None

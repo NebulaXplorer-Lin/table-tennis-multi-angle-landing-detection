@@ -1,0 +1,29 @@
+{
+  "legacy": false,
+  "name": "ball_mixed_hr_se",
+  "task": "ball",
+  "dataset": {
+    "name": "pp_opentt_ball_v1",
+    "kind": "ball",
+    "path": "data/datasets/pp_opentt_ball_v1",
+    "split_id": "pp_opentt_ball_mixed_v1"
+  },
+  "sources": [
+    "/home/radno/projects/pingpong/configs/experiments/ball_mixed_hr_se.json",
+    "/home/radno/projects/pingpong/configs/components/ball_fixed3.json",
+    "/home/radno/projects/pingpong/configs/components/ball_train.json",
+    "/home/radno/projects/pingpong/configs/datasets/pp_opentt_ball_v1.json"
+  ],
+  "overrides": [
+    "micro_batch=4"
+  ],
+  "config_hash": "cd24a21044b3905338caf292b71f02e28b01a6512fc8af78a8e0df4bd736901b",
+  "requested_config_hash": "cd24a21044b3905338caf292b71f02e28b01a6512fc8af78a8e0df4bd736901b",
+  "effective_config_hash": "1113e95801b85eb4737f289ddcfbbbd9649babce5a787597d5c7957067f38021",
+  "source_hashes": {
+    "/home/radno/projects/pingpong/configs/experiments/ball_mixed_hr_se.json": "162f3a4108de1d057c4a7dc42c42dce4e6612cf282a0cf86e56cd6766c4de53c",
+    "/home/radno/projects/pingpong/configs/components/ball_fixed3.json": "0a78151fd832d85f2b6c71843ac1d3a32a40101a5792a23c6fef9c89483f6002",
+    "/home/radno/projects/pingpong/configs/components/ball_train.json": "1faa017fee56e83c2f0453ce8cfa955aaec3844cb3dabda9eb8b38d0166e74b2",
+    "/home/radno/projects/pingpong/configs/datasets/pp_opentt_ball_v1.json": "5dc841f6e4dbf5524948231c45dfdc8e6b169ab8e05872076fba3d5b118198f2"
+  }
+}

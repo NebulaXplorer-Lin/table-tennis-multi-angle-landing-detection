@@ -1,0 +1,125 @@
+{
+  "dataset_id": "1d4b900ab6d57687a576001e3723a069bd3e33a243699ad9824daa362e443dc7",
+  "split_id": "pp_opentt_ball_mixed_v1",
+  "split_hashes": {
+    "train": "ebe890491863c867432cfd8dd066735c08bd73049f422e517a2204f8ba57222d",
+    "val": "f044c71ea9500b4c7c615132718cf0fb910e4b74e21b60135707f4dc1b6e2213",
+    "test": "cb9c79b0d39a525b903b409ed179fad0a73891d02a68d18df02463863c0d6827"
+  },
+  "counts": {
+    "train": {
+      "pp": 15544,
+      "opentt": 38568
+    },
+    "val": {
+      "pp": 5302,
+      "opentt": 7393
+    },
+    "test": {
+      "opentt": 6983
+    }
+  },
+  "provenance": {
+    "pp_dataset_id": "f2552a61b4598b68b115854a6ec1995f61c1283eab673c7c376d47c2e2cf2c65",
+    "pp_split_hashes": {
+      "train": "2a09b6f47b95ff93ed1b6bd4ced3fab8c02f71601b1f66ba83e375ccb4c16b23",
+      "val": "badc1fc0c1f8f002683e3108443137b0210077e84ac1608ea60985540330749f"
+    },
+    "opentt_split": {
+      "split_id": "openttgames_event25_match_v1",
+      "train": [
+        "game_1",
+        "game_2",
+        "game_3",
+        "game_4"
+      ],
+      "val": [
+        "game_5"
+      ],
+      "test": [
+        "test_1",
+        "test_2",
+        "test_3",
+        "test_4",
+        "test_5",
+        "test_6",
+        "test_7"
+      ],
+      "policy": "Entire matches are disjoint. Test is never used for selection. Missing annotations are unknown."
+    },
+    "sources": [
+      {
+        "video_id": "ott_game_1",
+        "video_sha256": "1297b3db91f2e3e160337643695dff07eabf9785ea2d88c2f7b59687ba511148",
+        "annotation_sha256": "d43d421ad63a3c64f6d4ac6324759ed4f1c1eaa0f3e4ad0ecc5a1b6e4ad7ccfc"
+      },
+      {
+        "video_id": "ott_game_2",
+        "video_sha256": "330ac07730bae6d899dbbbd00ad43500c583e6af6ea6dd261565bc77811eba66",
+        "annotation_sha256": "b350119e322e605109233182768ed2f7583b075c7ee226bae6b25179593c662b"
+      },
+      {
+        "video_id": "ott_game_3",
+        "video_sha256": "e0f6a1ddbb838ac6acc67fb50f763728b589ec8f8cb7ababd9fa95f13c853e49",
+        "annotation_sha256": "9431e474aa6509a672b1891cbc111741d35f0e0eab981adf1672e68657c39a23"
+      },
+      {
+        "video_id": "ott_game_4",
+        "video_sha256": "ddb2bc49915a99db46702825ff322759faa9205c846a1ba902419e38c1e23b39",
+        "annotation_sha256": "a8dfe3309db6c3b77c1650225eed309b3f971acb58a61e81a2332dcdc26643ce"
+      },
+      {
+        "video_id": "ott_game_5",
+        "video_sha256": "4b90df6712356ba8184af2b9a23ba6cb00a5f048a8a5af0ff2e12cbb54cd8958",
+        "annotation_sha256": "9c6a8fa2e500b7e28e8b343f2a6929596e2a255c8d2fd4042d63c281e9637fc4"
+      },
+      {
+        "video_id": "ott_test_1",
+        "video_sha256": "373f0a6926c7edb51eb70119f020afc30beabd140dc5f9cc454f0c7848406bb2",
+        "annotation_sha256": "f60ca733c514e5e4792ca9184331649bb6bc241f84d862d12e459397f49dc621"
+      },
+      {
+        "video_id": "ott_test_2",
+        "video_sha256": "91df783ab4d26bf350faffaefabe9fb6c172584dfd053a866729b11cc3261c43",
+        "annotation_sha256": "db79a74c3fc2299d84668b7bcc98e4a925ccdee839e6ca00a28c16bc91d85c74"
+      },
+      {
+        "video_id": "ott_test_3",
+        "video_sha256": "48179df05a7a816d1b44b142fbc1ff604e6094aad7a4b13cd013f0c2447a2daf",
+        "annotation_sha256": "885afc7b9514a0745d7653dc4bcadc2698d66b0ae514532b2372cd98bfc7109c"
+      },
+      {
+        "video_id": "ott_test_4",
+        "video_sha256": "c941fb0862daf47dbb8afc62117c21a921f649a7fdeee94fe5c16f9f2839be6d",
+        "annotation_sha256": "a835c3535732181ab6e6535ddbdf8bdd6f001a81ee08de1c301f2d97aacdae5c"
+      },
+      {
+        "video_id": "ott_test_5",
+        "video_sha256": "2c4652738a07102db7428b31003784532117dc9619c5fa1cca80c60639cc233d",
+        "annotation_sha256": "54a475f1eb2ccbd234c48e95bd839f67c070af8952acb6a27ddea4b35d832760"
+      },
+      {
+        "video_id": "ott_test_6",
+        "video_sha256": "ae37928612d8c5652677d468a8feb2669aff0afe8cfc1b1a642cc6ba5b811c29",
+        "annotation_sha256": "b5be0056e78a3af145a8687ce10be0fca8866c4fde9c7390cfa8623b1cf5c17b"
+      },
+      {
+        "video_id": "ott_test_7",
+        "video_sha256": "f2f54e4ce0c23a50d119fa2fdae552cb277d31f7e3e5a61c8fd3c40ef064399e",
+        "annotation_sha256": "2f02252a3a315d4196098885c834ffb0a21d0f01c294b559d76bdd6ff8d2e296"
+      }
+    ],
+    "policy": "native120_fixed3_unknown_masked_v1",
+    "preparation_sha256": "60a257832150eb568556bff4d316a92b1de47d082c334083e07f757c1ea39a91"
+  },
+  "source_overlap_audit": {
+    "status": "passed_screening",
+    "pp_sampled_frames": 4805,
+    "opentt_scored_frames": 52944,
+    "candidates": 0,
+    "source_manifest_sha256": "9255ef3ed6470237b0fe3bb70837cf84c7aab4546cb06511a6762650a446b0b8",
+    "policy": "PP every fifth frame vs native train/val/test ball centers; pHash<=3 and gray32 MAE<=5; exact source hashes checked during preparation",
+    "limitations": "A screen for copied content, not proof of absence of all crops/overlays. Test content is consulted solely for training-leakage screening, not model selection.",
+    "exclusions": []
+  }
+}

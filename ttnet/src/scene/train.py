@@ -13,19 +13,22 @@ from ttnet.evaluation.ball_corpus import BallCorpus
 from ttnet.evaluation.inference import load_model
 from ttnet.data_tools.geometry import letterbox,map_point
 from ttnet.training.dataset import normalize
-from ttnet.scene.table import TableHead,table_loss,box_iou,annotations,decode_table
+from ttnet.scene.table import TableHead,table_loss,box_iou,annotations,decode_table,annotation_identity
 from ttnet.events.train import atomic_checkpoint,rng_state,set_rng
 
 
-def extract(model,checkpoint,root,device,batch=16):
+def extract(model,checkpoint,root,device,batch=16,table_dataset=None,pool=(4,4)):
+    if len(pool)!=2 or any(type(v) is not int or v<1 for v in pool):
+        raise ValueError('invalid table feature pooling dimensions')
     ident=dict(global_sha256=sha(checkpoint),splits={p:sha(DATA/f'splits/{p}.jsonl') for p in ('train','val')},
         labels={p:sha(DATA/f'labels/{p}.jsonl') for p in ('train','val')},
-        code={p:sha(PROJECT/p) for p in ('ttnet/src/models/localizer.py','ttnet/src/scene/table.py','ttnet/src/scene/train.py')},input=[512,288],pool=[4,4],amp=True)
+        code={p:sha(PROJECT/p) for p in ('ttnet/src/models/localizer.py','ttnet/src/scene/table.py','ttnet/src/scene/train.py')},input=[512,288],pool=list(pool),amp=True)
+    if table_dataset is not None:ident['table_annotations']=annotation_identity(table_dataset)
     root.mkdir(parents=True,exist_ok=True)
     if (root/'identity.json').exists() and json.loads((root/'identity.json').read_text())!=ident:raise ValueError('table cache identity mismatch')
     save(root/'identity.json',ident)
     for part in ('train','val'):
-        labels,audit=annotations(part);save(root/f'{part}_audit.json',audit)
+        labels,audit=annotations(part,dataset=table_dataset);save(root/f'{part}_audit.json',audit)
         corpus=BallCorpus(DATA,part)
         for vid in corpus.split[part]:
             dest=root/f'{vid}.npz'
@@ -46,7 +49,7 @@ def extract(model,checkpoint,root,device,batch=16):
                             targets.append(np.array([*a,*c],np.float32)/[512,288,512,288])
                         else:targets.append(np.zeros(4,np.float32))
                     _,_,spatial=model(torch.from_numpy(np.stack(images)).to(device),torch.tensor(masks,device=device),torch.tensor(offsets,device=device),return_spatial=True)
-                    features.append(F.adaptive_avg_pool2d(spatial,(4,4)).float().cpu().numpy())
+                    features.append(F.adaptive_avg_pool2d(spatial,pool).float().cpu().numpy())
             tmp=dest.with_suffix('.tmp.npz');np.savez_compressed(tmp,features=np.concatenate(features),targets=np.array(targets,dtype=np.float32),valid=np.array(valid),frame_ids=ids);tmp.replace(dest)
             print(f'table features {part} {vid}: {len(ids)}',flush=True)
     return ident
@@ -61,16 +64,19 @@ def load_part(root,part,device):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--checkpoint',type=Path,required=True);p.add_argument('--run',type=Path,required=True);p.add_argument('--device',default='cuda');p.add_argument('--epochs',type=int,default=60);p.add_argument('--resume',action='store_true');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--checkpoint',type=Path,required=True);p.add_argument('--run',type=Path,required=True);p.add_argument('--device',default='cuda');p.add_argument('--epochs',type=int,default=60);p.add_argument('--resume',action='store_true');p.add_argument('--table-dataset',type=Path,help='explicit versioned table labels; omitted uses the historical labels');args=p.parse_args()
     torch.set_num_threads(4);cv2.setNumThreads(1);device=torch.device(args.device)
     torch.manual_seed(42);np.random.seed(42);random.seed(42)
     run=args.run
     if run.exists() and not args.resume:raise FileExistsError(run)
     run.mkdir(parents=True,exist_ok=True);save(run/'run.json',dict(status='extracting',started=now()))
     cfg=dict(seed=42,epochs=args.epochs,lr=3e-4,batch=128,patience=10,loss='L1+GIoU',global_checkpoint=str(args.checkpoint),global_sha256=sha(args.checkpoint),selection='val_mean_iou',missing='ignore',amp_features=True)
+    if args.table_dataset is not None:
+        cfg['table_dataset']=str(args.table_dataset)
+        cfg['table_annotations']=annotation_identity(args.table_dataset)
     save(run/'config.yaml',cfg)
     model,_=load_model(args.checkpoint,device);model.eval().requires_grad_(False)
-    ident=extract(model,args.checkpoint,run/'features',device);del model
+    ident=extract(model,args.checkpoint,run/'features',device,table_dataset=args.table_dataset);del model
     x,y,_=load_part(run/'features','train',device);vx,vy,keys=load_part(run/'features','val',device)
     head=TableHead().to(device);opt=torch.optim.AdamW(head.parameters(),lr=cfg['lr'],weight_decay=1e-4)
     start=0;best=-1.;patience=0;history=[]
@@ -93,7 +99,7 @@ def main():
     state=torch.load(run/'best.pt',map_location=device,weights_only=False);head.load_state_dict(state['head']);head.eval()
     with torch.inference_mode():pred=torch.cat([head(a) for a in vx.split(256)]);iou=box_iou(pred,vy).cpu().numpy()
     per=[dict(video_id=k[0],frame_id=k[1],iou=float(v),predicted_box=p.tolist(),label_box=g.tolist()) for k,v,p,g in zip(keys,iou,pred.cpu(),vy.cpu())]
-    save(run/'val_predictions.json',per);save(run/'metrics.json',dict(mean_iou=float(iou.mean()),iou50_recall=float((iou>=.5).mean()),iou75_recall=float((iou>=.75).mean()),frames=len(iou),epoch=state['epoch'],checkpoint_sha256=sha(run/'best.pt')))
+    save(run/'val_predictions.json',per);save(run/'metrics.json',dict(mean_iou=float(iou.mean()),iou50_recall=float((iou>=.5).mean()),iou75_recall=float((iou>=.75).mean()),frames=len(iou),epoch=state['epoch'],checkpoint_sha256=sha(run/'best.pt'),table_annotations=cfg.get('table_annotations')))
     save(run/'run.json',dict(status='trained_pending_visualization',finished=now(),best_val_iou=best))
 
 if __name__=='__main__':main()

@@ -18,7 +18,7 @@ from ttnet.common import DATA,PROJECT,jsonl,now,save,save_jsonl,sha
 from ttnet.models.features import FeatureWindowCache
 from ttnet.training.scales import input_size
 from ttnet.temporal import temporal_mode,slots_for_mode
-from .inference import load_model,predict,prediction_map
+from .inference import load_model,predict,prediction_map,validate_evaluation_source
 from .metrics import accept,aggregate
 
 
@@ -71,9 +71,10 @@ def evaluate(args):
     device=torch.device(args.device);torch.set_num_threads(4);cv2.setNumThreads(1)
     global_model,ginfo=load_model(args.global_checkpoint,device)
     meta=json.loads((args.dataset/'metadata/dataset.json').read_text())
-    if ginfo['dataset_id']!=meta['dataset_id']:raise ValueError('global model dataset differs')
+    validate_evaluation_source(ginfo,meta)
     local_model,linfo=(load_model(args.local_checkpoint,device) if args.local_checkpoint else (None,None))
-    if linfo and (linfo['dataset_id']!=meta['dataset_id'] or linfo['global_checkpoint_sha256']!=sha(args.global_checkpoint)):
+    if linfo:validate_evaluation_source(linfo,meta)
+    if linfo and (linfo['dataset_id']!=ginfo['dataset_id'] or linfo['global_checkpoint_sha256']!=sha(args.global_checkpoint)):
         raise ValueError('local model/global checkpoint identity mismatch')
     started=time.perf_counter()
     rows,gc,gf=predict(global_model,args.dataset,'val',device,batch=2,workers=4,amp=args.amp,features=True,
@@ -169,7 +170,7 @@ def evaluate(args):
     # evaluations/<id>/index.html is two levels below run root.
     tiles=tiles.replace('../../../','../../')
     (out/'index.html').write_text('<meta charset="utf-8"><style>body{background:#111;color:#eee;font:16px sans-serif}figure{display:inline-block;width:440px}img{width:100%}</style><h1>Ball localization: prediction and label</h1><p>Green: label; red: prediction; blue: ROI. Every scored error has an overlay in errors.json.</p>'+tiles)
-    summary=dict(status='evaluated',evaluated=now(),dataset_id=meta['dataset_id'],frames=len(rows),val_videos=len(by_video),
+    summary=dict(status='evaluated',evaluated=now(),dataset_id=meta['dataset_id'],training_dataset_id=ginfo['dataset_id'],frames=len(rows),val_videos=len(by_video),
                  global_checkpoint_sha256=sha(args.global_checkpoint),local_checkpoint_sha256=sha(args.local_checkpoint) if args.local_checkpoint else None,
                  global_threshold=ginfo['threshold'],local_threshold=linfo['threshold'] if linfo else None,
                  global_input=list(input_size(ginfo.get('config'),'global')),

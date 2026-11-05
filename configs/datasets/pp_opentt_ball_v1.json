@@ -1,0 +1,6 @@
+{
+  "name": "pp_opentt_ball_v1",
+  "kind": "ball",
+  "path": "data/datasets/pp_opentt_ball_v1",
+  "split_id": "pp_opentt_ball_mixed_v1"
+}

@@ -79,7 +79,8 @@ def overlay(rgb, row, record, kinds):
     if p and p['valid']:cv2.circle(im,(round(p['x']),round(p['y'])),11,(0,0,255),2)
     text=f"{row['video_id']}:{row['frame_id']} GT={row['label_status']} conf={p['confidence'] if p else 0:.3f} {' '.join(kinds)}"
     # Text occupies a separate strip: no scoring errors are hidden by the legend.
-    im=cv2.copyMakeBorder(im,55,0,0,0,cv2.BORDER_CONSTANT,value=(20,20,20))
+    # Even-sized strip preserves the last source row in YUV420 video encoders.
+    im=cv2.copyMakeBorder(im,56,0,0,0,cv2.BORDER_CONSTANT,value=(20,20,20))
     for y,line in [(20,text),(43,'GREEN GT | RED observation | CYAN candidates | PINK ROI')]:
         cv2.putText(im,line,(8,y),cv2.FONT_HERSHEY_SIMPLEX,.45,(255,255,255),1)
     return im
@@ -99,7 +100,8 @@ def audit(config, dataset, dest, device='cpu', video_ids=None):
     corpus=BallCorpus(dataset)
     for path in (cfg['global_checkpoint'],cfg['local_checkpoint']):
         trained=torch.load(path,map_location='cpu',weights_only=False)['config']
-        if trained.get('split_hashes')!=corpus.metadata['split_hashes']:
+        expected=trained.get('source_datasets',{}).get('pp',{}).get('split_hashes',trained.get('split_hashes'))
+        if expected!=corpus.metadata['split_hashes']:
             raise ValueError('locator checkpoint and frozen PP split differ')
     all_records=[];per_video={};error_index=[];timings=[]
     selected=video_ids or corpus.split['val']

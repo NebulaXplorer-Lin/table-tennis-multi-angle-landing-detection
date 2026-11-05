@@ -13,10 +13,10 @@ def letterbox_transform(w, h, width=512, height=288):
                      original_width=w, original_height=h)
 
 
-def letterbox(image, width=512, height=288):
+def letterbox(image, width=512, height=288, padding_value=0):
     h, w = image.shape[:2]
     t = letterbox_transform(w, h, width, height)
-    out = np.zeros((height, width, 3), dtype=np.uint8)
+    out = np.full((height, width, 3), padding_value, dtype=np.uint8)
     left, top, rw, rh = t["pad_left"], t["pad_top"], t["resized_width"], t["resized_height"]
     out[top:top+rh, left:left+rw] = cv2.resize(image, (rw, rh), interpolation=cv2.INTER_LINEAR)
     return out, t

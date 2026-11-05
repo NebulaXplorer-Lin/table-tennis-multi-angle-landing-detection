@@ -1,0 +1,68 @@
+{
+  "schema": "independent_table_mlp_v1",
+  "source": "independent_cnn",
+  "dataset": "/home/radno/projects/pingpong/data/datasets/pp_table_reannotated_v1",
+  "pretrained": null,
+  "global_checkpoint": null,
+  "input": [
+    512,
+    288
+  ],
+  "channels": 32,
+  "table_pool": [
+    16,
+    4
+  ],
+  "seed": 42,
+  "epochs": 60,
+  "patience": 10,
+  "micro_batch": 16,
+  "effective_batch": 16,
+  "workers": 2,
+  "samples_per_epoch": 4096,
+  "thin_fraction": 0.1,
+  "max_thin_frame_repeats": 4,
+  "max_thin_video_fraction": 0.3,
+  "encoder_lr": 0.0003,
+  "head_lr": 0.0003,
+  "weight_decay": 0.0001,
+  "warmup_epochs": 3,
+  "amp": true,
+  "confidence": 0.1,
+  "nms_iou": 0.7,
+  "selection": "val_video_mean_iou",
+  "relative_y_weight": 0.25,
+  "log_height_weight": 0.25,
+  "height_floor": 0.02,
+  "height_epsilon": 0.0001,
+  "smooth_l1_beta": 1.0,
+  "augment_per_draw": true,
+  "augmentation": {
+    "preserve_positive": true,
+    "horizontal_flip": 0.5,
+    "translate": 0.05,
+    "scale": [
+      0.9,
+      1.1
+    ],
+    "color": {
+      "probability": 0.8,
+      "brightness": [
+        0.8,
+        1.2
+      ],
+      "contrast": [
+        0.8,
+        1.2
+      ],
+      "saturation": [
+        0.75,
+        1.25
+      ],
+      "hue": [
+        -0.03,
+        0.03
+      ]
+    }
+  }
+}

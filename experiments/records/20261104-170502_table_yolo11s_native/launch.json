@@ -1,0 +1,20 @@
+{
+  "schema": "table_yolo_native_launch_v1",
+  "run": "/home/radno/projects/pingpong/out/experiments/20261104-170502_table_yolo11s_native",
+  "command": [
+    "/home/radno/projects/pingpong/.venv/bin/python",
+    "-u",
+    "-m",
+    "ttnet.scene.train_yolo_native",
+    "--config",
+    "/home/radno/projects/pingpong/configs/table/yolo11s_native.json",
+    "--run",
+    "/home/radno/projects/pingpong/out/experiments/20261104-170502_table_yolo11s_native",
+    "--device",
+    "0"
+  ],
+  "pid": 521719,
+  "log": "/home/radno/projects/pingpong/out/launches/20261104-170502_table_yolo11s_native/driver.log",
+  "started": "2026-11-04T17:05:02.812050+08:00",
+  "status_file": "/home/radno/projects/pingpong/out/experiments/20261104-170502_table_yolo11s_native/task.json"
+}

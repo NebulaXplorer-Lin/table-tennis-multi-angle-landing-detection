@@ -1,0 +1,21 @@
+{
+  "status": "failed",
+  "pid": 485162,
+  "source": "/home/radno/projects/pingpong/out/experiments/20261104-160259_independent_mlp_color",
+  "log": "/home/radno/projects/pingpong/out/launches/20261104-160259_independent_mlp_color/driver.log",
+  "command": [
+    "/home/radno/projects/pingpong/.venv/bin/python",
+    "-u",
+    "-m",
+    "ttnet.scene.train_independent_mlp",
+    "--config",
+    "/home/radno/projects/pingpong/configs/table/independent_mlp_color.json",
+    "--run",
+    "/home/radno/projects/pingpong/out/experiments/20261104-160259_independent_mlp_color",
+    "--device",
+    "cuda"
+  ],
+  "created": "2026-11-04T16:02:59.249901+08:00",
+  "superseded_by": "20261104-160636_independent_mlp_color",
+  "reason": "draw3998 08_004:1 positive box shifted outside the image"
+}

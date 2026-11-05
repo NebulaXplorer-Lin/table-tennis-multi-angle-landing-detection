@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "pid": 449345,
+  "source": "/home/radno/projects/pingpong/out/experiments/20261104-145747_B_mlp_thin",
+  "log": "/home/radno/projects/pingpong/out/launches/20261104-145747_B_mlp_thin/driver.log",
+  "command": [
+    "/home/radno/projects/pingpong/.venv/bin/python",
+    "-u",
+    "-m",
+    "ttnet.scene.table_mlp_thin",
+    "--config",
+    "/home/radno/projects/pingpong/configs/table/B_mlp_thin.json",
+    "--run",
+    "/home/radno/projects/pingpong/out/experiments/20261104-145747_B_mlp_thin",
+    "--device",
+    "cuda"
+  ],
+  "created": "2026-11-04T14:57:47.915440+08:00",
+  "finished": "2026-11-04T15:04:20.400458+08:00",
+  "best_epoch": 12,
+  "epochs": 22,
+  "checkpoint": "/home/radno/projects/pingpong/out/experiments/20261104-145747_B_mlp_thin/best.pt",
+  "metrics": "/home/radno/projects/pingpong/out/experiments/20261104-145747_B_mlp_thin/metrics.json",
+  "report": "/home/radno/projects/pingpong/docs/B_mlp_thin_20261104.md",
+  "val": {
+    "frame_mean_iou": 0.4825322804697024,
+    "video_mean_iou": 0.37187555680706674,
+    "iou50": 0.45618506175259754
+  },
+  "thin": {
+    "frames": 629,
+    "mean_iou": 0.23531813301243984,
+    "iou50": 0.0
+  }
+}

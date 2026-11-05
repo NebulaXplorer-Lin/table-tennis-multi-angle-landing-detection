@@ -7,6 +7,7 @@ import math
 from pathlib import Path
 
 import cv2
+import fcntl
 
 from ttnet.common import CACHE,ROOT,identity,jsonl,save,sha
 from ttnet.data_tools.frame_store import FrameStore,pack_video
@@ -23,17 +24,25 @@ def _publish(root,key,dataset_id,videos):
 
 
 def cache_video(args):
+    from collections import OrderedDict
     dataset,cache,vid,rows,sizes,dataset_id=args
     cv2.setNumThreads(1)
     store=FrameStore(dataset)
     for w,h in sizes:
-        def reader(row):return letterbox(store.row_rgb(row),w,h)[0]
+        recent=OrderedDict()
+        def reader(row):
+            fid=row['frame_id']
+            if fid not in recent:
+                recent[fid]=letterbox(store.row_rgb(row),w,h)[0]
+                while len(recent)>64:recent.popitem(last=False)
+            return recent[fid]
         pack_video(Path(cache)/f'{w}x{h}',vid,rows,reader,
                    source_identity=dict(dataset_id=dataset_id,size=[w,h]))
     return vid
 
 
 def ensure_global_cache(dataset,sizes,workers=4):
+    from .dataset import context_rows
     dataset=Path(dataset)
     sizes=sorted(set(tuple(s) for s in sizes))
     dm=json.loads((dataset/'metadata/dataset.json').read_text())
@@ -43,9 +52,20 @@ def ensure_global_cache(dataset,sizes,workers=4):
     if backend:policy['pixel_backend']=backend
     key=identity(policy)
     root=CACHE/'inputs/global'/key[:20]
+    root.mkdir(parents=True,exist_ok=True)
+    with (root/'.build.lock').open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        if (root/'identity.json').is_file():
+            existing=json.loads((root/'identity.json').read_text())
+            if existing.get('cache_key')==key and existing.get('complete'):
+                return root
+        return _build_global_cache(dataset,sizes,workers,dm,policy,key,root,context_rows)
+
+
+def _build_global_cache(dataset,sizes,workers,dm,policy,key,root,context_rows):
     groups={}
     for split in ('train','val'):
-        for row in jsonl(dataset/'labels'/f'{split}.jsonl'):groups.setdefault(row['video_id'],[]).append(row)
+        for row in context_rows(dataset,split):groups.setdefault(row['video_id'],[]).append(row)
     print(f'Preparing NPY input cache: {len(groups)} videos, sizes={sizes}',flush=True)
     with ProcessPoolExecutor(max_workers=workers) as pool:
         futures=[pool.submit(cache_video,(str(dataset),str(root),vid,rows,sizes,dm['dataset_id'])) for vid,rows in groups.items()]
@@ -65,18 +85,23 @@ def gt_carrier_transform(row,side_at_1080=256,jitter_fraction=.2):
 
 
 def local_cache_video(args):
+    from .dataset import native_window
     dataset,root,vid,rows,predictions,config,policy=args
     cv2.setNumThreads(1)
     root=Path(root);store=FrameStore(dataset)
-    times=[r['timestamp_sec'] for r in rows]
+    context=jsonl(Path(dataset)/'context'/f'{vid}.jsonl') if rows[0].get('native_sparse') else rows
+    frames={r['frame_id']:r for r in context}
+    times=[r['timestamp_sec'] for r in context]
+    kinds=policy.get('kinds',('gt_context','predicted'))
     width,_=input_size(config,'local');span=config.get('local_crop_side_1080',256)
     grouped={'gt_context':[],'predicted':[]};pairs={'gt_context':{},'predicted':{}}
     for row,pred in zip(rows,predictions):
         transforms=[]
-        if row['label_status']=='positive':transforms.append(('gt_context',gt_carrier_transform(row,span,config.get('augmentation',{}).get('gt_crop_jitter_fraction',.2))))
-        if pred and pred['valid']:
+        if row['label_status']=='positive' and 'gt_context' in kinds:transforms.append(('gt_context',gt_carrier_transform(row,span,config.get('augmentation',{}).get('gt_crop_jitter_fraction',.2))))
+        if pred and pred['valid'] and 'predicted' in kinds:
             r=row['resolution'];transforms.append(('predicted',crop_transform(pred['x'],pred['y'],r['width'],r['height'],width,span)))
-        window=sample_window(times,row['frame_id'],temporal_mode(config),config.get('window_half_span_sec',1/30))
+        window=(native_window(row,frames,temporal_mode(config)) if row.get('native_sparse') else
+                sample_window(times,row['frame_id'],temporal_mode(config),config.get('window_half_span_sec',1/30)))
         for fid in window['frame_ids']:
             if fid is None:continue
             for kind,transform in transforms:
@@ -84,10 +109,18 @@ def local_cache_video(args):
                 if pair in pairs[kind]:continue
                 ordinal=len(grouped[kind]);pairs[kind][pair]=ordinal
                 grouped[kind].append(dict(frame_id=ordinal,source_frame_id=fid,
-                                           timestamp_sec=times[fid],row=rows[fid],transform=transform))
-    for kind,items in grouped.items():
+                                           timestamp_sec=frames[fid]['timestamp_sec'],row=frames[fid],transform=transform))
+    for kind in kinds:
+        items=grouped[kind]
         if items:
-            def reader(item):return crop_image(store.row_rgb(item['row']),item['transform'])
+            from collections import OrderedDict
+            recent=OrderedDict()
+            def reader(item):
+                fid=item['frame_id']
+                if fid not in recent:
+                    recent[fid]=crop_image(store.row_rgb(item['row']),item['transform'])
+                    while len(recent)>64:recent.popitem(last=False)
+                return recent[fid]
             pack_video(root/kind,vid,items,reader,source_identity=dict(policy,kind=kind))
         save(root/kind/vid/'pairs.json',pairs[kind])
     return vid
@@ -107,14 +140,37 @@ def ensure_local_cache(dataset,prediction_maps,global_sha256,config):
     for split in ('train','val'):
         for row in jsonl(dataset/'labels'/f'{split}.jsonl'):groups.setdefault(row['video_id'],[]).append(row)
         all_predictions.update(prediction_maps[split])
+    if config.get('source_sampling')=='pp_opentt_50_50':
+        shared_policy={k:v for k,v in policy.items() if k not in ('global_sha256','prediction_sha256')}
+        shared=CACHE/'inputs/local_gt'/identity(shared_policy)[:20]
+        _locked_local_cache(dataset,shared,groups,all_predictions,config,dict(shared_policy,kinds=['gt_context']))
+        root.mkdir(parents=True,exist_ok=True)
+        target=root/'gt_context'
+        if not target.exists():target.symlink_to((shared/'gt_context').resolve(),target_is_directory=True)
+        _locked_local_cache(dataset,root,groups,all_predictions,config,dict(policy,kinds=['predicted']))
+        return root
+    _locked_local_cache(dataset,root,groups,all_predictions,config,policy)
+    return root
+
+
+def _locked_local_cache(dataset,root,groups,all_predictions,config,policy):
+    root.mkdir(parents=True,exist_ok=True)
+    with (root/'.build.lock').open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        if (root/'identity.json').is_file():
+            if json.loads((root/'identity.json').read_text()).get('cache_key')==identity(policy):return
+        _build_local_cache(dataset,root,groups,all_predictions,config,policy)
+
+
+def _build_local_cache(dataset,root,groups,all_predictions,config,policy):
+    dm=json.loads((Path(dataset)/'metadata/dataset.json').read_text())
     with ProcessPoolExecutor(max_workers=config['workers']) as pool:
         futures=[pool.submit(local_cache_video,(str(dataset),str(root),vid,rows,
                     [all_predictions.get((vid,r['frame_id'])) for r in rows],config,policy)) for vid,rows in groups.items()]
         for done,future in enumerate(as_completed(futures),1):
             future.result()
             if done%25==0 or done==len(groups):print(f'Local cache {done}/{len(groups)}',flush=True)
-    for kind in ('gt_context','predicted'):
+    for kind in policy.get('kinds',('gt_context','predicted')):
         videos=[v for v in groups if (root/kind/v/'manifest.json').is_file()]
         _publish(root/kind,identity(dict(policy,kind=kind)),dm['dataset_id'],videos)
-    save(root/'identity.json',dict(**policy,complete=True))
-    return root
+    save(root/'identity.json',dict(**policy,cache_key=identity(policy),complete=True))

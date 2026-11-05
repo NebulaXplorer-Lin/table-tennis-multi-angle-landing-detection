@@ -132,3 +132,58 @@ class ContextEventHead(nn.Module):
             safe=valid.clone();safe[~safe.any(1),6]=True
             x=self.temporal(x,src_key_padding_mask=~safe)
         return self.classifier(torch.where(valid[:,6,None],x[:,6],0))
+
+
+class TableFusionEventHead(ContextEventHead):
+    """Controlled F0/G0/V0/zero/gated trials; ball descriptor remains 256-D."""
+    def __init__(self, channels, mode='concat', dropout=.1, time_encoding=True):
+        if mode not in ('none','geometry','concat','zero','gated') or channels < 1:
+            raise ValueError('invalid table fusion mode/channels')
+        super().__init__('tcn','none' if mode=='none' else 'relative',dropout,time_encoding)
+        self.table_mode,self.table_channels = mode,channels
+        self.use_visual = mode in ('concat','zero','gated')
+        if self.use_visual:
+            self.roi_project = nn.Sequential(nn.LayerNorm(16*channels),nn.Linear(16*channels,48),nn.SiLU())
+            self.context_project = nn.Sequential(nn.LayerNorm(channels),nn.Linear(channels,16),nn.SiLU())
+            self.fusion = nn.Sequential(nn.Linear(224,128),nn.LayerNorm(128),nn.SiLU())
+        if mode=='gated':
+            self.modulation = nn.Linear(96,256)
+            nn.init.zeros_(self.modulation.weight);nn.init.zeros_(self.modulation.bias)
+
+    def forward(self, features, motion, frame_valid, table=None):
+        if features.shape[1:]!=(13,256) or motion.shape!=(*features.shape[:2],18):
+            raise ValueError('table fusion requires ball256 and motion9/scene9')
+        valid = frame_valid.bool()
+        f = torch.where(valid[...,None],features,0)
+        m = torch.where(valid[...,None],motion,0)
+        lv = valid[...,None] & (m[...,7:8]>.5)
+        local = torch.where(lv,self.local_norm(torch.where(lv,f[...,128:],0)),0)
+        branches = [self.visual(torch.cat([self.global_norm(f[...,:128]),local],-1)),self.motion(m[...,:9])]
+        scene = None
+        if self.scene is not None:
+            sv = valid[...,None] & (m[...,15:16]>.5)
+            scene = self.scene(torch.where(sv,m[...,9:],0))
+            scene = torch.where(sv,scene,0);branches.append(scene)
+        if self.use_visual:
+            if table is None:
+                raise ValueError('table visual inputs are required; use geometry/none explicitly')
+            projected = []
+            for key,project in (('roi',self.roi_project),('context',self.context_project)):
+                mask = valid & table[key+'_valid'].bool()
+                raw = torch.where(mask[...,None],table[key],0)
+                if self.table_mode=='zero':
+                    raw = torch.zeros_like(raw)
+                projected.append(torch.where(mask[...,None],project(raw),0))
+            table_visual = torch.cat(projected,-1);branches.append(table_visual)
+        x = self.fusion(torch.cat(branches,-1))
+        if self.table_mode=='gated':
+            scale,bias = self.modulation(torch.cat([scene,table_visual],-1)).chunk(2,-1)
+            available = valid[...,None] & (table['context_valid'][...,None] | table['roi_valid'][...,None])
+            x = x+torch.where(available,x*scale.tanh()+bias,0)
+        if self.time_encoding:
+            angles = m[...,8:9]*self.frequencies
+            x = x+torch.stack([angles.sin(),angles.cos()],-1).flatten(-2)
+        x = torch.where(valid[...,None],x,0)
+        for block in self.temporal:
+            x = block(x,valid[...,None])
+        return self.classifier(torch.where(valid[:,6,None],x[:,6],0))

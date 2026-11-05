@@ -33,15 +33,23 @@ class FrameStore:
         self.max_open_chunks = max_open_chunks
         self.root = None
         self.format = None
+        self.routes = {}
+        self.video_routes = {}
         reference = self.dataset/'frame_store.json'
         if reference.is_file() and not legacy:
             ref = json.loads(reference.read_text())
-            self.root = (self.dataset/ref['path']).resolve()
-            manifest = json.loads((self.root/'manifest.json').read_text())
-            if manifest.get('status') != 'completed' or manifest['storage_id'] != ref['storage_id']:
-                raise ValueError('incomplete or mismatched frame store')
-            self.format = manifest.get('format','npy_rgb_u8_v1')
-            self.storage_id = manifest['storage_id']
+            if ref.get('format') == 'routed_rgb_v1':
+                self.format = ref['format']
+                self.routes = {key:FrameStore((self.dataset/path).resolve(), max_open_chunks=max_open_chunks)
+                               for key,path in ref['sources'].items()}
+                self.video_routes = ref['video_sources']
+            else:
+                self.root = (self.dataset/ref['path']).resolve()
+                manifest = json.loads((self.root/'manifest.json').read_text())
+                if manifest.get('status') != 'completed' or manifest['storage_id'] != ref['storage_id']:
+                    raise ValueError('incomplete or mismatched frame store')
+                self.format = manifest.get('format','npy_rgb_u8_v1')
+            self.storage_id = ref['storage_id']
         self._chunks = OrderedDict()
         self._readers = OrderedDict()
         self._videos = {}
@@ -83,6 +91,8 @@ class FrameStore:
             return self._get_rgb(video_id,frame_id,path=path)
 
     def _get_rgb(self, video_id, frame_id, *, path=None):
+        if self.routes:
+            return self.routes[self.video_routes[video_id]].get_rgb(video_id, frame_id, path=path)
         if self.root is None:
             if path is None:
                 raise KeyError(f'legacy frame requires its image path: {video_id}/{frame_id}')
@@ -133,10 +143,15 @@ class FrameStore:
         return self.format == 'source_video_rgb_v1'
 
     def source_path(self,video_id):
+        if self.routes:
+            return self.routes[self.video_routes[video_id]].source_path(video_id)
         manifest,_ = self._video(video_id)
         return (self.root/manifest['source']).resolve()
 
     def backend_identity(self):
+        if self.routes:
+            return dict(format=self.format, storage_id=self.storage_id,
+                        sources={key:store.backend_identity() for key,store in self.routes.items()})
         if not self.is_video:
             return None
         from .video_store import decoder_identity
@@ -148,6 +163,8 @@ class FrameStore:
         return frame_rgb(frame,manifest['pixel_policy'])
 
     def close(self):
+        for store in self.routes.values():
+            store.close()
         for reader in self._readers.values():
             reader.close()
         self._readers.clear()

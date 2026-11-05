@@ -1,0 +1,43 @@
+{
+  "status": "running",
+  "source": "/home/radno/projects/pingpong/out/experiments/20261104-095944_table_visual_comparison",
+  "task_manifest": "/home/radno/projects/pingpong/out/experiments/20261104-095944_table_visual_comparison/task.json",
+  "purpose": "B shared-spatial training continues; queued YOLO cancelled and replaced by native independent CNN",
+  "routes": {
+    "shared_B": {
+      "status": "running",
+      "config": "/home/radno/projects/pingpong/configs/table/shared_B.json",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261104-095944_table_visual_comparison/shared_B",
+      "log": "/home/radno/projects/pingpong/out/experiments/20261104-095944_table_visual_comparison/shared_B.log",
+      "command": [
+        "/home/radno/projects/pingpong/.venv/bin/python",
+        "-u",
+        "-m",
+        "ttnet.scene.train_visual",
+        "--config",
+        "/home/radno/projects/pingpong/configs/table/shared_B.json",
+        "--run",
+        "/home/radno/projects/pingpong/out/experiments/20261104-095944_table_visual_comparison/shared_B",
+        "--device",
+        "cuda",
+        "--train"
+      ],
+      "started": "2026-11-04T09:59:45.789875+08:00",
+      "pid": 309887
+    },
+    "independent_yolo11s": {
+      "status": "cancelled",
+      "config": "/home/radno/projects/pingpong/configs/table/independent_yolo11s.json",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261104-095944_table_visual_comparison/independent_yolo11s",
+      "log": "/home/radno/projects/pingpong/out/experiments/20261104-095944_table_visual_comparison/independent_yolo11s.log",
+      "reason": "User replaced YOLO with independent native feature encoder and lightweight CNN",
+      "cancelled": "2026-11-04T10:05:40.286647+08:00"
+    },
+    "independent_cnn": {
+      "status": "queued",
+      "config": "/home/radno/projects/pingpong/configs/table/independent_cnn.json",
+      "run": "/home/radno/projects/pingpong/out/experiments/20261104-095944_table_visual_comparison/independent_cnn",
+      "log": "/home/radno/projects/pingpong/out/experiments/20261104-095944_table_visual_comparison/independent_cnn.log"
+    }
+  }
+}

@@ -1,11 +1,29 @@
-# Experiment comparison
+# 实验比较总表
 
-Ball localisation and landing detection are different tasks. touch_f1 is angle macro F1 under the recorded local public protocol.
+由 [comparison.csv](comparison.csv) 生成。不同数据划分、任务和选型协议分别解读；旧内部验证不能与public新协议直接归因比较。新协议完整三种子结论见 [本轮报告](../out/experiments/20261105-092319_public_event_study/summary.md)。
 
-| experiment_id | eval_id | task | status | center_f1 | touch_f1 | e2e_fps |
-|---|---|---|---|---|---|---|
-| 20261013-163117_yolo11n_ball-640 | best_fp32_640 | ball_localisation | completed | 0.0 | — | 316.73222827605866 |
-| 20261013-163117_yolo11n_ball-640 | score001_ap101_diagnostic | ball_localisation | completed | 0.023459318562651276 | — | — |
-| 20261013-212251_baseline_ball-position | onnx_fp32_ball | ball_localisation | failed | — | — | — |
-| 20261013-212318_baseline_ball-position | onnx_fp32_ball | ball_localisation | completed | 0.977598307855014 | — | 111.22533523477739 |
-| 20261013-215749_yolo11n_full1280_public | epoch032_public_paused | landing_detection | evaluated_training_paused | — | 0.38659944092881277 | 66.2 |
+| 实验 / 评估 | 任务与协议 | F1 | 完整FPS | 状态 |
+|---|---|---:|---:|---|
+| [20261013-163117_yolo11n_ball-640 / best_fp32_640](../experiments/records/20261013-163117_yolo11n_ball-640/evaluations/best_fp32_640.json) | ball_localisation / ball_v1 | 0.00% | 316.73 | completed |
+| [20261013-163117_yolo11n_ball-640 / score001_ap101_diagnostic](../experiments/records/20261013-163117_yolo11n_ball-640/evaluations/score_diagnostic.json) | ball_localisation / ball_v1_posthoc_score001_ap101 | 2.35% | — | completed |
+| [20261013-212251_baseline_ball-position / onnx_fp32_ball](../experiments/records/20261013-212251_baseline_ball-position/config.yaml) | ball_localisation / ball_v1_center | — | — | failed |
+| [20261013-212318_baseline_ball-position / onnx_fp32_ball](../experiments/records/20261013-212318_baseline_ball-position/evaluations/onnx_fp32_ball.json) | ball_localisation / ball_v1_center | 97.76% | 111.23 | completed |
+| [20261013-215749_yolo11n_full1280_public / epoch032_public_paused](../experiments/records/20261013-215749_yolo11n_full1280_public/evaluations/epoch032_public_paused.json) | landing_detection / local_public_landing_ignore_first | 38.66% | 66.20 | evaluated_training_paused |
+| [20261104-182418_B_event_F0_seed42 / continuous](/home/radno/projects/pingpong/out/experiments/20261104-182418_B_event_F0_seed42/evaluations/continuous/metrics.json) | landing_detection / 旧 PP114 train / PP40 val | 81.33% | 53.11 | completed |
+| [20261104-195314_B_event_geometry_seed42_contiguous / continuous](/home/radno/projects/pingpong/out/experiments/20261104-195314_B_event_geometry_seed42_contiguous/evaluations/continuous/metrics.json) | landing_detection / 旧 PP114 train / PP40 val | 82.16% | 42.84 | completed |
+| [20261104-195314_B_event_concat_seed42_contiguous / continuous](/home/radno/projects/pingpong/out/experiments/20261104-195314_B_event_concat_seed42_contiguous/evaluations/continuous/metrics.json) | landing_detection / 旧 PP114 train / PP40 val | 83.91% | 43.17 | completed |
+| [20261104-194046_B_event_F0_seed43 / continuous](/home/radno/projects/pingpong/out/experiments/20261104-194046_B_event_F0_seed43/evaluations/continuous/metrics.json) | landing_detection / 旧 PP114 train / PP40 val | 76.89% | 52.95 | completed |
+| [20261104-194046_B_event_geometry_seed43 / continuous](/home/radno/projects/pingpong/out/experiments/20261104-194046_B_event_geometry_seed43/evaluations/continuous/metrics.json) | landing_detection / 旧 PP114 train / PP40 val | 75.14% | 43.04 | completed |
+| [20261104-194046_B_event_concat_seed43 / continuous](/home/radno/projects/pingpong/out/experiments/20261104-194046_B_event_concat_seed43/evaluations/continuous/metrics.json) | landing_detection / 旧 PP114 train / PP40 val | 82.02% | 43.24 | completed |
+| [20261104-194046_B_event_F0_seed44 / continuous](/home/radno/projects/pingpong/out/experiments/20261104-194046_B_event_F0_seed44/evaluations/continuous/metrics.json) | landing_detection / 旧 PP114 train / PP40 val | 79.57% | 53.53 | completed |
+| [20261104-194046_B_event_geometry_seed44 / continuous](/home/radno/projects/pingpong/out/experiments/20261104-194046_B_event_geometry_seed44/evaluations/continuous/metrics.json) | landing_detection / 旧 PP114 train / PP40 val | 82.95% | 43.95 | completed |
+| [20261104-194046_B_event_concat_seed44 / continuous](/home/radno/projects/pingpong/out/experiments/20261104-194046_B_event_concat_seed44/evaluations/continuous/metrics.json) | landing_detection / 旧 PP114 train / PP40 val | 82.38% | 43.26 | completed |
+| [20261105-092319_public_B_F0_seed42 / public](/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_F0_seed42/evaluations/public/metrics.json) | landing_detection / PP154 train / public15 validation | 66.47% | 53.62 | completed |
+| [20261105-092319_public_B_concat_seed42 / public](/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_concat_seed42/evaluations/public/metrics.json) | landing_detection / PP154 train / public15 validation | 75.66% | 43.18 | completed |
+| [20261105-092319_public_B_gated_seed42 / public](/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_gated_seed42/evaluations/public/metrics.json) | landing_detection / PP154 train / public15 validation | 74.42% | 43.30 | completed |
+| [20261105-092319_public_B_F0_seed43 / public](/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_F0_seed43/evaluations/public/metrics.json) | landing_detection / PP154 train / public15 validation | 66.16% | 53.74 | completed |
+| [20261105-092319_public_B_concat_seed43 / public](/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_concat_seed43/evaluations/public/metrics.json) | landing_detection / PP154 train / public15 validation | 73.95% | 43.14 | completed |
+| [20261105-092319_public_B_gated_seed43 / public](/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_gated_seed43/evaluations/public/metrics.json) | landing_detection / PP154 train / public15 validation | 77.59% | 43.18 | completed |
+| [20261105-092319_public_B_F0_seed44 / public](/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_F0_seed44/evaluations/public/metrics.json) | landing_detection / PP154 train / public15 validation | 73.57% | 53.99 | completed |
+| [20261105-092319_public_B_concat_seed44 / public](/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_concat_seed44/evaluations/public/metrics.json) | landing_detection / PP154 train / public15 validation | 73.29% | 43.54 | completed |
+| [20261105-092319_public_B_gated_seed44 / public](/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_gated_seed44/evaluations/public/metrics.json) | landing_detection / PP154 train / public15 validation | 72.26% | 43.26 | completed |

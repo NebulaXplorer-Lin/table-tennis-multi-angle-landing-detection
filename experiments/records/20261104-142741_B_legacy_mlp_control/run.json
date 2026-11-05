@@ -1,0 +1,38 @@
+{
+  "status": "completed",
+  "pid": 436822,
+  "source": "/home/radno/projects/pingpong/out/experiments/20261104-142741_B_legacy_mlp_control",
+  "log": "/home/radno/projects/pingpong/out/launches/20261104-142741_B_legacy_mlp_control/driver.log",
+  "command": [
+    "/home/radno/projects/pingpong/.venv/bin/python",
+    "-u",
+    "-m",
+    "ttnet.scene.table_mlp_control",
+    "--task",
+    "/home/radno/projects/pingpong/out/experiments/20261104-142741_B_legacy_mlp_control",
+    "--device",
+    "cuda",
+    "--feature-batch",
+    "8"
+  ],
+  "created": "2026-11-04T14:27:41.418801+08:00",
+  "finished": "2026-11-04T14:34:04.709932+08:00",
+  "comparison": "/home/radno/projects/pingpong/out/experiments/20261104-142741_B_legacy_mlp_control/comparison.json",
+  "report": "/home/radno/projects/pingpong/docs/B_legacy_mlp_control_20261104.md",
+  "branches": {
+    "reference": {
+      "run": "/home/radno/projects/pingpong/out/experiments/20261104-142741_B_legacy_mlp_control/reference",
+      "status": "completed",
+      "epoch": 17,
+      "best_val_iou": 0.3939642906188965,
+      "best_epoch": 7
+    },
+    "B": {
+      "run": "/home/radno/projects/pingpong/out/experiments/20261104-142741_B_legacy_mlp_control/B",
+      "status": "completed",
+      "epoch": 60,
+      "best_val_iou": 0.463663250207901,
+      "best_epoch": 52
+    }
+  }
+}

@@ -55,7 +55,8 @@ def predict_windows(system,corpus,vid,features,records,centers=None,batch=64):
             for c in chosen:
                 if c not in prepared:prepared[c]=assemble_window(corpus,vid,c,features,records,torch.device('cpu'),system.config)
             inputs=[prepared[c] for c in chosen]
-            tensors=[torch.cat([item[k] for item in inputs]).to(system.device) for k in range(3)]
+            from ttnet.scene.visual_cache import batch_windows
+            tensors=batch_windows(inputs,system.device)
             probabilities=system.head(*tensors).float().sigmoid().cpu().numpy()
             for fid,p in zip(chosen,probabilities):
                 output.append(dict(frame_id=fid,timestamp_sec=corpus.videos[vid]['frames'][fid]['timestamp_sec'],

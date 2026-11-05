@@ -1,0 +1,8 @@
+{
+  "status": "trained_pending_eval",
+  "stage": "event",
+  "mode": "frozen",
+  "epochs_completed": 27,
+  "finished": "2026-11-04T21:06:43.738981+09:00",
+  "stop_reason": "early_stopping"
+}

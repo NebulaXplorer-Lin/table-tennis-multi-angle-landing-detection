@@ -1,0 +1,21 @@
+{
+  "schema": "pp_table_reannotations_v1",
+  "version": "pp_table_reannotated_v1",
+  "date": "2026-11-03",
+  "base_dataset": "data/datasets/pp_ball_v2",
+  "base_dataset_id": "f2552a61b4598b68b115854a6ec1995f61c1283eab673c7c376d47c2e2cf2c65",
+  "split_id": "ttnet_ball_v1_frozen_yolo_pilot",
+  "annotator": "Codex",
+  "annotation_method": "ai_visual_reannotation_from_original_rgb_and_local_temporal_context",
+  "human_review_status": "not_independently_reviewed",
+  "target_definition": "主比赛球台台面及薄桌沿的轴对齐外包框；排除桌腿、底座、球网与网柱。不沿人物遮挡缩小整个球台的外包框。",
+  "scope": "修订已确认错选到地板的框；其他原始标签与所有缺标状态保留，不宣称全量逐帧精修。",
+  "revisions": [
+    {"video_id":"04_004","frame_id":115,"split":"val","annotation":"data/pp_train_data/annotations/04/004.json","source_annotation_sha256":"ccd5efefb38f7bf5b9cbb5157f0b77eed6ecf30e1fa97b42a2a3d96404053231","old_bbox_xyxy":[0,455.5,286.25,720],"new_bbox_xyxy":[310,286,862,325],"reason":"原框位于左下地板；按原图和相邻帧重标主球台台面。"},
+    {"video_id":"04_004","frame_id":116,"split":"val","annotation":"data/pp_train_data/annotations/04/004.json","source_annotation_sha256":"ccd5efefb38f7bf5b9cbb5157f0b77eed6ecf30e1fa97b42a2a3d96404053231","old_bbox_xyxy":[0,455.5,286.75,720],"new_bbox_xyxy":[310,286,862,325],"reason":"原框位于左下地板；逐帧确认与115帧同镜头、桌面外缘稳定。"},
+    {"video_id":"04_004","frame_id":117,"split":"val","annotation":"data/pp_train_data/annotations/04/004.json","source_annotation_sha256":"ccd5efefb38f7bf5b9cbb5157f0b77eed6ecf30e1fa97b42a2a3d96404053231","old_bbox_xyxy":[0,452,292.5,720],"new_bbox_xyxy":[310,286,862,325],"reason":"原框位于左下地板；逐帧确认主球台边界，人物遮挡不改变整台外包框。"},
+    {"video_id":"04_004","frame_id":118,"split":"val","annotation":"data/pp_train_data/annotations/04/004.json","source_annotation_sha256":"ccd5efefb38f7bf5b9cbb5157f0b77eed6ecf30e1fa97b42a2a3d96404053231","old_bbox_xyxy":[0,453,292,720],"new_bbox_xyxy":[310,286,862,325],"reason":"原框位于左下地板；逐帧确认与相邻帧同镜头、台面边界稳定。"},
+    {"video_id":"04_004","frame_id":119,"split":"val","annotation":"data/pp_train_data/annotations/04/004.json","source_annotation_sha256":"ccd5efefb38f7bf5b9cbb5157f0b77eed6ecf30e1fa97b42a2a3d96404053231","old_bbox_xyxy":[0,454.5,290.5,720],"new_bbox_xyxy":[310,286,862,325],"reason":"原框位于左下地板；逐帧确认主球台台面，不使用人物或相邻球台框。"},
+    {"video_id":"04_004","frame_id":120,"split":"val","annotation":"data/pp_train_data/annotations/04/004.json","source_annotation_sha256":"ccd5efefb38f7bf5b9cbb5157f0b77eed6ecf30e1fa97b42a2a3d96404053231","old_bbox_xyxy":[0,454,290.25,720],"new_bbox_xyxy":[310,286,862,325],"reason":"原框位于左下地板；结合后续121/126帧复核，桌面位置持续稳定。"}
+  ]
+}

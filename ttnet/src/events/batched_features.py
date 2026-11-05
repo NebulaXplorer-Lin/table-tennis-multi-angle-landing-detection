@@ -33,7 +33,7 @@ def independent_features(system,corpus,vid,ids):
     heat=heat.float().cpu().numpy();local_indices=[];local_images=[];crops={};globals_={}
     for i,fid in enumerate(selected):
         x,y,conf=decode_heatmap(heat[i]);x,y=map_point(x,y,transforms[i],inverse=True)
-        g=accept(dict(x=x,y=y,confidence=conf,source='global'),cfg['localization_threshold'],resolution);globals_[i]=g
+        g=accept(dict(x=x,y=y,confidence=conf,source='global'),cfg.get('global_threshold',cfg['localization_threshold']),resolution);globals_[i]=g
         if g['valid']:
             crop=crop_transform(x,y,meta['width'],meta['height'],lw,cfg['local_crop_side_1080']);crops[i]=crop
             local_indices.append(i);local_images.append(np.stack([normalize(crop_image(im,crop)) if im is not None else np.zeros((3,lh,lw),np.float32) for im in triples[i]]))
@@ -44,11 +44,13 @@ def independent_features(system,corpus,vid,ids):
         lheat,ldesc=system.local_model(lx,valid[ix],times[ix]);lheat=lheat.float().cpu().numpy()
         for j,i in enumerate(local_indices):
             x,y,conf=decode_heatmap(lheat[j]);x,y=crop_point(x,y,crops[i],inverse=True)
-            local[i]=accept(dict(x=x,y=y,confidence=conf,source='local'),cfg['localization_threshold'],resolution)
+            local[i]=accept(dict(x=x,y=y,confidence=conf,source='local'),cfg.get('local_threshold',cfg['localization_threshold']),resolution)
             if local[i]['valid']:local_descriptors[i]=ldesc[j]
     for i,fid in enumerate(selected):
         g=globals_[i];l=local.get(i);ld=local_descriptors.get(i,gdesc[i].new_zeros(128))
         descriptors[fid]=torch.cat([gdesc[i],ld],-1)
         records[fid]=dict(frame_id=fid,prediction=l if l and l['valid'] else g,global_prediction=g,local_prediction=l,
                           local_valid=bool(l and l['valid']),crop_transform=crops.get(i),table=system.table_record(transforms[i],resolution,i))
+    if hasattr(system,'attach_table_visual'):
+        system.attach_table_visual(corpus,vid,ids,records)
     return descriptors,records,{'global':zero,'local':zero}

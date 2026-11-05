@@ -49,7 +49,7 @@ def associated_frames(system, corpus, vid, ids):
         for p in raw:
             p.update(source='global',appearance=appearance(rgb[1],p))
         x,y,conf = decode_heatmap(hm);x,y = map_point(x,y,transform,inverse=True)
-        g = accept(dict(x=x,y=y,confidence=conf,source='global'),cfg['localization_threshold'],resolution)
+        g = accept(dict(x=x,y=y,confidence=conf,source='global'),cfg.get('global_threshold',cfg['localization_threshold']),resolution)
         search = tracker.predict(ts)
         if hasattr(tracker,'context'):tracker.context(gdesc[0].detach().float().cpu().numpy(),table,resolution)
         selected = tracker.update(raw,fid,ts)
@@ -68,7 +68,7 @@ def associated_frames(system, corpus, vid, ids):
             lx = torch.from_numpy(np.stack([normalize(crop_image(im,crop)) if im is not None else np.zeros((3,lh,lw),np.float32) for im in rgb])).unsqueeze(0).to(system.device)
             lheat,ldesc = system._run(system.local_model,lx,valid,offsets)
             xx,yy,cc = decode_heatmap(lheat.detach().float().cpu().numpy());xx,yy = crop_point(xx,yy,crop,inverse=True)
-            observations.append(accept(dict(x=xx,y=yy,confidence=cc,source='local',crop_transform=crop),cfg['localization_threshold'],resolution))
+            observations.append(accept(dict(x=xx,y=yy,confidence=cc,source='local',crop_transform=crop),cfg.get('local_threshold',cfg['localization_threshold']),resolution))
             observations[-1]['appearance']=appearance(rgb[1],observations[-1])
             observations[-1]['local_index']=len(crops)
             crops.append(crop);local_descriptors.append(ldesc)
@@ -80,7 +80,7 @@ def associated_frames(system, corpus, vid, ids):
         valid_local = [i for i,p in enumerate(observations) if p['valid']]
         index = min(valid_local,key=cost) if valid_local else None
         local = observations[index] if index is not None else None
-        observed = accept(selected,cfg['localization_threshold'],resolution) if selected else None
+        observed = accept(selected,cfg.get('global_threshold',cfg['localization_threshold']),resolution) if selected else None
         prediction = local or observed
         if hasattr(tracker,'finalize'):
             chosen=tracker.finalize(observations)

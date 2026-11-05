@@ -1,0 +1,22 @@
+{
+  "purpose": "Additive closeout of completed B event internal study",
+  "source_manifest": "/home/radno/projects/pingpong/out/experiments/20261104-182418_B_event_exploration/replication.json",
+  "validator": "scripts.run_b_event_replication.validate_replication",
+  "device": "CPU",
+  "training_or_inference": false,
+  "source_modifications": false,
+  "human_review_performed": false,
+  "evaluation_protocol_ids": [
+    "39dbfc6ee7ad8d04a9a1dba8daf4bc3f823d4410c63c37a2de6b43ca03b7577d"
+  ],
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "arms": [
+    "F0",
+    "geometry",
+    "concat"
+  ]
+}

@@ -72,7 +72,8 @@ def balanced_samples(samples, seed, epoch):
 
 def window_signature(config):
     return tuple((k,config.get(k)) for k in ('context_head','scene_mode','event_window_mode',
-                                            'table_smoothing','table_smoothing_tau_sec'))
+                                            'table_smoothing','table_smoothing_tau_sec','table_geometry_version',
+                                            'table_frontend','table_fusion','motion_max_step_fraction'))
 
 
 def assemble_window(corpus, vid, center, descriptors, records, device, config=None):
@@ -96,6 +97,10 @@ def assemble_window(corpus, vid, center, descriptors, records, device, config=No
         vv=bool(pv and previous and previous['valid'] and fid-1 in frames)
         dt=frames[fid]['timestamp_sec']-frames[fid-1]['timestamp_sec'] if vv else 0.
         vv=bool(vv and dt>0)
+        if vv and config.get('table_fusion'):
+            jump = np.hypot(x-previous['x']/meta['width'],y-previous['y']/meta['height'])
+            vv = bool(jump <= config.get('motion_max_step_fraction',.25) and not rec.get('scene_cut')
+                      and not frames[fid].get('scene_cut') and not rec.get('reacquired'))
         vx=(x-previous['x']/meta['width'])/dt if vv else 0.
         vy=(y-previous['y']/meta['height'])/dt if vv else 0.
         motion.append([x,y,vx,vy,p['confidence'] if pv else 0.,float(pv),float(vv),float(rec['local_valid']),
@@ -103,9 +108,14 @@ def assemble_window(corpus, vid, center, descriptors, records, device, config=No
         if config.get('context_head'):
             from ttnet.scene.table import geometry
             table=rec.get('table') if tables is None else tables.get(fid)
-            motion[-1].extend(geometry(table,p,meta['width'],meta['height'],config.get('scene_mode','none')).tolist())
-    return (torch.stack(features).unsqueeze(0),torch.tensor([motion],device=device,dtype=torch.float32),
-            torch.tensor([valid],device=device,dtype=torch.bool))
+            motion[-1].extend(geometry(table,p,meta['width'],meta['height'],config.get('scene_mode','none'),
+                                      stable=config.get('table_geometry_version')=='stable_v1').tolist())
+    result = (torch.stack(features).unsqueeze(0),torch.tensor([motion],device=device,dtype=torch.float32),
+              torch.tensor([valid],device=device,dtype=torch.bool))
+    if config.get('table_fusion'):
+        from ttnet.scene.visual_cache import window_visual
+        result += (window_visual(ids,records,config['table_fusion']['channels'],device),)
+    return result
 
 
 def sample_identity(samples):

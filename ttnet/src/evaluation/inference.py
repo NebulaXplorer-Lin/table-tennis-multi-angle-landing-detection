@@ -12,9 +12,18 @@ from .metrics import accept, decode_heatmap
 from ttnet.temporal import move_inputs,temporal_mode
 
 
+def validate_evaluation_source(info, metadata, domain='pp'):
+    """Training identity may be composite; evaluation must be a declared source."""
+    if info.get('dataset_id') == metadata['dataset_id']:
+        return
+    source=info.get('config',{}).get('source_datasets',{}).get(domain,{})
+    if source.get('dataset_id') != metadata['dataset_id'] or source.get('split_hashes') != metadata['split_hashes']:
+        raise ValueError('evaluation dataset is not an identity-checked training source')
+
+
 def load_model(path, device):
     checkpoint = torch.load(path,map_location="cpu",weights_only=False)
-    model = build_localizer(checkpoint.get("config")).to(device)
+    model = build_localizer(checkpoint.get("config"), checkpoint.get('stage')).to(device)
     model.load_state_dict(checkpoint["model"])
     model.eval()
     return model,checkpoint

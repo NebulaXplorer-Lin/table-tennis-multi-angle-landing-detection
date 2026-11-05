@@ -1,0 +1,15 @@
+{
+  "status": "completed",
+  "stage": "global",
+  "started": "2026-11-03T15:21:14.623853+09:00",
+  "finished": "2026-11-03T16:13:28.480812+09:00",
+  "epochs_completed": 20,
+  "best_epoch": 8,
+  "threshold": 0.9,
+  "dataset_id": "1d4b900ab6d57687a576001e3723a069bd3e33a243699ad9824daa362e443dc7",
+  "stop_reason": "max_epochs",
+  "best_sha256": "345ce8e77767da8dcccebf9e7bf0fb938482902a4df1f081b34180f9ad261c08",
+  "last_sha256": "841bc6bab6ec6ad9b4465fab609d6d78df2ceac311d6c7fda8ec670d23bcb8b7",
+  "evaluation": "evaluations/best_val",
+  "completed": "2026-11-04T15:27:25.446125+09:00"
+}

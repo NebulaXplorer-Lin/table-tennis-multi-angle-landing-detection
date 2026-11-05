@@ -11,9 +11,9 @@ import numpy as np
 import torch
 import av
 
-from ttnet.common import sha
+from ttnet.common import save,sha
 from ttnet.events.data import assemble_window, balanced_samples
-from ttnet.events.engine import EventSystem
+from ttnet.events.engine import EventSystem,cache_identity
 from ttnet.events.metrics import landing_match, peaks
 from ttnet.events.prepare import target_samples, nearest_index
 from ttnet.models.event import EventHead, event_loss
@@ -215,6 +215,8 @@ class CheckpointResumeTests(unittest.TestCase):
                 self.mode=mode;self.train(training)
                 for model in [self.global_model,self.local_model]:model.requires_grad_(False);model.eval()
         def forward(system,corpus,cache,sample):return system.head(torch.full((1,9),sample['frame_id']/100))
+        def prepare_cache(system,corpus,dest):
+            save(dest/'identity.json',cache_identity(system,corpus))
         anchors=[dict(target=t,probabilities=p) for t,p in [([1.,0.],[.9,.1]),([0.,1.],[.1,.9]),([0.,0.],[.1,.1])]]
         real_atomic=atomic_checkpoint
         class Interrupted(Exception):pass
@@ -229,7 +231,7 @@ class CheckpointResumeTests(unittest.TestCase):
             def args(run,resume=False):return Namespace(config=cfg,dataset=root/'data',cache=root/'cache',run=root/run,
                 device='cpu',mode='frozen',smoke=False,resume=resume,restart_incomplete=False)
             with patch('ttnet.events.train.EventCorpus',Corpus),patch('ttnet.events.train.EventSystem',System),\
-                 patch('ttnet.events.train.build_cache'),patch('ttnet.events.train.load_cache',return_value={}),\
+                 patch('ttnet.events.train.build_cache',side_effect=prepare_cache),patch('ttnet.events.train.load_cache',return_value={}),\
                  patch('ttnet.events.train.cached_forward',side_effect=forward),\
                  patch('ttnet.events.train.validate',return_value=(.5,anchors)):
                 train(args('full'))

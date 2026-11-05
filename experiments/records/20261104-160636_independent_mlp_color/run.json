@@ -1,0 +1,63 @@
+{
+  "status": "completed",
+  "pid": 487685,
+  "source": "/home/radno/projects/pingpong/out/experiments/20261104-160636_independent_mlp_color",
+  "log": "/home/radno/projects/pingpong/out/launches/20261104-160636_independent_mlp_color/driver.log",
+  "command": [
+    "/home/radno/projects/pingpong/.venv/bin/python",
+    "-u",
+    "-m",
+    "ttnet.scene.train_independent_mlp",
+    "--config",
+    "/home/radno/projects/pingpong/configs/table/independent_mlp_color.json",
+    "--run",
+    "/home/radno/projects/pingpong/out/experiments/20261104-160636_independent_mlp_color",
+    "--device",
+    "cuda"
+  ],
+  "created": "2026-11-04T16:06:36.155204+08:00",
+  "previous_attempt": "20261104-160259_independent_mlp_color",
+  "recovery": "identity geometry when augmentation moves the positive box entirely out; color retained",
+  "live_status": "/home/radno/projects/pingpong/out/experiments/20261104-160636_independent_mlp_color/task.json",
+  "parameters": 305295,
+  "first_update": "/home/radno/projects/pingpong/out/experiments/20261104-160636_independent_mlp_color/first_update.json",
+  "report": "/home/radno/projects/pingpong/docs/independent_mlp_color_20261104.md",
+  "finished": "2026-11-04T16:15:15.719479+08:00",
+  "epochs": 11,
+  "best_epoch": 1,
+  "checkpoint": "/home/radno/projects/pingpong/out/experiments/20261104-160636_independent_mlp_color/best.pt",
+  "metrics": "/home/radno/projects/pingpong/out/experiments/20261104-160636_independent_mlp_color/metrics.json",
+  "val": {
+    "mean_iou": 0.41858631667203233,
+    "video_mean_iou": 0.4289305108315328,
+    "iou50": 0.1811409527543619
+  },
+  "thin": {
+    "frames": 629,
+    "mean_iou": 0.43236431275717974,
+    "iou50": 0.13036565977742448,
+    "iou75": 0.0,
+    "missing": 0,
+    "coverage": 1.0,
+    "edge_median_px": [
+      102.125,
+      7.44140625,
+      35.875,
+      15.8828125
+    ],
+    "edge_p90_px": [
+      145.825,
+      14.675000000000002,
+      111.90000000000003,
+      27.884375000000002
+    ],
+    "vertical_median_gt_height": [
+      0.2490748355263158,
+      0.5291466346153846
+    ],
+    "vertical_p90_gt_height": [
+      0.4530839019851117,
+      0.9438441619585688
+    ]
+  }
+}

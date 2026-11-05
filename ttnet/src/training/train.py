@@ -25,6 +25,7 @@ from .dataset import BallDataset
 from .scales import MultiScaleBatchSampler,input_size,training_scales
 from .cache import ensure_global_cache,ensure_local_cache
 from .stopping import JointEarlyStopping,validate_resume_config
+from .mixed_sampling import MixedSourceSampler
 from ttnet.temporal import temporal_mode,slots_for_mode,move_inputs,batch_size
 from ttnet.results import write_results
 
@@ -110,6 +111,8 @@ def train(args,run,config,attempt):
                    input_size=input_size(config,args.stage),crop_side_at_1080=config.get("local_crop_side_1080",256),
                    temporal_mode=mode,window_half_span_sec=config.get("window_half_span_sec",1/30),input_cache=input_cache,local_cache=local_cache,
                    augmentation=config.get('augmentation'))
+    source_sampler=None
+    loader_generator=torch.Generator().manual_seed(seed+9107)
     if args.smoke:
         # Spread over videos while keeping a genuinely fixed small training set.
         indices=np.linspace(0,len(ds)-1,min(8,len(ds))).round().astype(int).tolist()
@@ -120,10 +123,16 @@ def train(args,run,config,attempt):
         if len(scales)>1 or scales[0]!=ds.input_size:
             loader=DataLoader(ds,batch_sampler=MultiScaleBatchSampler(len(ds),config["micro_batch"],scales),
                               num_workers=config["workers"],pin_memory=device.type=="cuda",worker_init_fn=seed_worker)
+        elif config.get('source_sampling')=='pp_opentt_50_50':
+            ds.augmentation_seed=seed
+            source_sampler=MixedSourceSampler(ds.rows,seed,config['effective_batch'])
+            loader=DataLoader(ds,batch_size=config['micro_batch'],sampler=source_sampler,
+                              num_workers=config['workers'],pin_memory=device.type=='cuda',
+                              worker_init_fn=seed_worker,generator=loader_generator)
         else:
             loader=DataLoader(ds,batch_size=config["micro_batch"],shuffle=True,num_workers=config["workers"],
                               pin_memory=device.type=="cuda",worker_init_fn=seed_worker)
-    model=build_localizer(config).to(device)
+    model=build_localizer(config,args.stage).to(device)
     optimizer=torch.optim.AdamW(model.parameters(),lr=config["lr"],weight_decay=config["weight_decay"])
     criterion=LocalizationLoss()
     scaler=torch.cuda.amp.GradScaler(enabled=config["amp"] and device.type=="cuda")
@@ -168,6 +177,11 @@ def train(args,run,config,attempt):
         return dict(status="completed_smoke",dataset_id=meta["dataset_id"],samples=len(indices))
     epochs=config["epochs"];epoch=start_epoch-1;stop_reason='max_epochs'
     for epoch in range(start_epoch,epochs):
+        if source_sampler:
+            source_sampler.set_epoch(epoch)
+            ds.epoch=epoch
+            loader_generator.manual_seed(seed+9107+epoch)
+            save(run/'sampling'/f'epoch_{epoch+1:03d}.json',source_sampler.manifest)
         ds.gt_crops=args.stage=="local" and epoch<config["gt_crop_epochs"]
         if args.stage=="local" and epoch==config["gt_crop_epochs"]:
             patience=0
@@ -199,16 +213,29 @@ def train(args,run,config,attempt):
                                   input_size=input_size(config,args.stage),crop_side_at_1080=config.get("local_crop_side_1080",256),
                                   input_cache=input_cache,window_half_span_sec=config.get("window_half_span_sec",1/30),local_cache=local_cache)
         tolerance=config["global_best_tolerance_px"] if args.stage=="global" else config["local_best_tolerance_px"]
-        selected=select_threshold(rows,candidates,tolerance,global_candidates,
+        pp_indices=[i for i,r in enumerate(rows) if r.get('source_domain','pp')=='pp']
+        selected=select_threshold([rows[i] for i in pp_indices],[candidates[i] for i in pp_indices],tolerance,
+                                   [global_candidates[i] for i in pp_indices] if global_candidates is not None else None,
                                    global_info["threshold"] if global_info else None)
         metrics=selected["metrics"];error=metrics["accepted_error_median_px"]
+        source_metrics={}
+        for source in sorted({r.get('source_domain','pp') for r in rows}):
+            ids=[i for i,r in enumerate(rows) if r.get('source_domain','pp')==source]
+            predictions=[]
+            from ttnet.evaluation.metrics import accept
+            for i in ids:
+                local=accept(candidates[i],selected['threshold'],rows[i]['resolution'])
+                g=accept(global_candidates[i],global_info['threshold'],rows[i]['resolution']) if global_candidates is not None else None
+                predictions.append(local if local and local['valid'] else g)
+            source_metrics[source]={str(t):aggregate([rows[i] for i in ids],predictions,t) for t in (10,50)}
         key=(metrics["f1"],-(error if error is not None else 1e12))
         improved=key>best_key
         if improved:best_key=key;best_epoch=epoch;threshold=selected["threshold"];patience=0
         else:patience+=1
         record=dict(epoch=epoch+1,train_loss=total_loss/max(total_samples,1),learning_rate=optimizer.param_groups[0]["lr"],
                     crop_mode="gt_jitter" if ds.gt_crops else ("predicted_global" if args.stage=="local" else None),
-                    threshold=selected["threshold"],val=metrics,elapsed_sec=time.perf_counter()-start,
+                    threshold=selected["threshold"],val=metrics,val_by_source=source_metrics,
+                    sampling=source_sampler.manifest if source_sampler else None,elapsed_sec=time.perf_counter()-start,
                     peak_cuda_bytes=torch.cuda.max_memory_allocated() if device.type=="cuda" else None)
         should_stop=monitor.update(record['train_loss'],metrics['f1']) if monitor else patience>=config['patience']
         record['early_stopping_state']=monitor.state_dict() if monitor else None
@@ -267,10 +294,12 @@ def main():
                   feature_window_slots=config.get('feature_window_slots',9 if temporal_mode(config)=='single' else slots_for_mode(temporal_mode(config))),
                   batch=config["micro_batch"],gradient_accumulation=config["effective_batch"]//config["micro_batch"],
                   global_checkpoint=str(args.global_checkpoint) if args.global_checkpoint else None,
-                  dataset_id=data_meta["dataset_id"],split_id="ttnet_ball_v1_frozen_yolo_pilot",
+                  dataset_id=data_meta["dataset_id"],split_id=data_meta.get('split_id',"ttnet_ball_v1_frozen_yolo_pilot"),
                   split_hashes=data_meta["split_hashes"],train_videos=data_meta["train_videos"],val_videos=data_meta["val_videos"],
                   train_frames=data_counts["train"],val_frames=data_counts["val"],
                   data_policy="all decoded frames preserved; only positive/confirmed negative labels supervised; unknown/ignore masked")
+    if data_meta.get('source_datasets'):
+        config['source_datasets']=data_meta['source_datasets']
     if run.exists() and not args.resume:raise RuntimeError("existing run: use --resume or a new run id")
     if args.resume:
         stored=json.loads((run/"config.yaml").read_text())

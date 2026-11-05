@@ -187,6 +187,8 @@ def write_index(root=ROOT):
     rows = []
     for path in sorted(output.glob('*/manifest.json')):
         manifest, stats = read(path), read(path.parent/'stats/summary.json')
+        if manifest.get('stage') not in ('global','local') or 'source_status' not in manifest:
+            continue
         row = dict(result_id=path.parent.name, stage=manifest['stage'], status=manifest['status'],
                    source_status=manifest['source_status'], best_epoch=stats.get('best_epoch'),
                    e2e_fps=stats.get('e2e_fps'), dataset_id=stats.get('dataset_id'), split_id=stats.get('split_id'),

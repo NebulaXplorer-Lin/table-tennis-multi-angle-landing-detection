@@ -12,7 +12,7 @@ from ttnet.evaluation.ball_corpus import BallCorpus
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);a=p.parse_args();torch.set_num_threads(4)
     source=Path('data/cache/features/35af6f8dbee933512d8c');dest=a.root/'ar_training_cache';dest.mkdir(exist_ok=True)
-    state=torch.load(a.root/'table/best.pt',map_location='cpu',weights_only=False);model=TableHead().eval();model.load_state_dict(state['head'])
+    state=torch.load(a.root/'table/best.pt',map_location='cpu',weights_only=False);model=TableHead(state['config'].get('table_pool',[4,4])).eval();model.load_state_dict(state['head'])
     save(dest/'identity.json',dict(base=json.loads((source/'identity.json').read_text()),table_sha256=sha(a.root/'table/best.pt'),source='fixed_rule_candidates',match_px=10))
     for part in ('train','val'):
         corpus=BallCorpus(DATA,part)

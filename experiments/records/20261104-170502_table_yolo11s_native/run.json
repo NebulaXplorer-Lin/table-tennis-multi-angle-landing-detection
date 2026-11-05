@@ -1,0 +1,108 @@
+{
+  "status": "completed",
+  "pid": 521719,
+  "source": "/home/radno/projects/pingpong/out/experiments/20261104-170502_table_yolo11s_native",
+  "log": "/home/radno/projects/pingpong/out/launches/20261104-170502_table_yolo11s_native/driver.log",
+  "command": [
+    "/home/radno/projects/pingpong/.venv/bin/python",
+    "-u",
+    "-m",
+    "ttnet.scene.train_yolo_native",
+    "--config",
+    "/home/radno/projects/pingpong/configs/table/yolo11s_native.json",
+    "--run",
+    "/home/radno/projects/pingpong/out/experiments/20261104-170502_table_yolo11s_native",
+    "--device",
+    "0"
+  ],
+  "created": "2026-11-04T17:05:02.812050+08:00",
+  "live_status": "/home/radno/projects/pingpong/out/experiments/20261104-170502_table_yolo11s_native/task.json",
+  "report": "/home/radno/projects/pingpong/docs/yolo_table_native_20261104.md",
+  "checkpoint": "/home/radno/projects/pingpong/out/experiments/20261104-170502_table_yolo11s_native/best.pt",
+  "parameters": 9428179,
+  "selection": "native_mAP50_95",
+  "first_epoch": {
+    "epoch": 1,
+    "fitness": 0.56758,
+    "metrics": {
+      "metrics/precision(B)": 0.93785,
+      "metrics/recall(B)": 0.93183,
+      "metrics/mAP50(B)": 0.9601,
+      "metrics/mAP50-95(B)": 0.56758,
+      "val/box_loss": 1.47365,
+      "val/cls_loss": 1.05916,
+      "val/dfl_loss": 1.93693
+    },
+    "optimizer_updates": 2161
+  },
+  "status_observed_at": "2026-11-04T17:47:33.205152+08:00",
+  "finished": "2026-11-04T17:47:33.204154+08:00",
+  "epochs": 24,
+  "best_epoch": 12,
+  "metrics": "/home/radno/projects/pingpong/out/experiments/20261104-170502_table_yolo11s_native/metrics.json",
+  "checkpoint_sha256": "3c2699e3918e0f1a00b763cf01f32a426fba41ca0488bbbd661566b2850d1ebd",
+  "val": {
+    "mean_iou": 0.5473463984184045,
+    "video_mean_iou": 0.710831298913398,
+    "iou50": 0.6728092530876298,
+    "iou75": 0.5295040188198392,
+    "missing": 1664,
+    "coverage": 0.6737894530484219
+  },
+  "thin": {
+    "frames": 629,
+    "mean_iou": 0.7065296235637938,
+    "iou50": 1.0,
+    "iou75": 0.25119236883942764,
+    "missing": 0,
+    "coverage": 1.0,
+    "edge_median_px": [
+      21.75,
+      4.75,
+      31.75,
+      3.25
+    ],
+    "edge_p90_px": [
+      61.275000000000006,
+      6.5,
+      92.10000000000002,
+      4.5
+    ],
+    "vertical_median_gt_height": [
+      0.1484375,
+      0.10526315789473684
+    ],
+    "vertical_p90_gt_height": [
+      0.22990285367334556,
+      0.14285714285714285
+    ]
+  },
+  "group22": {
+    "frames": 1726,
+    "mean_iou": 0.03530532836499662,
+    "iou50": 0.04287369640787949,
+    "iou75": 0.042294322132097335,
+    "missing": 1652,
+    "coverage": 0.04287369640787949,
+    "edge_median_px": [
+      8.875,
+      11.75,
+      17.5,
+      0.5
+    ],
+    "edge_p90_px": [
+      16.675,
+      13.75,
+      27.5,
+      1.0
+    ],
+    "vertical_median_gt_height": [
+      0.16906474820143885,
+      0.0072203107079553755
+    ],
+    "vertical_p90_gt_height": [
+      0.19784172661870503,
+      0.014388489208633094
+    ]
+  }
+}

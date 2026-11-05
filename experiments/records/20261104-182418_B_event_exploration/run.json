@@ -1,0 +1,14 @@
+{
+  "status": "completed",
+  "finished": "2026-11-04T21:54:13.365182+09:00",
+  "source": "out/experiments/20261104-182418_B_event_exploration",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "trained_and_evaluated_runs": 9,
+  "total_decoded_overlay_frames": 56628,
+  "strong_validation": "passed",
+  "summary": "docs/B_event_results_20261104.md"
+}

@@ -14,6 +14,8 @@ from ttnet.scene.table import annotations
 
 
 def augment(cfg,base,table_features,device):
+    if cfg.get('table_frontend'):
+        raise ValueError('spatial table frontends require events.engine.build_cache; legacy table augmentation cannot supply visual descriptors')
     corpus=EventCorpus(EVENT_DATA);attach_pp(corpus,cfg['pp_annotations'])
     system=EventSystem(cfg,device);system.configure('frozen',False)
     previous=json.loads((base/'identity.json').read_text());expected=cache_identity(system,corpus)

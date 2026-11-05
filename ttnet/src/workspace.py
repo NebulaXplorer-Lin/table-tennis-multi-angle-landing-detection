@@ -4,9 +4,11 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import os
 import shutil
 import subprocess
+import fcntl
 from pathlib import Path
 
 from ttnet.common import PROJECT,ROOT,RUNS,OUTPUT,identity,now,save,sha
@@ -27,7 +29,62 @@ def relative(path):
     return os.path.relpath(Path(path),PROJECT)
 
 
+def _completed_public_validation(run):
+    """Accept the report's explicit receipt, never guess an evaluation attempt."""
+    record=PROJECT/'experiments/records'/run.name
+    try:
+        completion=read(record/'public_completion.json')
+        if not isinstance(completion,dict):return None
+        reference=completion.get('evaluation',{})
+        if not isinstance(reference,dict):return None
+        if (completion.get('schema')!='public_event_run_completion_v1'
+                or completion.get('status')!='completed' or completion.get('experiment_id')!=run.name
+                or reference.get('status')!='completed' or reference.get('validation_set')!='pp_public'
+                or not (record/'summary.md').is_file()):
+            return None
+        def resolve(value):
+            path=Path(value)
+            return (path if path.is_absolute() else PROJECT/path).resolve()
+        metrics_path=resolve(reference['metrics'])
+        checkpoint=resolve(reference['checkpoint'])
+        study_path=resolve(completion['study_completion'])
+        if (not metrics_path.is_relative_to((run/'evaluations').resolve())
+                or checkpoint!=(run/'checkpoints/best.pt').resolve()
+                or sha(metrics_path)!=reference['metrics_sha256']
+                or sha(checkpoint)!=reference['checkpoint_sha256']
+                or sha(study_path)!=completion['study_completion_sha256']):
+            return None
+        study=read(study_path);metrics=read(metrics_path)
+        if not isinstance(study,dict) or not isinstance(metrics,dict):return None
+        parity=metrics.get('cache_online_parity',{})
+        if not isinstance(parity,dict):return None
+        score=metrics.get('macro_f1')
+        if (study.get('status')!='completed' or study.get('validation_set')!='pp_public'
+                or study.get('all_checks_passed') is not True
+                or metrics.get('status')!='evaluated' or metrics.get('validation_set')!='pp_public'
+                or metrics.get('checkpoint_sha256')!=reference['checkpoint_sha256']
+                or any(parity.get(key) is not True for key in
+                       ('passed','decisions_equal','landing_decisions_equal'))
+                or type(score) not in (int,float) or not math.isfinite(score) or not 0<=score<=1):
+            return None
+        return dict(score=dict(eval_id=reference.get('eval_id','public'),
+            metric_scope='pp_public_validation_landing_macro_f1',f1=score,
+            precision=None,recall=None,e2e_fps=metrics.get('e2e_fps')),
+            summary=relative(record/'summary.md'),best_epoch=reference.get('best_epoch'))
+    except (KeyError,TypeError,ValueError,OSError):
+        # Partial writes and changed evidence remain unscored, without mutating a run.
+        return None
+
+
 def refresh_index():
+    lock_path=PROJECT/'out'/'.workspace_index.lock'
+    lock_path.parent.mkdir(parents=True,exist_ok=True)
+    with lock_path.open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        return _refresh_index()
+
+
+def _refresh_index():
     """Read archived evidence only; never re-publish or modify historical runs."""
     entries=[];seen=set()
     for base in (ROOT/'runs',RUNS):
@@ -47,22 +104,27 @@ def refresh_index():
                    config=relative(run/'config.yaml'),checkpoint=relative(run/'checkpoints/best.pt') if (run/'checkpoints/best.pt').exists() else None)
             scores=[]
             if stage=='event':
-                continuous=read(run/'evaluations/continuous/metrics.json')
-                if continuous.get('status')=='evaluated':
-                    base_entry['status']='evaluated'
-                    base_entry['summary']=relative(run/'evaluations/continuous/metrics.json')
-                    scores.append(dict(eval_id='continuous',metric_scope='pp_val_landing_macro_f1',
-                        f1=continuous['metrics']['macro_f1'],precision=None,recall=None,
-                        e2e_fps=continuous.get('e2e_fps')))
-                m=read(run/'evaluations/best/metrics.json')
-                for part in ('val','test'):
-                    if part in m:scores.append(dict(eval_id=f'best_{part}_anchors',metric_scope=f'{part}_sparse_event_classification',
-                       f1=m[part].get('macro_f1'),precision=None,recall=None,e2e_fps=None))
-                if 'public' in m:scores.append(dict(eval_id='best_public_landing',metric_scope='pp_public_landing',
-                    f1=m['public'].get('macro_f1'),precision=None,recall=None,e2e_fps=m['public'].get('e2e_fps')))
-                for path in sorted((run/'evaluations').glob('epoch*_public/public/metrics.json')):
-                    m=read(path);scores.append(dict(eval_id=path.parent.parent.name,metric_scope='pp_public_landing_intermediate',
-                       f1=m.get('macro_f1'),precision=None,recall=None,e2e_fps=None))
+                public=_completed_public_validation(run)
+                if public:
+                    base_entry.update(status='completed',summary=public['summary'],best_epoch=public['best_epoch'])
+                    scores.append(public['score'])
+                elif not config.get('public_validation_root'):
+                    continuous=read(run/'evaluations/continuous/metrics.json')
+                    if continuous.get('status')=='evaluated':
+                        base_entry['status']='evaluated'
+                        base_entry['summary']=relative(run/'evaluations/continuous/metrics.json')
+                        scores.append(dict(eval_id='continuous',metric_scope='pp_val_landing_macro_f1',
+                            f1=continuous['metrics']['macro_f1'],precision=None,recall=None,
+                            e2e_fps=continuous.get('e2e_fps')))
+                    m=read(run/'evaluations/best/metrics.json')
+                    for part in ('val','test'):
+                        if part in m:scores.append(dict(eval_id=f'best_{part}_anchors',metric_scope=f'{part}_sparse_event_classification',
+                           f1=m[part].get('macro_f1'),precision=None,recall=None,e2e_fps=None))
+                    if 'public' in m:scores.append(dict(eval_id='best_public_landing',metric_scope='pp_public_landing',
+                        f1=m['public'].get('macro_f1'),precision=None,recall=None,e2e_fps=m['public'].get('e2e_fps')))
+                    for path in sorted((run/'evaluations').glob('epoch*_public/public/metrics.json')):
+                        m=read(path);scores.append(dict(eval_id=path.parent.parent.name,metric_scope='pp_public_landing_intermediate',
+                           f1=m.get('macro_f1'),precision=None,recall=None,e2e_fps=None))
             else:
                 m=read(run/'evaluations/best_val/metrics.json');bench=read(run/'evaluations/benchmark/metrics.json')
                 for tol,metric in m.get('center',{}).items():
@@ -83,6 +145,9 @@ def refresh_index():
     if legacy.exists():
         with legacy.open() as stream:
             for row in csv.DictReader(stream):
+                if any(entry['experiment_id']==row['experiment_id'] and
+                       entry['eval_id']==row.get('eval_id') for entry in entries):
+                    continue
                 def number(key):
                     value=row.get(key)
                     return float(value) if value not in (None,'','null','—') else None

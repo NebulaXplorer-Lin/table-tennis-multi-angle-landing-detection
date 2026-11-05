@@ -36,18 +36,56 @@ class EventSystem(nn.Module):
         else:
             # Full event checkpoints contain both locators, including joint updates.
             # Inference must not depend on the original pretraining files remaining.
-            self.global_model=build_localizer(dict(config,temporal_mode='fixed3')).to(device)
-            self.local_model=build_localizer(dict(config,temporal_mode='fixed3')).to(device)
+            self.global_model=build_localizer(dict(config,temporal_mode='fixed3'), 'global').to(device)
+            self.local_model=build_localizer(dict(config,temporal_mode='fixed3'), 'local').to(device)
         head_rng=torch.get_rng_state()
+        if initialize and not random_init:
+            for stage, info in (('global', ginfo), ('local', linfo)):
+                trained = info.get('config', {})
+                self.config[stage+'_localizer_type'] = trained.get(stage+'_localizer_type', trained.get('localizer_type', 'residual_fpn'))
+            self.config['locator_training_dataset_id'] = ginfo.get('dataset_id')
         self.table_head=None
         if config.get('table_checkpoint') or config.get('table_head',False):
             from ttnet.scene.table import TableHead
-            self.table_head=TableHead().to(device)
+            table_pool=config.get('table_pool',[4,4])
             if initialize and not random_init:
                 table_state=torch.load(config['table_checkpoint'],map_location=device,weights_only=False)
                 if table_state['config']['global_sha256']!=sha(config['global_checkpoint']):raise ValueError('table/global dependency mismatch')
+                trained_pool=table_state['config'].get('table_pool',[4,4])
+                if 'table_pool' in config and list(table_pool)!=list(trained_pool):
+                    raise ValueError('table pooling configuration and checkpoint differ')
+                table_pool=trained_pool
+            self.config['table_pool']=list(table_pool)
+            self.table_head=TableHead(table_pool).to(device)
+            if initialize and not random_init:
                 self.table_head.load_state_dict(table_state['head'])
             self.table_head.requires_grad_(config.get('train_table_head',False)).eval()
+        self.table_encoder = None
+        spec = config.get('table_frontend')
+        if spec:
+            from ttnet.scene.visual_cache import validate_frontend
+            from ttnet.models.table_encoder import load_table_checkpoint, SharedGlobalTableHead, IndependentTableEncoder
+            from ttnet.models.table_light import load_spatial_table, NativeTableEncoder, NativeTableMLP
+            validate_frontend(spec)
+            if self.table_head is not None:
+                raise ValueError('choose legacy table_head or spatial table_frontend')
+            if initialize:
+                self.table_encoder,state = load_spatial_table(spec['checkpoint'],device,sha(config['global_checkpoint']))
+                if any(state['config'][key] != spec[key] for key in ('source','channels','input')):
+                    raise ValueError('table checkpoint and event feature contract differ')
+                self.config['table_annotation_identity'] = state['dependencies']['table_annotations']
+                self.config['table_frontend_architecture'] = state.get('architecture')
+            else:
+                if spec['source']=='shared_global':
+                    self.table_encoder=SharedGlobalTableHead(spec['channels']).to(device)
+                elif spec['source']=='independent_cnn':
+                    architecture=config.get('table_frontend_architecture') or {}
+                    self.table_encoder=(NativeTableMLP(spec['input'],architecture['table_pool'])
+                                        if architecture.get('kind')=='native_depthwise_fpn_mlp_v1'
+                                        else NativeTableEncoder(spec['input'])).to(device)
+                else:
+                    self.table_encoder=IndependentTableEncoder(architecture=config.get('table_frontend_architecture')).to(device)
+            self.table_encoder.eval().requires_grad_(False)
         self.ar_model=None
         if config.get('tracker_type')=='autoregressive':
             from ttnet.tracking.autoregressive import CandidateGRU
@@ -75,8 +113,12 @@ class EventSystem(nn.Module):
 
     def configure(self, mode, training):
         if mode not in ('frozen','joint'):raise ValueError(mode)
+        if mode=='joint' and self.table_encoder is not None:
+            raise ValueError('spatial table fusion currently supports frozen event training; auxiliary-loss FT is a later stage')
         self.mode=mode
         self.train(training)
+        if self.table_encoder is not None:
+            self.table_encoder.eval().requires_grad_(False)
         if self.table_head is not None:
             train_table=mode=='joint' and self.config.get('train_table_head',False)
             self.table_head.requires_grad_(train_table).train(training and train_table)
@@ -86,6 +128,10 @@ class EventSystem(nn.Module):
             model.train(training and mode=='joint')
 
     def _run(self, model, images, valid, offsets):
+        if model is self.global_model and self.table_encoder is not None and self.config['table_frontend']['source']=='shared_global':
+            heat,desc,spatial = model(images,valid,offsets,return_spatial=True)
+            self._table_prediction,self._table_spatial = self.table_encoder(spatial)
+            return heat,desc
         if model is self.global_model and self.table_head is not None:
             heat,desc,spatial=model(images,valid,offsets,return_spatial=True)
             self._table_boxes=self.table_head(spatial).detach().float().cpu().numpy()
@@ -95,12 +141,41 @@ class EventSystem(nn.Module):
         return model(images,valid,offsets)
 
     def table_record(self,transform,resolution,index=0):
+        if self.table_encoder is not None and self.config['table_frontend']['source']=='shared_global':
+            from ttnet.models.table_encoder import select_table
+            spec = self.config['table_frontend']
+            candidates = self.table_encoder.candidates(self._table_prediction,spec['confidence'],spec['nms_iou'],spec['input'])
+            return self._visual_table(select_table(candidates[index],transform),self._table_spatial[index],transform)
         if self.table_head is None:return None
         from ttnet.scene.table import decode_table
         return decode_table(self._table_boxes[index],transform,resolution)
 
+    def _visual_table(self,table,spatial,transform):
+        from ttnet.models.table_encoder import spatial_visual
+        payload = spatial_visual(spatial,table,transform,self.config['table_frontend']['roi'])
+        # Frozen full-video inference must not retain per-frame CUDA tensors.
+        if self.mode=='frozen' or not self.training:
+            payload = {k:v.detach().float().cpu() if torch.is_tensor(v) else v for k,v in payload.items()}
+        return dict(table,visual=payload)
+
+    def attach_table_visual(self,corpus,vid,ids,records):
+        if self.table_encoder is None or self.config['table_frontend']['source']=='shared_global':
+            return
+        from ttnet.models.table_encoder import select_table
+        spec = self.config['table_frontend']
+        for fid in sorted(set(ids)):
+            if not records[fid].get('frame_valid',True):
+                continue
+            image,transform = letterbox(corpus.image(vid,fid),*spec['input'],padding_value=114 if spec['source']=='independent_yolo' else 0)
+            x = torch.from_numpy(image.transpose(2,0,1).copy()).to(self.device).float()[None]/255.
+            prediction,spatial = self.table_encoder(x)
+            candidates = self.table_encoder.candidates(prediction,spec['confidence'],spec['nms_iou'])
+            records[fid]['table'] = self._visual_table(select_table(candidates[0],transform),spatial[0],transform)
+
     def forward_frames(self, corpus, vid, ids):
+        ids = list(ids)
         descriptors,records,loss=self._forward_frames(corpus,vid,ids)
+        self.attach_table_visual(corpus,vid,ids,records)
         if self.config.get('table_source')=='oracle':
             from ttnet.scene.table import annotations
             if not hasattr(self,'_table_annotations'):
@@ -142,7 +217,7 @@ class EventSystem(nn.Module):
             table=self.table_record(transform,resolution)
             x,y,conf=decode_heatmap(heat.detach().float().cpu().numpy())
             x,y=map_point(x,y,transform,inverse=True)
-            g=accept(dict(x=x,y=y,confidence=conf,source='global'),cfg['localization_threshold'],resolution)
+            g=accept(dict(x=x,y=y,confidence=conf,source='global'),cfg.get('global_threshold',cfg['localization_threshold']),resolution)
             crop=None; l=None; ldesc=gdesc.new_zeros((1,128))
             if g['valid']:
                 crop=crop_transform(x,y,meta['width'],meta['height'],lw,cfg['local_crop_side_1080'])
@@ -151,7 +226,7 @@ class EventSystem(nn.Module):
                 lheat,raw_ldesc=self._run(self.local_model,lx,valid,offsets)
                 xx,yy,cc=decode_heatmap(lheat.detach().float().cpu().numpy())
                 xx,yy=crop_point(xx,yy,crop,inverse=True)
-                l=accept(dict(x=xx,y=yy,confidence=cc,source='local'),cfg['localization_threshold'],resolution)
+                l=accept(dict(x=xx,y=yy,confidence=cc,source='local'),cfg.get('local_threshold',cfg['localization_threshold']),resolution)
                 if l['valid']:ldesc=raw_ldesc
                 if row['label_status'] in ('positive','negative'):
                     point=crop_point(*row['xy'],crop) if row['xy'] else None
@@ -176,6 +251,8 @@ class EventSystem(nn.Module):
 
 def cache_identity(system,corpus):
     result=dict(schema=3,dataset_id=corpus.identity,
+                locator_training_dataset_id=system.config.get('locator_training_dataset_id'),
+                locator_architectures={stage:system.config.get(stage+'_localizer_type',system.config.get('localizer_type','residual_fpn')) for stage in ('global','local')},
                 table=dict(checkpoint_sha256=sha(system.config['table_checkpoint']) if system.config.get('table_checkpoint') else None,source=system.config.get('table_source','predicted'),code=sha(SRC/'scene/table.py')),
                 autoregressive=dict(checkpoint_sha256=sha(system.config['ar_checkpoint']) if system.config.get('ar_checkpoint') else None,beam_size=system.config.get('ar_beam_size',8),use_table=system.config.get('ar_use_table',True)),
                 tracker=dict(type=system.config.get('tracker_type','independent'),
@@ -183,13 +260,22 @@ def cache_identity(system,corpus):
                 local_sha256=sha(system.config['local_checkpoint']),
                 config={k:system.config[k] for k in ('global_input','local_input','local_crop_side_1080','localization_threshold','amp')},
                 code_sha256=sha(__file__),
-                implementation={name:sha(SRC/name) for name in ('models/localizer.py','models/build.py','tracking/independent.py','tracking/association.py','tracking/candidates.py','tracking/runtime.py','tracking/autoregressive.py',
+                implementation={name:sha(SRC/name) for name in ('models/localizer.py','models/high_resolution.py','models/build.py','tracking/independent.py','tracking/association.py','tracking/candidates.py','tracking/runtime.py','tracking/autoregressive.py',
                     'training/dataset.py','data_tools/geometry.py','data_tools/frame_store.py','events/context.py','events/batched_features.py')},
                 extraction_batch=system.config.get('feature_batch',16),
                 sampling=dict(target_fps=system.config.get('target_fps',25),temporal_mode='fixed3',association_context='stream_source_with_existing_npy_precedence'))
     backends={name:store.backend_identity() for name in ('frame_store','pp_frame_store')
               if (store:=getattr(corpus,name,None)) is not None and getattr(store,'is_video',False)}
     if backends:result['pixel_backends']=backends
+    result['locator_thresholds'] = {stage:system.config.get(stage+'_threshold',system.config['localization_threshold']) for stage in ('global','local')}
+    if system.config.get('table_frontend'):
+        spec = system.config['table_frontend']
+        result['schema'] = 4
+        result['table_visual'] = dict(spec,checkpoint_sha256=sha(spec['checkpoint']),
+                                     annotations=system.config.get('table_annotation_identity'),
+                                     geometry_version=system.config.get('table_geometry_version','stable_v1'),
+                                     dtype='float32',sampling='bilinear_bin_centres_4x4_align_corners_false_v1',
+                                     implementation={name:sha(SRC/name) for name in ('models/table_encoder.py','models/table_light.py','scene/visual_cache.py','events/data.py')})
     return result
 
 
@@ -227,7 +313,11 @@ def build_cache(system,corpus,dest,parts=('train','val')):
                         if start%512==0:print(f'cache {vid} {start}/{len(ids)}',flush=True)
             # NPZ is committed before its record marker; interrupted writes are rebuilt.
             temporary=path.with_suffix('.tmp.npz')
-            np.savez_compressed(temporary,frame_ids=np.array(ids),features=np.stack(arrays))
+            extra = {}
+            if system.config.get('table_frontend'):
+                from ttnet.scene.visual_cache import serialize_visual
+                extra,records = serialize_visual(records,system.config['table_frontend']['channels'])
+            np.savez_compressed(temporary,frame_ids=np.array(ids),features=np.stack(arrays),**extra)
             temporary.replace(path)
             save_jsonl(records_path,records)
             print(f'cached {vid}: {len(ids)}',flush=True)
@@ -239,7 +329,16 @@ def load_cache(corpus,dest,parts=('train','val'),expected=None):
     result={}
     for part in parts:
         for vid in corpus.split[part]:
+            records = {r['frame_id']:r for r in jsonl(Path(dest)/f'{vid}.jsonl')}
             with np.load(Path(dest)/f'{vid}.npz') as a:
                 features={int(i):torch.from_numpy(f.copy()) for i,f in zip(a['frame_ids'],a['features'])}
-            result[vid]=(features,{r['frame_id']:r for r in jsonl(Path(dest)/f'{vid}.jsonl')})
+                if any(k.startswith('table_') for k in a.files):
+                    from ttnet.scene.visual_cache import restore_visual
+                    channels = a['table_context'].shape[1]
+                    if expected and expected.get('table_visual',{}).get('channels',channels)!=channels:
+                        raise ValueError('cached table channels differ from frontend identity')
+                    restore_visual(a,a['frame_ids'],records,channels)
+                elif expected and expected.get('table_visual'):
+                    raise ValueError('table feature cache is incomplete')
+            result[vid]=(features,records)
     return result

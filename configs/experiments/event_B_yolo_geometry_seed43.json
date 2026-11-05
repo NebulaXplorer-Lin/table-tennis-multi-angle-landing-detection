@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "name": "event_B_yolo_geometry_seed43",
+  "task": "event",
+  "components": {
+    "localizer": "../components/ball_fixed3.json",
+    "tracker": "../components/association.json",
+    "event_head": "../components/tcn.json",
+    "training": "../components/event_comparison_train.json"
+  },
+  "dataset": "../datasets/openttgames_event25_v3.json",
+  "parameters": {
+    "mode": "frozen",
+    "table_checkpoint": null,
+    "context_head": true,
+    "scene_mode": "relative",
+    "table_source": "predicted",
+    "head_dropout": 0.1,
+    "time_encoding": true,
+    "event_window_mode": "frames",
+    "global_checkpoint": "out/experiments/20261103-142106_mixed_ball_B_global/checkpoints/best.pt",
+    "local_checkpoint": "out/experiments/20261103-142106_mixed_ball_B_local/checkpoints/best.pt",
+    "global_localizer_type": "high_resolution_se",
+    "local_localizer_type": "residual_fpn",
+    "global_threshold": 0.7,
+    "local_threshold": 0.7,
+    "epochs": 40,
+    "patience": 8,
+    "table_geometry_version": "stable_v1",
+    "motion_max_step_fraction": 0.25,
+    "table_fusion": {
+      "mode": "geometry",
+      "channels": 128
+    },
+    "table_frontend": {
+      "source": "independent_yolo",
+      "checkpoint": "out/experiments/20261104-170502_table_yolo11s_native/best.pt",
+      "channels": 128,
+      "input": [
+        640,
+        640
+      ],
+      "confidence": 0.1,
+      "nms_iou": 0.7,
+      "roi": {
+        "width_scale": 1.1,
+        "height_scale": 1.5,
+        "min_height": 0.08
+      }
+    },
+    "seed": 43
+  },
+  "description": "B high-resolution Global and paired Local, locked 0.7/0.7 association, 13-frame frozen TCN. Seed43 three-arm internal validation exploration; no test selection. Fixed pretrained table best epoch12, confidence0.1; geometry/visual comparison."
+}

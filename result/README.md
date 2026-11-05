@@ -1,6 +1,10 @@
 # 完整版本与实验结果
 
-更新：2026-10-20。组员先看[Quick intro](../docs/quick_intro.md)，训练见[指南](../docs/training_guide.md)。
+更新：2026-11-05。组员先看[Quick intro](../docs/quick_intro.md)，训练见[指南](../docs/training_guide.md)。
+
+最新 [PP154训练 / pp_public最终验证交付](public_event_20261105/README.md) 已完成九组训练与两组固定历史参考。门控三种子宏F1均值74.76%±2.19pp，打包候选seed43单次77.59%；只在1/3种子优于拼接，尚无稳定优越结论。视觉候选本机约43FPS，速度参考旧F0为public75.69% / 54.40FPS。以下表格保留旧内部协议的完整版本。
+
+历史 baseline 最佳权重已于 2026-11-04 [集中整理](../docs/baseline_best_weights_20261104.md)，交付包仅保留内部验证最高的 TCN seed44 完整流水线（81.10%），附配置、阈值及 SHA256 校验清单。
 
 后续开发以三种子完整的TCN主基线为参照。EMA是单种子候选，内部只少1个FP，两套外测与主基线相同；保留两版，不把小幅单种子变化解释为稳定收益。
 

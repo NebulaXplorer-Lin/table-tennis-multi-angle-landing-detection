@@ -5,6 +5,7 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 from functools import lru_cache
+from pathlib import Path
 
 from ttnet.common import jsonl
 from ttnet.data_tools.geometry import crop_image, crop_point, crop_transform, letterbox, letterbox_transform, map_point
@@ -14,6 +15,27 @@ from ttnet.data_tools.frame_store import FrameStore
 
 MEAN = np.array([.485,.456,.406], np.float32)
 STD = np.array([.229,.224,.225], np.float32)
+
+
+def context_rows(dataset, split):
+    """Sparse native contexts keep actual frame IDs; PP remains full-frame."""
+    rows = jsonl(Path(dataset)/'labels'/f'{split}.jsonl')
+    native = {r['video_id'] for r in rows if r.get('native_sparse')}
+    return [r for r in rows if r['video_id'] not in native] + [
+        r for vid in sorted(native) for r in jsonl(Path(dataset)/'context'/f'{vid}.jsonl')]
+
+
+def native_window(row, frames, mode='fixed3'):
+    if mode not in ('fixed3', 'single'):
+        raise ValueError('native sparse localization supports fixed3/single only')
+    center=row['frame_id']; n=row['video_frame_count']
+    ids=[center] if mode=='single' else [center-1,center,center+1]
+    ids=[fid if 0<=fid<n else None for fid in ids]
+    if any(fid is not None and fid not in frames for fid in ids):
+        raise ValueError(f'missing native context: {row["video_id"]}:{center}')
+    offsets=[frames[fid]['timestamp_sec']-row['timestamp_sec'] if fid is not None else 0. for fid in ids]
+    return dict(frame_ids=ids,frame_valid=[fid is not None for fid in ids],time_offsets_sec=offsets,
+                center_frame_id=center,actual_span_sec=max(offsets)-min(offsets))
 
 
 def normalize(rgb):
@@ -42,14 +64,15 @@ class BallDataset(Dataset):
         self.dataset, self.stage, self.augment, self.sigma = dataset, stage, augment, sigma
         self.rows = jsonl(dataset/"labels"/f"{split}.jsonl")
         self.video_rows={}
-        for row in self.rows:
+        for row in context_rows(dataset,split):
             self.video_rows.setdefault(row["video_id"],[]).append(row)
         self.timestamps={}
         for video,rows in self.video_rows.items():
             rows.sort(key=lambda r:r["frame_id"])
-            if [r["frame_id"] for r in rows]!=list(range(len(rows))):
+            if not rows[0].get('native_sparse') and [r["frame_id"] for r in rows]!=list(range(len(rows))):
                 raise ValueError("temporal sampling requires all ordered source frames")
             self.timestamps[video]=[r["timestamp_sec"] for r in rows]
+        self.frame_rows={vid:{r['frame_id']:r for r in rows} for vid,rows in self.video_rows.items()}
         if not all_frames:
             self.rows = [r for r in self.rows if r["label_status"] in ["positive","negative"]]
         self.predictions = predictions
@@ -87,6 +110,8 @@ class BallDataset(Dataset):
         return image
 
     def temporal_index(self,row):
+        if row.get('native_sparse'):
+            return native_window(row,self.frame_rows[row['video_id']],self.temporal_mode)
         return sample_window(self.timestamps[row["video_id"]],row["frame_id"],self.temporal_mode,self.window_half_span_sec)
 
     def local_image(self,center,neighbor,transform,use_gt):
@@ -129,6 +154,8 @@ class BallDataset(Dataset):
         return crop_transform(p["x"], p["y"], r["width"], r["height"], width, self.crop_side_at_1080)
 
     def item(self, i, gt_crop=None, input_size=None):
+        rng=(np.random.default_rng(np.random.SeedSequence([self.augmentation_seed,getattr(self,'epoch',0),i]))
+             if hasattr(self,'augmentation_seed') else np.random)
         row = self.rows[i]
         width, height = validate_size(input_size or self.input_size, self.stage)
         valid = row["label_status"] in ["positive","negative"]
@@ -144,7 +171,7 @@ class BallDataset(Dataset):
             if use_gt and center is not None:
                 side = self.crop_side_at_1080*h/1080
                 jitter=self.augmentation['gt_crop_jitter_fraction']
-                cx,cy = np.asarray(center)+np.random.uniform(-jitter,jitter,2)*side
+                cx,cy = np.asarray(center)+rng.uniform(-jitter,jitter,2)*side
             else:
                 p = (self.predictions or {}).get((row["video_id"], row["frame_id"]))
                 if p is None or not p["valid"]:
@@ -166,14 +193,14 @@ class BallDataset(Dataset):
         images=[]
         for fid in index["frame_ids"]:
             if fid is None:images.append(None);continue
-            neighbor=self.video_rows[row["video_id"]][fid]
+            neighbor=self.frame_rows[row["video_id"]][fid]
             if fid==row["frame_id"]:image=rgb
             elif self.stage=="global":image=self.global_image(neighbor,width,height)
             else:image=self.local_image(row,neighbor,transform,use_gt)
             images.append(image)
         if self.augment:
-            flip=np.random.random()<self.augmentation['horizontal_flip']
-            scale=np.random.uniform(*self.augmentation['brightness_scale']);shift=np.random.uniform(*self.augmentation['brightness_offset'])
+            flip=rng.random()<self.augmentation['horizontal_flip']
+            scale=rng.uniform(*self.augmentation['brightness_scale']);shift=rng.uniform(*self.augmentation['brightness_offset'])
             if flip:
                 if point:
                     point = (width-1-point[0], point[1])

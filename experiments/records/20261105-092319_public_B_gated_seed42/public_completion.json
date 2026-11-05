@@ -1,0 +1,31 @@
+{
+  "schema": "public_event_run_completion_v1",
+  "status": "completed",
+  "completed": "2026-11-05T14:54:15.961814+08:00",
+  "experiment_id": "20261105-092319_public_B_gated_seed42",
+  "human_review_performed": false,
+  "model_run_files_modified": false,
+  "study_completion": "/home/radno/projects/pingpong/out/experiments/20261105-092319_public_event_study/completion.json",
+  "study_completion_sha256": "a919bc5d6e45cabe5730be342046cc1f6c1ceaac69761dc54f85ef053cc86003",
+  "evaluation": {
+    "status": "completed",
+    "validation_set": "pp_public",
+    "eval_id": "public",
+    "metrics": "/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_gated_seed42/evaluations/public/metrics.json",
+    "metrics_sha256": "b57945e886ab5376728b38c37a763780b59a51793780c33c5dd6295c42e12122",
+    "checkpoint": "/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_gated_seed42/checkpoints/best.pt",
+    "checkpoint_sha256": "d6408f5cb090b39f0c20e5bce5f6a7dc86d6a3adc6c0fd4a2833f1ffcbac74f7",
+    "best_epoch": 15,
+    "metrics_summary": {
+      "macro_f1": 0.7442013442013442,
+      "tp": 66,
+      "fp": 12,
+      "fn": 26
+    },
+    "errors": "/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_gated_seed42/evaluations/public/errors.html",
+    "benchmark": "/home/radno/projects/pingpong/out/experiments/20261105-092319_public_B_gated_seed42/evaluations/benchmark/benchmark.json",
+    "study_analysis": "/home/radno/projects/pingpong/out/experiments/20261105-092319_public_event_study/analysis.json",
+    "study_analysis_sha256": "c94dbe5f1a838ed6adb27a5d7688179bb94455d4d41e60eee383995ce13c845d",
+    "completion_receipt": "/home/radno/projects/pingpong/out/experiments/20261105-092319_public_event_study/completion.json"
+  }
+}
