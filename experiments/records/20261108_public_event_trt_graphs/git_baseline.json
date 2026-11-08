@@ -1,0 +1,12 @@
+{
+  "entry": "participant.solution_public_trt_graphs:Solution",
+  "fps": [
+    51.9,
+    51.3,
+    53.1
+  ],
+  "macro_f1": 0.7812143026488781,
+  "parent": "ee754efefe06a02d40cd860b00fa55c29a67caf9",
+  "checkpoint_and_engines": "Not in Git. Retained on server at paths in README_public_event_trt.md.",
+  "excluded": "All selection experiments, videos, tensors, weights and TensorRT binaries."
+}

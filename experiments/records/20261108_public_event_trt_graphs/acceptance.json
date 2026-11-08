@@ -1,0 +1,715 @@
+{
+  "entry": "participant.solution_public_trt_graphs:Solution",
+  "baseline_fps": [
+    43.3,
+    44.5,
+    42.4
+  ],
+  "final_fps": [
+    51.9,
+    51.3,
+    53.1
+  ],
+  "baseline_median": 43.3,
+  "final_median": 51.9,
+  "all_final_runs_at_least_50": true,
+  "relative_median_speedup": 0.19861431870669755,
+  "metrics": {
+    "macro_f1": 0.7812143026488781,
+    "by_view": {
+      "0度": {
+        "tp": 15,
+        "fp": 7,
+        "fn": 6,
+        "precision": 0.6818181818181818,
+        "recall": 0.7142857142857143,
+        "f1": 0.6976744186046512
+      },
+      "45度": {
+        "tp": 30,
+        "fp": 15,
+        "fn": 8,
+        "precision": 0.6666666666666666,
+        "recall": 0.7894736842105263,
+        "f1": 0.7228915662650601
+      },
+      "90度": {
+        "tp": 30,
+        "fp": 2,
+        "fn": 3,
+        "precision": 0.9375,
+        "recall": 0.9090909090909091,
+        "f1": 0.923076923076923
+      }
+    },
+    "total": {
+      "tp": 75,
+      "fp": 24,
+      "fn": 17,
+      "precision": 0.7575757575757576,
+      "recall": 0.8152173913043478,
+      "f1": 0.7853403141361256
+    },
+    "per_video": {
+      "v000001": {
+        "angle": "0度",
+        "tp": 4,
+        "fp": 0,
+        "fn": 2,
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "f1": 0.8,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 0,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 1,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 2,
+            "ground_truth": 3
+          },
+          {
+            "prediction": 3,
+            "ground_truth": 4
+          }
+        ],
+        "false_positives": [],
+        "false_negatives": [
+          0,
+          5
+        ]
+      },
+      "v000010": {
+        "angle": "0度",
+        "tp": 2,
+        "fp": 2,
+        "fn": 1,
+        "precision": 0.5,
+        "recall": 0.6666666666666666,
+        "f1": 0.5714285714285715,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 0,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 1,
+            "ground_truth": 2
+          }
+        ],
+        "false_positives": [
+          2,
+          3
+        ],
+        "false_negatives": [
+          0
+        ]
+      },
+      "v000019": {
+        "angle": "0度",
+        "tp": 5,
+        "fp": 2,
+        "fn": 1,
+        "precision": 0.7142857142857143,
+        "recall": 0.8333333333333334,
+        "f1": 0.7692307692307692,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 1,
+            "ground_truth": 0
+          },
+          {
+            "prediction": 3,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 4,
+            "ground_truth": 3
+          },
+          {
+            "prediction": 5,
+            "ground_truth": 4
+          },
+          {
+            "prediction": 6,
+            "ground_truth": 5
+          }
+        ],
+        "false_positives": [
+          0,
+          2
+        ],
+        "false_negatives": [
+          1
+        ]
+      },
+      "v000028": {
+        "angle": "0度",
+        "tp": 0,
+        "fp": 2,
+        "fn": 2,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "ignored": 0,
+        "matches": [],
+        "false_positives": [
+          0,
+          1
+        ],
+        "false_negatives": [
+          0,
+          1
+        ]
+      },
+      "v000037": {
+        "angle": "0度",
+        "tp": 4,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.888888888888889,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 0,
+            "ground_truth": 0
+          },
+          {
+            "prediction": 1,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 2,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 3,
+            "ground_truth": 3
+          }
+        ],
+        "false_positives": [
+          4
+        ],
+        "false_negatives": []
+      },
+      "v000038": {
+        "angle": "45度",
+        "tp": 5,
+        "fp": 5,
+        "fn": 1,
+        "precision": 0.5,
+        "recall": 0.8333333333333334,
+        "f1": 0.625,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 3,
+            "ground_truth": 0
+          },
+          {
+            "prediction": 4,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 5,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 6,
+            "ground_truth": 3
+          },
+          {
+            "prediction": 8,
+            "ground_truth": 4
+          }
+        ],
+        "false_positives": [
+          0,
+          1,
+          2,
+          7,
+          9
+        ],
+        "false_negatives": [
+          5
+        ]
+      },
+      "v000047": {
+        "angle": "45度",
+        "tp": 2,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "f1": 0.8,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 0,
+            "ground_truth": 0
+          },
+          {
+            "prediction": 1,
+            "ground_truth": 2
+          }
+        ],
+        "false_positives": [],
+        "false_negatives": [
+          1
+        ]
+      },
+      "v000057": {
+        "angle": "45度",
+        "tp": 6,
+        "fp": 2,
+        "fn": 1,
+        "precision": 0.75,
+        "recall": 0.8571428571428571,
+        "f1": 0.7999999999999999,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 1,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 2,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 3,
+            "ground_truth": 3
+          },
+          {
+            "prediction": 4,
+            "ground_truth": 4
+          },
+          {
+            "prediction": 6,
+            "ground_truth": 5
+          },
+          {
+            "prediction": 7,
+            "ground_truth": 6
+          }
+        ],
+        "false_positives": [
+          0,
+          5
+        ],
+        "false_negatives": [
+          0
+        ]
+      },
+      "v000066": {
+        "angle": "45度",
+        "tp": 5,
+        "fp": 4,
+        "fn": 2,
+        "precision": 0.5555555555555556,
+        "recall": 0.7142857142857143,
+        "f1": 0.6250000000000001,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 0,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 1,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 3,
+            "ground_truth": 4
+          },
+          {
+            "prediction": 4,
+            "ground_truth": 5
+          },
+          {
+            "prediction": 6,
+            "ground_truth": 6
+          }
+        ],
+        "false_positives": [
+          2,
+          5,
+          7,
+          8
+        ],
+        "false_negatives": [
+          0,
+          3
+        ]
+      },
+      "v000075": {
+        "angle": "45度",
+        "tp": 4,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.888888888888889,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 0,
+            "ground_truth": 0
+          },
+          {
+            "prediction": 1,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 2,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 4,
+            "ground_truth": 3
+          }
+        ],
+        "false_positives": [
+          3
+        ],
+        "false_negatives": []
+      },
+      "v000085": {
+        "angle": "45度",
+        "tp": 5,
+        "fp": 3,
+        "fn": 1,
+        "precision": 0.625,
+        "recall": 0.8333333333333334,
+        "f1": 0.7142857142857143,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 0,
+            "ground_truth": 0
+          },
+          {
+            "prediction": 1,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 2,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 4,
+            "ground_truth": 4
+          },
+          {
+            "prediction": 5,
+            "ground_truth": 5
+          }
+        ],
+        "false_positives": [
+          3,
+          6,
+          7
+        ],
+        "false_negatives": [
+          3
+        ]
+      },
+      "v000094": {
+        "angle": "45度",
+        "tp": 3,
+        "fp": 0,
+        "fn": 2,
+        "precision": 1.0,
+        "recall": 0.6,
+        "f1": 0.7499999999999999,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 0,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 1,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 2,
+            "ground_truth": 4
+          }
+        ],
+        "false_positives": [],
+        "false_negatives": [
+          0,
+          3
+        ]
+      },
+      "v000095": {
+        "angle": "90度",
+        "tp": 15,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "ignored": 1,
+        "matches": [
+          {
+            "prediction": 0,
+            "ground_truth": 0
+          },
+          {
+            "prediction": 1,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 2,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 3,
+            "ground_truth": 3
+          },
+          {
+            "prediction": 4,
+            "ground_truth": 4
+          },
+          {
+            "prediction": 5,
+            "ground_truth": 5
+          },
+          {
+            "prediction": 6,
+            "ground_truth": 6
+          },
+          {
+            "prediction": 7,
+            "ground_truth": 7
+          },
+          {
+            "prediction": 8,
+            "ground_truth": 8
+          },
+          {
+            "prediction": 9,
+            "ground_truth": 9
+          },
+          {
+            "prediction": 10,
+            "ground_truth": 10
+          },
+          {
+            "prediction": 11,
+            "ground_truth": 11
+          },
+          {
+            "prediction": 12,
+            "ground_truth": 12
+          },
+          {
+            "prediction": 13,
+            "ground_truth": 13
+          },
+          {
+            "prediction": 14,
+            "ground_truth": 14
+          }
+        ],
+        "false_positives": [],
+        "false_negatives": []
+      },
+      "v000106": {
+        "angle": "90度",
+        "tp": 8,
+        "fp": 2,
+        "fn": 3,
+        "precision": 0.8,
+        "recall": 0.7272727272727273,
+        "f1": 0.761904761904762,
+        "ignored": 0,
+        "matches": [
+          {
+            "prediction": 0,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 1,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 2,
+            "ground_truth": 3
+          },
+          {
+            "prediction": 3,
+            "ground_truth": 4
+          },
+          {
+            "prediction": 4,
+            "ground_truth": 5
+          },
+          {
+            "prediction": 5,
+            "ground_truth": 6
+          },
+          {
+            "prediction": 6,
+            "ground_truth": 7
+          },
+          {
+            "prediction": 7,
+            "ground_truth": 9
+          }
+        ],
+        "false_positives": [
+          8,
+          9
+        ],
+        "false_negatives": [
+          0,
+          8,
+          10
+        ]
+      },
+      "v000117": {
+        "angle": "90度",
+        "tp": 7,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "ignored": 2,
+        "matches": [
+          {
+            "prediction": 0,
+            "ground_truth": 0
+          },
+          {
+            "prediction": 1,
+            "ground_truth": 1
+          },
+          {
+            "prediction": 2,
+            "ground_truth": 2
+          },
+          {
+            "prediction": 3,
+            "ground_truth": 3
+          },
+          {
+            "prediction": 4,
+            "ground_truth": 4
+          },
+          {
+            "prediction": 5,
+            "ground_truth": 5
+          },
+          {
+            "prediction": 6,
+            "ground_truth": 6
+          }
+        ],
+        "false_positives": [],
+        "false_negatives": []
+      }
+    },
+    "protocol": {
+      "frame_tolerance": 1,
+      "distance_px": 50,
+      "matching": "maximum-cardinality one-to-one; valid GT first; invalid GT absorbs unmatched predictions",
+      "macro": "unweighted mean over views",
+      "organizer_scorer": false
+    }
+  },
+  "all_predictions_identical": true,
+  "protected_unchanged": true,
+  "profile_parity": {
+    "prior": "/home/lirong/pingpong-public-ee754ef/out/public-event-trt-001/baseline1/predictions.jsonl",
+    "prior_count": 102,
+    "current_count": 102,
+    "missing": [],
+    "added": [],
+    "max_coordinate_delta_px": 0.0,
+    "identical": true
+  },
+  "event_build": {
+    "phase": "completed",
+    "samples": 387,
+    "max_logit_delta": 0.0234375,
+    "max_probability_delta": 0.003973543643951416,
+    "p50_pytorch": 1.7600319115445018,
+    "p50_trt": 0.32128405291587114,
+    "build_seconds": 41.739071033895016
+  },
+  "event_shadow": {
+    "windows": 2109,
+    "max_logit_delta": 0.0390625,
+    "max_probability_delta": 0.003973543643951416,
+    "threshold_flips": 0
+  },
+  "rejected_gpu_feature_cache": {
+    "cache_fps": 43.0,
+    "combined_fps": 47.0,
+    "reason": "No measured improvement in initial full-video screen; not adopted"
+  },
+  "measurements": {
+    "baseline1": {
+      "fps": 43.3,
+      "entry": "participant.solution_public_trt_local:Solution"
+    },
+    "event1": {
+      "fps": 48.7,
+      "entry": "participant.solution_public_trt_event:Solution"
+    },
+    "shadow": {
+      "fps": 42.5,
+      "entry": "participant.solution_public_trt_event_shadow:Solution"
+    },
+    "cache1": {
+      "fps": 43.0,
+      "entry": "participant.solution_public_trt_gpu_features:Solution"
+    },
+    "combined1": {
+      "fps": 47.0,
+      "entry": "participant.solution_public_trt_event_gpu:Solution"
+    },
+    "graph1": {
+      "fps": 49.8,
+      "entry": "participant.solution_public_trt_event_graph:Solution"
+    },
+    "graphs1": {
+      "fps": 51.9,
+      "entry": "participant.solution_public_trt_graphs:Solution"
+    },
+    "baseline2": {
+      "fps": 44.5,
+      "entry": "participant.solution_public_trt_local:Solution"
+    },
+    "graphs2": {
+      "fps": 51.3,
+      "entry": "participant.solution_public_trt_graphs:Solution"
+    },
+    "baseline3": {
+      "fps": 42.4,
+      "entry": "participant.solution_public_trt_local:Solution"
+    },
+    "graphs3": {
+      "fps": 53.1,
+      "entry": "participant.solution_public_trt_graphs:Solution"
+    },
+    "graphs-shadow": {
+      "fps": 47.2,
+      "entry": "participant.solution_public_trt_graphs_shadow:Solution"
+    }
+  }
+}
