@@ -4,7 +4,7 @@
 
 此入口继承已验证的 Local TensorRT 版本，增加完整 gated/TCN 事件引擎，并对 Global、桌面 YOLO、事件引擎使用固定缓冲区及 CUDA Graph。Local 每帧可能执行两个裁剪，需要保留各自描述特征，因此继续使用原 TensorRT 调用方式。
 
-GPU 特征缓存实验没有显示加速收益，未用于本入口。球/桌面特征存储、裁剪、事件阈值和 NMS 沿用原流程。原来的 `participant.solution_public_trt_local:Solution` 保留用于回退。
+GPU 特征缓存实验没有显示加速收益，未用于本入口。球/桌面特征存储、裁剪、事件阈值和 NMS 见下方候选1配置。原来的 `participant.solution_public_trt_local:Solution` 保留用于回退。
 
 服务器运行示例：
 
@@ -29,3 +29,11 @@ CUDA Graph 输出缓冲区会复用，本入口按帧顺序执行，每次结果
 实验记录：`out/public-event-trt-001/acceptance.json`。`baseline1/2/3` 和 `graphs1/2/3` 为正常速度轮；`capture`、`shadow`、`graphs-shadow` 和 `event-profile` 是诊断轮，不作为正式 FPS。
 
 开发复现：新输出目录先运行 `capture_event_trt.py`，再运行 `build_event_trt.py`，用 `evaluate_event_variants.py` 做完整输出、精度、速度对照。抓取窗口来自推理流程，没有使用真实标签构造网络输入。输入抓取文件仅供构建验证，完成后清理。
+
+## 2026-11-10 候选1参数版本
+
+在 `fbc0b0b` 基准上仅调整推理参数：Global/Local 阈值均为 0.7；关联运动权重 0.8、运动尺度 100px、缺失代价 3.0；弹跳阈值 0.30、NMS 0.06 秒。其余关联参数从 checkpoint 保留，模型结构、权重和引擎不变。参数在引擎准备后、首个视频 reset 前生效；`run_status.json` 记录 `parameter_profile`、实际配置与后处理阈值。
+
+当前软件解码回退环境的一次完整15视频复测：宏 F1 79.539448%，51.4 FPS，初筛总分 84.654586，TP/FP/FN=76/21/16。此记录来自等价实验适配器对同一配置的实测，不是本次提交后的重新测速；public 已参与参数选型，不代表隐藏测试集，单次速度不等于三轮验收。原基准可回退至 `fbc0b0b`。
+
+详细复测记录见 `experiments/records/20261110_candidate1_parameters/README.md`。

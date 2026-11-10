@@ -1,0 +1,36 @@
+{
+  "config": {
+    "global_threshold": 0.7,
+    "local_threshold": 0.7,
+    "threshold": 0.3,
+    "nms_sec": 0.06,
+    "association": {
+      "motion_weight": 0.8,
+      "motion_scale_px": 100.0,
+      "missing_cost": 3.0
+    }
+  },
+  "result": {
+    "candidate": "candidate1",
+    "repeat": 1,
+    "macro_f1": 0.7953944801490019,
+    "fps": 51.4,
+    "accuracy_score": 59.65458601117515,
+    "speed_score": 25,
+    "total_score": 84.65458601117516,
+    "tp": 76,
+    "fp": 21,
+    "fn": 16,
+    "prepare_sec": 1.3,
+    "infer_sec": 41.1,
+    "path": "/home/lirong/score-search-20261110-swdecode/top-three-once-20261110-093216/candidate1-run1"
+  },
+  "runtime": {
+    "gpu": "GPU-5974eaf3-3b44-2379-e3e4-a3e19ec730c9, 595.71.05",
+    "decoded_rgb_sha256": "27448c206d3d7322d276cb25327b45f333875ee57e316e9f1e3051a09e0deca7",
+    "hardware_initialization_failed": true,
+    "ffmpeg_sha256": "36d94a605d612e4090d1b8aec889d0c0801c6eafb1593c90f5c0dfd2e2966a45"
+  },
+  "source": "/home/lirong/score-search-20261110-swdecode/top-three-once-20261110-093216",
+  "scope": "15 public development videos / 2109 frames; one full run via equivalent adapter; no retraining; not post-commit timing"
+}
